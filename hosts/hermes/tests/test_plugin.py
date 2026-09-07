@@ -35,4 +35,13 @@ def test_register_adds_every_declared_tool() -> None:
     with tempfile.TemporaryDirectory() as tmp:
         ctx = FakeCtx(Path(tmp))
         register(ctx)
-        assert [r["name"] for r in ctx.registrations] == []
+        assert [r["name"] for r in ctx.registrations] == ["generate","infer","models","status","web"]
+
+
+def test_status_handler_returns_the_real_result() -> None:
+    with tempfile.TemporaryDirectory() as tmp:
+        ctx = FakeCtx(Path(tmp))
+        register(ctx)
+        handler = next(r["handler"] for r in ctx.registrations if r["name"] == "status")
+        result = json.loads(handler({}))
+        assert "error" not in result

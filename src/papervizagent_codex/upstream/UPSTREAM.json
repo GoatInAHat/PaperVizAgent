@@ -2,6 +2,29 @@
   "repository": "https://github.com/google-research/papervizagent",
   "revision": "e088a8fff74cc363b6897c0843631fff76484908",
   "license": "Apache-2.0",
-  "vendored": ["agents", "utils/config.py", "utils/image_utils.py", "utils/paperviz_processor.py", "style_guides"],
-  "adaptations": "Provider calls use the host backend; plot execution is bounded; retrieval-none and critic iteration handling are corrected."
+  "vendored": [
+    "agents",
+    "utils/config.py",
+    "utils/image_utils.py",
+    "utils/paperviz_processor.py",
+    "style_guides"
+  ],
+  "adaptations": "Relative package imports and official-SDK backend inference; configurable bounded temporary plot process; canonical image blocks; preserved supplied references; retrieval-only/no-reference fixes; strict critic parsing, configurable rounds and explicit stop states. Original prompt constants and style guide wording are unchanged.",
+  "source_sha256": {
+    "style_guides/neurips2025_plot_style_guide.md": "a98397d2cd15a98abf88152c19efdca82ef3f27d66f23f73ed0f88e44e474e92",
+    "style_guides/neurips2025_diagram_style_guide.md": "d2aee50170d9de995bae01c45737a779853c07a34c1ce106219dc5790ee5bea5",
+    "agents/stylist_agent.py": "254b82932e058653d1c6c278e8fb84ced46449fc05f51c85a244ebce7f84ad28",
+    "agents/base_agent.py": "cf257bf2561c25b7284aaca0623aedb2067c45474bf23c203c85e494fc70c4ab",
+    "agents/planner_agent.py": "55a5a95f05930fc69f91953a301ed46292d4342abc6a3c37456a92c089876f01",
+    "agents/__init__.py": "88afce9983c7ca848103e8a3fd6b58475603d875a6543974cf88c39bac898aaa",
+    "agents/critic_agent.py": "2893273a101e9bab7ca67d9e7bf72de9c22eb91dba1f15f7691ee863a7987a4e",
+    "agents/retriever_agent.py": "61407d154f443fb8341a289117dbd9b3dbd0a7b156e24ec95112b908e5258587",
+    "agents/visualizer_agent.py": "6452fad9872d0dad1ec696f0299d599b9b1feca10f02178e7a5d8cca09b18600",
+    "agents/polish_agent.py": "42ebd9f8b5716a6c6cb8662d3b03b0a9f88e3477ffab4227247b9a977a3c5d28",
+    "agents/vanilla_agent.py": "968aae7b98fab7e83a7486cf905ef19b054208da0c8f3d1dc9bf365275d94a37",
+    "utils/image_utils.py": "7071a6cbaf31e8285c83523d912bb995f71695af0c2b977f3bec4b686de83dd8",
+    "utils/config.py": "c8f0a406f48a12de576dc4b6ff73925af839ce97b2b4d7195914912663fc958a",
+    "utils/paperviz_processor.py": "d97ca58d433c75bc046a9eaf760c7885fc859c90c4ffbc3376b52f6fda47be99",
+    "utils/__init__.py": "88afce9983c7ca848103e8a3fd6b58475603d875a6543974cf88c39bac898aaa"
+  }
 }

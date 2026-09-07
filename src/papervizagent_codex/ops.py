@@ -4,10 +4,12 @@ from __future__ import annotations
 import asyncio
 import base64
 import json
+from io import BytesIO
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
 
+from PIL import Image
 from pydantic import BaseModel, ConfigDict, Field
 
 from .backends import Backend
@@ -35,23 +37,43 @@ class InferInput(BaseModel):
 class GenerateInput(BaseModel):
     data: dict[str, Any] = Field(description='Upstream input dictionary, including content and visual_intent; polish accepts its upstream image fields.')
     settings: dict[str, Any] = Field(default_factory=dict, description='Upstream pipeline settings; overrides the configuration file pipeline section. No credentials.')
-    num_candidates: int = Field(default=1, ge=1)
-    max_concurrent: int = Field(default=4, ge=1)
+    num_candidates: int | None = Field(default=None, ge=1, description='Defaults to pipeline.num_candidates or 1.')
+    max_concurrent: int | None = Field(default=None, ge=1, description='Defaults to pipeline.max_concurrent or 4.')
 
 
 def settings_for(ctx: Context):
     return load_settings(ctx.config.get('papervizagent_codex_config'))
 
 
+# Only native generation controls need to cross the model-visible host boundary.
+# Arbitrary SDK options stay inside infer/generate, where credentials remain private.
+_NATIVE_OPTIONS = frozenset({'effort', 'service_tier', 'temperature', 'max_output_tokens',
+                             'candidate_count', 'aspect_ratio', 'image_size', 'size',
+                             'quality', 'background'})
+
+
 def status(args: StatusInput, ctx: Context) -> dict:
     settings = settings_for(ctx)
+    routes = {}
+    for role in ('retriever', 'planner', 'stylist', 'visualizer', 'critic', 'vanilla', 'polish'):
+        routes[role] = {}
+        for modality in ('llm', 'vlm', 'image'):
+            spec = settings.resolve(role, modality, tuple(args.native))
+            route = spec.model_dump(include={'provider', 'model'}, exclude_none=True)
+            if spec.provider == 'native':
+                route['options'] = {key: value for key, value in spec.options.items()
+                                    if key in _NATIVE_OPTIONS and isinstance(value, (str, int, float, bool, type(None)))}
+                route['unavailable_options'] = sorted(spec.options.keys() - route['options'].keys())
+            routes[role][modality] = route
     return {
-        'routes': {role: {modality: settings.resolve(role, modality, tuple(args.native)).model_dump(exclude_none=True)
-                         for modality in ('llm', 'vlm', 'image')}
-                   for role in ('retriever', 'planner', 'stylist', 'visualizer', 'critic', 'vanilla', 'polish')},
+        'routes': routes,
         'native': args.native,
         'codex': 'Use models to verify subscription availability; host capabilities are supplied by the caller.',
-        'pipeline': settings.pipeline,
+        'pipeline': {key: settings.pipeline[key] for key in
+                     ('task_name', 'exp_mode', 'retrieval_setting', 'temperature',
+                      'max_critic_rounds', 'num_candidates', 'max_concurrent',
+                      'plot_timeout_seconds', 'plot_dpi', 'work_dir', 'dataset_name',
+                      'split_name', 'timestamp') if key in settings.pipeline},
     }
 
 
@@ -84,8 +106,11 @@ async def infer(args: InferInput, ctx: Context) -> dict:
             path = _run_dir(ctx)
             outputs = []
             for i, value in enumerate(result):
-                filename = path / f'image-{i}.png'
-                filename.write_bytes(base64.b64decode(value, validate=True))
+                raw = base64.b64decode(value, validate=True)
+                with Image.open(BytesIO(raw)) as decoded:
+                    suffix = 'jpg' if decoded.format == 'JPEG' else decoded.format.lower()
+                filename = path / f'image-{i}.{suffix}'
+                filename.write_bytes(raw)
                 outputs.append({'type': 'image', 'path': str(filename)})
         else:
             outputs = [{'type': 'text', 'text': value} for value in result]
@@ -96,9 +121,15 @@ async def generate(args: GenerateInput, ctx: Context) -> dict:
     from .pipeline import run_pipeline
     configured = settings_for(ctx)
     options = {**configured.pipeline, **args.settings}
+    num_candidates = args.num_candidates or int(options.pop('num_candidates', 1))
+    max_concurrent = args.max_concurrent or int(options.pop('max_concurrent', 4))
+    options.pop('num_candidates', None)
+    options.pop('max_concurrent', None)
+    if num_candidates < 1 or max_concurrent < 1:
+        raise ValueError('num_candidates and max_concurrent must be positive.')
     root = _run_dir(ctx)
     work_dir = Path(options.pop('work_dir', root)).expanduser().resolve()
-    semaphore = asyncio.Semaphore(args.max_concurrent)
+    semaphore = asyncio.Semaphore(max_concurrent)
     async with Backend(configured) as backend:
         async def candidate(index):
             async with semaphore:
@@ -114,10 +145,20 @@ async def generate(args: GenerateInput, ctx: Context) -> dict:
                     artifact = str(image_path)
                 if not artifact and options.get('exp_mode') != 'dev_retriever':
                     raise RuntimeError(f'Pipeline produced no final image. Inspect {result_path}')
-                return {'candidate_id': index, 'artifact': artifact, 'result': str(result_path)}
-        results = await asyncio.gather(*(candidate(i) for i in range(args.num_candidates)))
+                stop = result.get('critic_stop_reason')
+                return {'candidate_id': index, 'artifact': artifact, 'result': str(result_path),
+                        'critic_stop_reason': stop,
+                        'status': 'partial' if stop in ('invalid_response', 'render_failed') else 'completed'}
         trace_path = root / 'trace.json'
-        trace_path.write_text(json.dumps(backend.trace, indent=2))
+        tasks = [asyncio.create_task(candidate(i)) for i in range(num_candidates)]
+        try:
+            results = await asyncio.gather(*tasks)
+        finally:
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            await asyncio.gather(*tasks, return_exceptions=True)
+            trace_path.write_text(json.dumps(backend.trace, indent=2))
         return {'candidates': results, 'trace': str(trace_path)}
 
 

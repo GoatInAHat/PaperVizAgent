@@ -62,6 +62,12 @@
     "onStartup": true
   },
   "contracts": {
-    "tools": []
+    "tools": [
+      "generate",
+      "infer",
+      "models",
+      "status",
+      "web"
+    ]
   }
 }

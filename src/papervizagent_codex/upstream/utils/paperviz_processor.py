@@ -76,6 +76,7 @@ class PaperVizProcessor:
         else: # default to stylist
             current_best_image_key = f"target_{task_name}_stylist_desc0_base64_jpg"
             
+        data['critic_stop_reason'] = 'round_limit'
         for round_idx in range(max_rounds):
             data["current_critic_round"] = round_idx
             data = await self.critic_agent.process(data, source=source)
@@ -88,6 +89,7 @@ class PaperVizProcessor:
             critic_suggestions = data.get(critic_suggestions_key, "")
             
             if critic_suggestions.strip() == "No changes needed.":
+                data['critic_stop_reason'] = 'no_changes_needed'
                 _stderr_print(f"[Critic Round {round_idx}] No changes needed. Stopping iteration.")
                 break
             
@@ -99,6 +101,7 @@ class PaperVizProcessor:
                 current_best_image_key = new_image_key
                 _stderr_print(f"[Critic Round {round_idx}] Completed iteration. Visualization SUCCESS.")
             else:
+                data['critic_stop_reason'] = 'render_failed'
                 _stderr_print(f"[Critic Round {round_idx}] Visualization FAILED (No valid image). Rolling back to previous best: {current_best_image_key}")
                 break
         

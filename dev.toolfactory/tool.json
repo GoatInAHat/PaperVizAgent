@@ -40,7 +40,8 @@
       "developerName": "GoatInAHat",
       "category": "Productivity",
       "defaultPrompt": "Use $papervizagent-codex with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
-    }
+    },
+    "mcp": false
   },
   "config": {
     "type": "object",

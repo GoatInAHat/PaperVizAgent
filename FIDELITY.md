@@ -1,3 +1,40 @@
+# Current implementation: v0.3
+
+The Python runtime now reuses the pinned upstream processor and seven role
+classes, not just the prompts. See
+[src/papervizagent_codex/upstream/UPSTREAM.json](src/papervizagent_codex/upstream/UPSTREAM.json)
+for source hashes and modifications. Native skill execution remains available.
+
+Per-role/per-modality provider routing is the inference adapter. Gemini,
+OpenAI-compatible APIs, Anthropic and the official Codex Python SDK make fresh
+requests; each Codex role receives a new ephemeral thread. Native execution uses
+fresh host subagents and bounded artifact handoffs. The portable skill uses
+actual host capabilities first unless a role/modality is explicitly configured.
+Standalone MCP/CLI/web cannot directly access another app's private tools;
+embedded users can supply native callbacks.
+
+Upstream modes, configurable critic rounds, retrieval settings, supplied
+examples, task-specific style guides, aspect hints, candidate counts and
+concurrency are exposed. All original prompt constants are unchanged. Fixed
+upstream defects are documented in the runtime provenance: missing ref.json
+with no retrieval, lost reference-image blocks, invalid critic responses,
+hardcoded three-round rendering, global plotting execution and swallowed
+retrieval-only results. Plot defaults retain 300 DPI with a configurable timeout.
+
+Remaining differences are explicit: no bundled Streamlit demo or benchmark
+suite; local runtime defaults to no retrieval until examples/dataset are supplied;
+one candidate by default; provider-supported controls determine the available
+sampling settings. Codex's image generator is service-managed, its model field
+selects the coordinator, and API-only controls cannot be simulated. Static
+external OAuth tokens need caller refresh. Plot child processes are not OS
+security sandboxes. Provider SDK errors are surfaced rather than five automatic
+retry attempts silently returning an "Error" string. The native skill retains
+its additional editable-SVG path and caption/legend protections.
+
+The historical audit below describes v0.1/v0.2. Statements about lacking an
+inference runtime or forbidding provider configuration apply to those releases,
+not v0.3. No release inherits upstream benchmark scores.
+
 # Fidelity audit and v0.2 restoration
 
 The v0.1 plugin was a prompt/workflow adaptation, not a faithful execution of

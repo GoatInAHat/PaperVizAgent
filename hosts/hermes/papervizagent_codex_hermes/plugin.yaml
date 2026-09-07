@@ -8,7 +8,12 @@ description: Scientific figures with upstream PaperVizAgent, separate roles,
 author: GoatInAHat
 license: Apache-2.0
 homepage: https://github.com/GoatInAHat/PaperVizAgent-codex
-provides_tools: []
+provides_tools:
+  - generate
+  - infer
+  - models
+  - status
+  - web
 optional_env:
   - name: PAPERVIZAGENT_CODEX_CONFIG
     description: Optional path to shared PaperVizAgent JSON/YAML model and pipeline

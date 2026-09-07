@@ -14,7 +14,7 @@ Provider = Literal['native', 'codex', 'gemini', 'openai', 'anthropic']
 
 
 class Model(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
     provider: Provider | None = None
     model: str | None = None
     api_key_env: str | None = None
@@ -27,7 +27,7 @@ class Model(BaseModel):
 
 
 class CodexAuth(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
     access_token_env: str = 'CODEX_OAUTH_TOKEN'
     account_id_env: str = 'CODEX_ACCOUNT_ID'
     token_file: str | None = None
@@ -37,7 +37,7 @@ class CodexAuth(BaseModel):
 
 
 class Settings(BaseModel):
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
     models: dict[Modality, Model] = Field(default_factory=dict)
     roles: dict[Role, Model] = Field(default_factory=dict)
     codex: CodexAuth = Field(default_factory=CodexAuth)
@@ -55,7 +55,7 @@ class Settings(BaseModel):
                 values.update(incoming)
         if not values:
             return Model(provider='native' if modality in native else 'codex')
-        values['provider'] = values.get('provider') or 'codex'
+        values['provider'] = values.get('provider') or ('native' if modality in native and not values.get('model') else 'codex')
         return Model.model_validate(values)
 
 
@@ -92,4 +92,5 @@ def _upstream_config(value: dict) -> dict:
             if secret:
                 spec['api_key'] = secret
             models[modality] = spec
-    return {'models': models}
+    return {**{key: value[key] for key in ('roles', 'codex', 'pipeline') if key in value},
+            'models': {**models, **value.get('models', {})}}

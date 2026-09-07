@@ -46,6 +46,10 @@ call doctor never makes, with no Hermes install required.
 
 ## Tools
 
-_No operation reaches this surface yet._
+- `generate` — Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess. (native)
+- `infer` — Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace. (native)
+- `models` — Read models and capabilities available through the configured Codex subscription. No inference. (native)
+- `status` — Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model. (native)
+- `web` — Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL. (native)
 
 All of them register into the `papervizagent_codex` toolset.

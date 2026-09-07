@@ -16,17 +16,6 @@
     "codex"
   ],
   "skills": "./skills/",
-  "mcpServers": {
-    "papervizagent-codex": {
-      "command": "uvx",
-      "args": [
-        "--from",
-        "papervizagent-codex==0.3.0",
-        "papervizagent-codex",
-        "mcp"
-      ]
-    }
-  },
   "interface": {
     "displayName": "PaperVizAgent for Codex",
     "shortDescription": "Scientific figures with native tools or configurable providers.",

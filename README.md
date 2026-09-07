@@ -1,13 +1,14 @@
-# PaperVizAgent for Codex
+# PaperVizAgent
 
-Scientific figures through separate native Codex agents, using the session
-you're already signed into. No API keys, model configuration, MCP server, or GPU setup.
+Scientific figures using [Google Research’s official PaperVizAgent](https://github.com/google-research/papervizagent) pipeline, with separate roles and configurable inference on every surface. This independent distribution keeps its original repository/package name, `papervizagent-codex`.
 
-An independent port of [Google Research's PaperVizAgent](https://github.com/google-research/papervizagent)
-(formerly PaperBanana), built with [ToolFactory](https://github.com/GoatInAHat/toolfactory).
-It preserves the original role prompts, complete style guides, reference-driven
-planning, and critic/regeneration loop. This is not an official Google or
-OpenAI integration.
+The Python processor, seven agent implementations and complete style guides are reused from pinned upstream source. [ToolFactory](https://github.com/GoatInAHat/toolfactory) generates the integrations and release packages from that one runtime.
+
+**Release status:** GitHub/source installation is available; the PyPI, npm, ClawHub and browser-store commands below require the publisher setup described in [RELEASING.md](RELEASING.md). Until PyPI is published, run the runtime from the release source:
+
+```sh
+uvx --from git+https://github.com/GoatInAHat/PaperVizAgent-codex@v0.3.0 papervizagent-codex mcp
+```
 
 <!-- tf:install -->
 ## Install
@@ -26,9 +27,8 @@ OpenAI integration.
 - **Browser extension** — from a checkout: `npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt build`,
   then `chrome://extensions` → developer mode → Load unpacked → `hosts/browser/.output/chrome-mv3`
   (Firefox: `npm --prefix hosts/browser exec --no -- web-ext run`). Each GitHub Release attaches the
-  store uploads `papervizagent-codex-0.3.0-chrome.zip`, `papervizagent-codex-0.3.0-firefox.zip`, `papervizagent-codex-0.3.0-edge.zip`, and the Mozilla-signed `.xpi`,
-  which is the only download-and-install channel now that Chrome no longer keeps side-loaded unpacked
-  extensions; the Chrome Web Store, Firefox Add-ons and Edge Add-ons listings appear once the release's
+  store uploads `papervizagent-codex-0.3.0-chrome.zip`, `papervizagent-codex-0.3.0-firefox.zip`, `papervizagent-codex-0.3.0-edge.zip`. When Firefox signing credentials are configured, it also attaches a
+  Mozilla-signed `.xpi`; the Chrome Web Store, Firefox Add-ons and Edge Add-ons listings appear once the release's
   submit step has each store's credentials. Then pair it: `uvx papervizagent-codex mcp --http --pair`
   prints the `<url>#<token>` the extension's options page accepts.
 - **Web app** — `uvx papervizagent-codex mcp --http --open` serves the operations page beside the
@@ -39,126 +39,54 @@ OpenAI integration.
 
 <!-- /tf:install -->
 
-After installation, start a new Codex task:
+The npm package is a small launcher for the same version on PyPI and requires [uv](https://docs.astral.sh/uv/getting-started/installation/). MCPB uses its host’s supported uv runtime. Downloadable bundles and registry listings are separate: see [release status](RELEASING.md).
+
+## Defaults and model choice
+
+The skill resolves each role independently: **explicit role setting → modality setting → available host tool → Codex fallback**. It checks actual tools; a host name does not guarantee vision or image generation.
+
+On Codex, the skill uses native subagents, vision and image generation without API keys or a Python server. The Codex plugin does not eagerly start MCP. Custom overrides use the optional runtime through the CLI or an explicitly connected MCP server.
+
+On other hosts, use available native capabilities and supply `CODEX_OAUTH_TOKEN` for missing capabilities, or use an existing Codex sign-in. `CODEX_ACCOUNT_ID` is needed only if the supplied token does not contain its account identifier. Tokens stay in environment/host secret settings or an explicitly selected token file; never paste them into prompts or tool arguments. Static access tokens expire: their owner must refresh them. The SDK manages refresh for its own sign-in.
+
+A standalone CLI/MCP/web server cannot directly invoke another app’s private tools. Its `generate` operation uses configured SDK providers or Codex. The portable skill is the bridge to host-native tools; embedded Python integrations can also supply native callbacks to `Backend(native={...})`. An unavailable capability produces an error.
+
+The official [Codex SDK](https://github.com/openai/codex/tree/main/sdk/python) discovers subscription models and starts a fresh, ephemeral thread for every role call. `models.image.model` selects the Codex **coordinating model**; Codex manages the built-in image generator. Arbitrary image-model selection uses an image API provider. Codex does not expose API controls such as temperature or maximum output tokens; explicit unsupported overrides fail, and unavailable upstream defaults are listed in the trace. Aspect/size requests are prompt guidance on Codex. See [configuration](CONFIGURATION.md).
+
+## Use
+
+In an agent host:
 
 ```text
-Use $papervizagent-codex to turn this paper's methods section into a scientific
-diagram. Use this caption: "Overview of our inference pipeline."
+Use $papervizagent-codex to turn these methods and this caption into a scientific diagram.
 ```
 
-Attach the paper or paste the relevant source. The default workflow uses full
-mode, automatic reference retrieval, one candidate, and three critic rounds.
-You can request a different mode, a smaller image budget, supplied references,
-or no retrieval in ordinary language.
+With the runtime installed:
 
-## Actual separate agents
+```sh
+papervizagent-codex status --json '{"native":["llm","vlm"]}'
+papervizagent-codex models
+papervizagent-codex generate --json '{"data":{"content":"Encode the input, retrieve evidence, then decode the answer.","visual_intent":"Overview of the inference pipeline"},"settings":{"exp_mode":"demo_full","retrieval_setting":"none","max_critic_rounds":3}}'
+papervizagent-codex mcp
+```
 
-The main Codex agent coordinates files and state. Each role receives a fresh
-native context with its original prompt and explicit inputs.
+`status` only resolves configuration. `models` verifies the Codex account catalog without inference. `infer` runs one isolated role and returns text or an image path plus its trace. `generate` runs the upstream pipeline, retaining intermediate descriptions, code, image data and role traces under the tool’s data directory. Set `PAPERVIZAGENT_CODEX_DATA_DIR` to choose it.
 
-| Role | Input and behavior |
-|---|---|
-| Retriever | Ranks the real reference pool using target methods/data and caption; retrieves up to ten source/caption/image examples |
-| Planner | Inspects those examples and writes a complete target description |
-| Stylist | Refines the planner description using the complete task-specific style guide |
-| Visualizer | Renders the description through native image generation, or executable Matplotlib code for plots |
-| Critic | Independently inspects the current image against its description and raw source; returns a critique and complete revised description |
+Both diagrams and Matplotlib plots support vanilla, planner, planner+stylist, planner+critic, full, retrieval-only and polish modes. Candidate count, concurrency, critic rounds, retrieval mode, aspect ratio, style guides and provider options remain configurable. The skill defaults to automatic reference retrieval; the standalone runtime defaults to `none` until a reference dataset or supplied examples are provided. The runtime defaults to one full candidate and three critic rounds; upstream’s ten-candidate demo is a selectable configuration, not an implied default.
 
-The Critic's revised description produces a **new image from text**. Editing an
-existing bitmap is a separate user-requested workflow. Every critic round uses a
-fresh context; no headings or role-play substitute for actual delegation.
+Original prompt constants and style guides remain unchanged. Each native role has a fresh subagent; each runtime role makes an isolated provider request or Codex thread. Critic revisions produce fresh renders; polish is a separate editing workflow. Plot execution runs generated Python in a temporary child process with a configurable timeout and 300 DPI output. This isolates plotting state and hangs; it is **not an OS security sandbox**. Use the host’s execution sandbox for untrusted inputs.
 
-Full mode retains both planner and styled initial renders. With up to three
-critic-driven regenerations, that is at most five visible image-tool calls per
-candidate, with early stopping. A smaller requested budget is respected and
-recorded as a partial run when it prevents a stage. Failed visible calls count
-against the budget; there are no automatic retries. Subagents and reference
-processing also consume the signed-in account's usage.
+## Development and fidelity
 
-The available modes are full, planner_critic, planner_stylist, planner, vanilla,
-retriever, and polish. Explicit editable SVG is an additional renderer.
-[Workflow details](skills/papervizagent-codex/references/workflow.md) document
-their role graphs and stopping rules.
+```sh
+uv sync
+make build
+make check
+make validate
+make package
+```
 
-## Reference retrieval without setup
-
-The plugin fetches pinned metadata and only selected images from the original
-author's public PaperBanana Space. It does not download the entire dataset
-archive or bundle third-party paper figures.
-
-A Python 3.9+ standard-library helper handles downloads, caching, checksums and
-materialization; Codex performs the ranking. No Python packages or inference
-credentials are needed for retrieval. The complete first-200 diagram candidate
-pool is processed in batches rather than silently truncating source methods.
-The Planner receives the selected complete methods/data, captions and actual
-images. See [retrieval provenance](skills/papervizagent-codex/references/retrieval.md).
-
-When network/reference access is unavailable, the run explicitly records
-no-reference operation. Supplied references and an explicit no-retrieval request
-also work. Manual/random benchmark ablations are not implemented by the helper.
-
-## Host requirements and artifacts
-
-Use a current signed-in Codex session with native subagents, image generation,
-visual inspection, and file access. Native agent configuration is inherited;
-the plugin does not write custom-agent files or read OAuth tokens.
-[Official subagent documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents)
-
-The host's image tool chooses its available model and supported dimensions.
-Image usage is subject to the account's included limits.
-[Official image-generation documentation](https://learn.chatgpt.com/docs/image-generation)
-
-The reference helper uses available host Python; native fetch tools can provide
-the same data if Python is absent. Data plots use the host's available
-Python/Matplotlib runtime, preserving source and raw data. A missing capability
-is reported explicitly; no alternate model provider is launched.
-
-A run saves source/caption, retrieval provenance, separate descriptions, exact
-prompts, all real outputs, structured critic results, and run.json with role IDs,
-rounds, failures, selected output, and stop reason. Figures go to the requested
-directory or a new directory under outputs/figures/, respecting host rules.
-Raster output remains raster; requested SVG uses native editable elements.
-
-## Fidelity and validation
-
-v0.1.0 collapsed roles into one context and changed several core behaviors.
-v0.2 restores separate contexts, real retrieval, full prompts/guides, pipeline
-modes, separate evolution artifacts, the original three-round critic contract,
-and task-specific plotting.
-
-[FIDELITY.md](FIDELITY.md) records the audit, exact source evidence, and remaining
-adaptations: native models/transport, one conversational candidate, batched
-retrieval, caption inference when absent, preserved meaningful legends, and an
-additional SVG renderer. The original demo's ten-candidate planner+critic default
-is not silently described as this plugin's default.
-
-The port does not inherit the paper's benchmark results. The qualitative Critic
-is distinct from the original ground-truth evaluation. Review scientific
-content and venue requirements before treating any output as final.
-[Evaluation cases and observed results](evals/README.md)
-
-## Example
-
-![Previously tested scientific workflow](examples/retrieval/figure-v2.png)
-
-This example is retained from the v0.1 native rendering/edit test. It demonstrates
-image output, not evidence of the new role orchestration. The
-[synthetic source](examples/method.md), [original image](examples/retrieval/figure-v1.png),
-[edit prompt](examples/retrieval/prompt-v2.md), and
-[visual review](examples/retrieval/review.md) are available for inspection.
-Current native-role tests are recorded separately under evals/.
-
-## Development
-
-ToolFactory owns the manifest, marketplace entry, skill metadata and installation
-projections. The skill's coordinator instructions, native-role adapters, and
-standard-library reference helper are authored here. See
-[CONTRIBUTING.md](CONTRIBUTING.md) for regeneration and validation.
-
-[UPSTREAM.json](UPSTREAM.json) records exact source, prompt, guide and metadata
-hashes. [NOTICE](NOTICE) describes attribution and modifications. Code is
-licensed under [Apache-2.0](LICENSE); downloaded reference figures retain their
-source provenance and are not redistributed by this plugin.
+[FIDELITY.md](FIDELITY.md) records historical gaps and current adaptations. [UPSTREAM.json](UPSTREAM.json) and the runtime’s own provenance manifest pin reused source. [Configuration](CONFIGURATION.md) documents provider and pipeline settings. [Release status](RELEASING.md) distinguishes packaged integrations from published listings. This port does not inherit upstream’s benchmark scores and is not an official Google or OpenAI integration.
 
 <!-- tf:mcp-name -->
 <!-- mcp-name: io.github.GoatInAHat/papervizagent-codex -->

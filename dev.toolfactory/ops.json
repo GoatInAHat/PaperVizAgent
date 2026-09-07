@@ -1,0 +1,231 @@
+{
+  "tools": [
+    {
+      "name": "generate",
+      "description": "Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "additionalProperties": true,
+            "description": "Upstream input dictionary, including content and visual_intent; polish accepts its upstream image fields.",
+            "title": "Data",
+            "type": "object"
+          },
+          "settings": {
+            "additionalProperties": true,
+            "description": "Upstream pipeline settings; overrides the configuration file pipeline section. No credentials.",
+            "title": "Settings",
+            "type": "object"
+          },
+          "num_candidates": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Defaults to pipeline.num_candidates or 1.",
+            "title": "Num Candidates"
+          },
+          "max_concurrent": {
+            "anyOf": [
+              {
+                "minimum": 1,
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Defaults to pipeline.max_concurrent or 4.",
+            "title": "Max Concurrent"
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "title": "generateArguments"
+      },
+      "_meta": {
+        "dev.toolfactory": {
+          "requires": [
+            "net",
+            "fs",
+            "shell",
+            "secret"
+          ]
+        }
+      }
+    },
+    {
+      "name": "infer",
+      "description": "Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "role": {
+            "enum": [
+              "retriever",
+              "planner",
+              "stylist",
+              "visualizer",
+              "critic",
+              "vanilla",
+              "polish"
+            ],
+            "title": "Role",
+            "type": "string"
+          },
+          "modality": {
+            "enum": [
+              "llm",
+              "vlm",
+              "image"
+            ],
+            "title": "Modality",
+            "type": "string"
+          },
+          "system": {
+            "default": "",
+            "title": "System",
+            "type": "string"
+          },
+          "contents": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "title": "Contents",
+            "type": "array"
+          },
+          "contents_file": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional local JSON file containing content blocks, useful for image handoffs.",
+            "title": "Contents File"
+          },
+          "options": {
+            "additionalProperties": true,
+            "title": "Options",
+            "type": "object"
+          }
+        },
+        "required": [
+          "role",
+          "modality"
+        ],
+        "title": "inferArguments"
+      },
+      "_meta": {
+        "dev.toolfactory": {
+          "requires": [
+            "net",
+            "fs",
+            "shell",
+            "secret"
+          ]
+        }
+      }
+    },
+    {
+      "name": "models",
+      "description": "Read models and capabilities available through the configured Codex subscription. No inference.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "title": "modelsArguments"
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "dev.toolfactory": {
+          "requires": [
+            "net",
+            "shell",
+            "secret"
+          ]
+        }
+      }
+    },
+    {
+      "name": "status",
+      "description": "Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "native": {
+            "description": "Capabilities verified by the calling host; never inferred from the host name.",
+            "items": {
+              "enum": [
+                "llm",
+                "vlm",
+                "image"
+              ],
+              "type": "string"
+            },
+            "title": "Native",
+            "type": "array"
+          }
+        },
+        "title": "statusArguments"
+      },
+      "annotations": {
+        "readOnlyHint": true
+      },
+      "_meta": {
+        "dev.toolfactory": {
+          "requires": [
+            "fs"
+          ]
+        }
+      }
+    },
+    {
+      "name": "web",
+      "description": "Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {},
+        "title": "webArguments"
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "title": "Url",
+            "type": "string"
+          }
+        },
+        "required": [
+          "url"
+        ],
+        "title": "WebOutput"
+      },
+      "annotations": {
+        "openWorldHint": false
+      },
+      "_meta": {
+        "dev.toolfactory": {
+          "requires": [
+            "shell",
+            "net"
+          ]
+        }
+      }
+    }
+  ]
+}

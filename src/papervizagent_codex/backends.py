@@ -8,6 +8,7 @@ import os
 import tempfile
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from .config import Model, Settings
 
@@ -34,7 +35,7 @@ def token_credentials(settings: Settings) -> dict | None:
             claims = json.loads(base64.urlsafe_b64decode(payload + '=' * (-len(payload) % 4)))
             # This is routing metadata, not local authentication or JWT validation.
             account = claims.get('https://api.openai.com/auth', {}).get('chatgpt_account_id')
-        except (ValueError, IndexError, TypeError):
+        except (ValueError, IndexError, TypeError, AttributeError):
             pass
     if not account:
         raise ValueError('Set CODEX_ACCOUNT_ID (or chatgptAccountId in token_file) for this OAuth token.')
@@ -78,7 +79,10 @@ class Backend:
                 credentials = token_credentials(self.settings)
                 if credentials:
                     # Official external-token API. Does not read or rewrite auth.json.
-                    await client.account_login_start(credentials)
+                    try:
+                        await client.account_login_start(credentials)
+                    except Exception:
+                        raise ValueError('Codex rejected the supplied OAuth credentials. Check the account ID and supply a fresh access token.') from None
                 account = await client.account_read()
                 if account.account is None or account.account.root.type != 'chatgpt':
                     raise ValueError('Sign in with Codex, or supply CODEX_OAUTH_TOKEN. API providers can be selected in the configuration file.')
@@ -125,14 +129,15 @@ class Backend:
             return await asyncio.wait_for(self._codex_generate(spec, role, modality, system, contents, merged), self.settings.codex.timeout)
         if role == 'polish' and spec.provider == 'openai' and modality == 'image':
             merged.setdefault('edit', True)
-        result = await provider_generate(spec, modality, system, contents, merged)
-        self.trace.append({'role': role, 'modality': modality, 'provider': spec.provider, 'model': spec.model})
+        record = {'role': role, 'modality': modality, 'provider': spec.provider, 'model': spec.model, 'call_id': str(uuid4())}
+        self.trace.append(record)
+        result = await provider_generate(spec, modality, system, contents, merged, record)
         return result
 
     async def _codex_generate(self, spec, role, modality, system, contents, options):
         from openai_codex.generated.v2_all import ModelProviderCapabilitiesReadResponse
         client = await self.codex()
-        model = self.choose_model(spec, modality)
+        model = self.choose_model(spec, 'vlm' if any(b.get('type') == 'image' for b in contents) else modality)
         supported = {'effort', 'service_tier', 'output_schema', 'aspect_ratio', 'image_size', 'size', 'quality', 'background'}
         unsupported = set(spec.options) - supported
         if unsupported:
@@ -196,7 +201,7 @@ def _api_key(spec: Model) -> str | None:
     return os.environ.get(spec.api_key_env or default) or (spec.api_key.get_secret_value() if spec.api_key else None)
 
 
-async def provider_generate(spec: Model, modality: str, system: str, contents: list[dict], options: dict) -> list[str]:
+async def provider_generate(spec: Model, modality: str, system: str, contents: list[dict], options: dict, trace: dict | None = None) -> list[str]:
     if not spec.model:
         raise ValueError(f'Set a model for the {spec.provider} provider.')
     options = dict(options)
@@ -226,6 +231,8 @@ async def provider_generate(spec: Model, modality: str, system: str, contents: l
         async with genai.Client(**args).aio as client:
             response = await client.models.generate_content(model=spec.model, contents=parts,
                 config=types.GenerateContentConfig(system_instruction=system, candidate_count=count, **options))
+        if trace is not None:
+            trace['provider_request_id'] = getattr(response, 'response_id', None)
         outputs = []
         for candidate in response.candidates or []:
             for part in candidate.content.parts or []:
@@ -256,6 +263,8 @@ async def provider_generate(spec: Model, modality: str, system: str, contents: l
                     response = await client.images.edit(model=spec.model, prompt=prompt, image=files, n=count, **image_options)
                 else:
                     response = await client.images.generate(model=spec.model, prompt=prompt, n=count, **image_options)
+                if trace is not None:
+                    trace['provider_request_id'] = getattr(response, '_request_id', None)
                 outputs = [im.b64_json for im in response.data or [] if im.b64_json]
                 if not outputs:
                     raise RuntimeError('Image provider must return base64 image data.')
@@ -269,6 +278,8 @@ async def provider_generate(spec: Model, modality: str, system: str, contents: l
             if 'max_output_tokens' in options:
                 options['max_completion_tokens'] = options.pop('max_output_tokens')
             response = await client.chat.completions.create(model=spec.model, messages=[{'role': 'system', 'content': system}, {'role': 'user', 'content': parts}], n=count, **options)
+            if trace is not None:
+                trace['provider_request_id'] = response.id
             return [c.message.content for c in response.choices if c.message.content]
     if spec.provider == 'anthropic':
         if modality == 'image':
@@ -284,6 +295,8 @@ async def provider_generate(spec: Model, modality: str, system: str, contents: l
             outputs = []
             for _ in range(count):
                 response = await client.messages.create(model=spec.model, system=system, messages=[{'role': 'user', 'content': parts}], **options)
+                if trace is not None:
+                    trace.setdefault('provider_request_ids', []).append(response.id)
                 outputs.append(''.join(b.text for b in response.content if b.type == 'text'))
             return outputs
     raise ValueError(f'Unsupported runtime provider: {spec.provider}')
