@@ -90,9 +90,10 @@ class RetrieverAgent(BaseAgent):
                 retrieval_setting = "none"
         
         if retrieval_setting == "none":
-            # No retrieval, return empty list
-            data["top10_references"] = []
-            data["retrieved_examples"] = []
+            # Do not perform retrieval; preserve examples materialized by the
+            # caller's reference helper when present.
+            data.setdefault("top10_references", [])
+            data.setdefault("retrieved_examples", [])
             
         elif retrieval_setting == "manual":
             # Load from predefined few-shot file and store full examples

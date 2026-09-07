@@ -104,7 +104,9 @@ class VanillaAgent(BaseAgent):
                 raw_code = response_list[0]
                 data[f"vanilla_{cfg['task_name']}_code"] = raw_code
                 try:
-                    base64_jpg = await asyncio.to_thread(execute_plot_code, raw_code)
+                    base64_jpg = await asyncio.to_thread(
+                        execute_plot_code, raw_code, self.exp_config.plot_timeout_seconds
+                    )
                 except (RuntimeError, TimeoutError) as error:
                     data[f"vanilla_{cfg['task_name']}_plot_error"] = str(error)
                 else:

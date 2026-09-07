@@ -19,6 +19,7 @@ Vanilla Agent - Directly rendering images based on the method section.
 """
 
 import json
+from pathlib import Path
 from typing import Dict, Any
 import base64, io, asyncio
 from PIL import Image
@@ -86,10 +87,22 @@ class PlannerAgent(BaseAgent):
             content_list.append({"type": "text", "text": user_prompt})
             
             # Resolve relative path using work_dir
-            image_path = self.exp_config.work_dir / f"data/PaperBananaBench/{cfg['task_name']}" / item["path_to_gt_image"]
+            cached_image = item.get("image", {}).get("local_path")
+            image_path = (
+                Path(cached_image)
+                if cached_image
+                else self.exp_config.work_dir
+                / f"data/PaperBananaBench/{cfg['task_name']}"
+                / item["path_to_gt_image"]
+            )
             with open(image_path, "rb") as f:
                 ref_image_base64 = base64.b64encode(f.read()).decode("utf-8")
-            content_list.append({"type": "image", "image_base64": ref_image_base64})
+            media_type = "image/png" if image_path.suffix.lower() == ".png" else "image/jpeg"
+            content_list.append({
+                "type": "image",
+                "image_base64": ref_image_base64,
+                "media_type": media_type,
+            })
             user_prompt = ""
 
         user_prompt += f"Now, based on the following {cfg['content_label'].lower()} and {cfg['visual_intent_label'].lower()}, provide a detailed description for the figure to be generated.\n"

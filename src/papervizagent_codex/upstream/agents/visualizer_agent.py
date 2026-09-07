@@ -146,7 +146,9 @@ class VisualizerAgent(BaseAgent):
                 
                 data[f"{desc_key}_code"] = raw_code
                 try:
-                    base64_jpg = await asyncio.to_thread(execute_plot_code, raw_code)
+                    base64_jpg = await asyncio.to_thread(
+                        execute_plot_code, raw_code, self.exp_config.plot_timeout_seconds
+                    )
                 except (RuntimeError, TimeoutError) as error:
                     data[f"{desc_key}_plot_error"] = str(error)
                 else:
