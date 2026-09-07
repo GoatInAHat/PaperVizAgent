@@ -83,7 +83,7 @@
     },
     ".github/workflows/agent-config.yml": {
       "sha256": "f12a1696e9de7d74f78d7b7a214ffdc14e2ca1ce7522d8ee5f9ad54fb9ecd642",
-      "state": "generated"
+      "state": "manual"
     },
     ".github/workflows/ci.yml": {
       "sha256": "468a8558f283da202704065f31a30027716eb195ea34fba0437c0bd233ff8e43",
@@ -120,7 +120,7 @@
       "state": "generated"
     },
     "COVERAGE.md": {
-      "sha256": "ca89f40d9429b7cb0fc9ea875818f504c8c8178827f035879bd5e82abc521f44",
+      "sha256": "53c69d00f4219ca0c384cd41282e39acfba6afed619f6111f76357eb97289074",
       "state": "generated"
     },
     "dev.toolfactory/coverage.json": {
