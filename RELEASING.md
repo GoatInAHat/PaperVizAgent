@@ -50,3 +50,7 @@ wheel/sdist/MCPB contents and launch the MCPB staging directory with `uv run`
 from outside the repository. Live Codex tests are recorded under `evals/`; API
 provider credentials are not required for CI; provider wire tests use mocks,
 while the Codex path has live end-to-end coverage.
+
+Before a local `docker build`, run `make build` to generate the web operations
+schema. The release container job performs this step, then checks that the built
+image starts the CLI and contains the compiled web interface.
