@@ -11,9 +11,9 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).parents[1] / "src"))
 
-from papervizagent_codex import run_pipeline
-from papervizagent_codex.upstream.utils.inference import normalize_contents, text_modality
-from papervizagent_codex.upstream.utils.plot_execution import execute_plot_code
+from papervizagent import run_pipeline
+from papervizagent.upstream.utils.inference import normalize_contents, text_modality
+from papervizagent.upstream.utils.plot_execution import execute_plot_code
 
 
 def png_base64() -> str:

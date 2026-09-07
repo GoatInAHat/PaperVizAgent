@@ -2,17 +2,17 @@
   "toolfactoryVersion": "0.1.2",
   "files": {
     ".agents/mcp/servers.json": {
-      "sha256": "d977c64e005118fc0b1a7beb069a48058bf59f220cca8cf1908e728df3adc2d0",
+      "sha256": "15346e6ef8e1b2f1413cb7456c38921a4af1bd9847ab11d03a8c07627ee2a35b",
       "state": "generated",
       "keys": [
-        "papervizagent-codex",
+        "papervizagent",
         "toolfactory",
         "shadcn",
         "playwright"
       ]
     },
     ".agents/plugins/marketplace.json": {
-      "sha256": "bb8d13572b278ac4a56a551c72a8ccde38ab2be8e2499bee0f02206f933f4928",
+      "sha256": "c9ecadf972ed7daac4e2b75fa208a1c59ce5554102601db6af9beae0d2604df5",
       "state": "generated"
     },
     ".agents/README.md": {
@@ -33,8 +33,8 @@
       "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "state": "generated"
     },
-    ".agents/skills/papervizagent-codex": {
-      "sha256": "7a311f47194fbb3280825c351c88954869b349560e98b10939f30b942b985897",
+    ".agents/skills/papervizagent": {
+      "sha256": "c30c20faf46e9cc8743c00777ca9a1875d91c0087d82ac9bc3eaf13f22cb3a2d",
       "state": "generated"
     },
     ".agents/sync.py": {
@@ -42,11 +42,11 @@
       "state": "generated"
     },
     ".claude-plugin/marketplace.json": {
-      "sha256": "11f2ad9b2ddf112fca8a324cf1f45765060d0506ca7b60a8e4075c8d13631976",
+      "sha256": "cab4001bf5657c24be45490b116dc699736f0189d4f489d4f04614f029e99aeb",
       "state": "generated"
     },
     ".claude-plugin/plugin.json": {
-      "sha256": "36716c0421e824d022239e86759a857f5bf8a0dba628fb6e1e97e34833da659e",
+      "sha256": "214ce4cb32f7d4ff9352fcd1b8d890dfbe5fe5333c5d8194f5eab6160dd28066",
       "state": "generated"
     },
     ".claude/settings.json": {
@@ -54,11 +54,11 @@
       "state": "generated"
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "70885435c64273d60fc3afa17a179e57639a516392ab62029df8194187e19e2f",
+      "sha256": "a7aee6295c4fec47f10048f5ca2d9acacbfdcde55d59ede5902d2345753c3190",
       "state": "generated"
     },
     ".cursor-plugin/plugin.json": {
-      "sha256": "bfdaa22d2305fa3c94d69d6237044d29afbe9538249f1a316aab28c1c59fc798",
+      "sha256": "23b3e883599a2b0cbb4ccd6fb7a7cda84fb951b045dadf988d356c821f9e5e58",
       "state": "generated"
     },
     ".cursor/environment.json": {
@@ -74,7 +74,7 @@
       "state": "generated"
     },
     ".env.example": {
-      "sha256": "4cc6aefcbcc0c822bc3f1f2c1c12dc7c642312600c755bd2f3d5a1a6ca18d1f3",
+      "sha256": "9399c5a88b0c66b0286cfce57dc6355626fb1e6b3d1c6c79dcc7abe3a9e71591",
       "state": "generated"
     },
     ".gitattributes": {
@@ -86,7 +86,7 @@
       "state": "generated"
     },
     ".github/workflows/ci.yml": {
-      "sha256": "6f61e6efef0393734c9eacea3a07025e91ebd32b7af751b04f4ba29983ec520f",
+      "sha256": "468a8558f283da202704065f31a30027716eb195ea34fba0437c0bd233ff8e43",
       "state": "generated"
     },
     ".github/workflows/copilot-setup-steps.yml": {
@@ -94,7 +94,7 @@
       "state": "generated"
     },
     ".github/workflows/release.yml": {
-      "sha256": "27650211bc9c2aaa3f20abcfb5bd550582e6fe3bfc933f808eb1ae653357fd9c",
+      "sha256": "a5385db31c8be38196ccf7af8c5169d6523b166123da24c8de3ec469f24684bf",
       "state": "generated"
     },
     ".gitignore": {
@@ -111,12 +111,12 @@
       "sha256": "28ba02e36285a9da5347ea07b95199108eea68a0bde29cede33fe50b01d2a568",
       "state": "manual"
     },
-    "bin/papervizagent-codex.mjs": {
-      "sha256": "74bb9095c914b5db24b4420a00814e4749921ea4805bc83986ae80f6df9e95f6",
+    "bin/papervizagent.mjs": {
+      "sha256": "151d7dbfd3cb319107b2aa07b81ff9e5e58ce00258acc5c60d1b8233a7653fa3",
       "state": "generated"
     },
     "compose.toolfactory.yaml": {
-      "sha256": "7908429de068cf6020259f16c4ee340fab3772b85dac330f9c4786a0575b709c",
+      "sha256": "dd84aad522c5ad417ea90725f4c0dd5185fe510752cf7445f8ec7920fe28c825",
       "state": "generated"
     },
     "COVERAGE.md": {
@@ -128,7 +128,7 @@
       "state": "generated"
     },
     "dev.toolfactory/inspector.json": {
-      "sha256": "0628f4ef7a5bcf9cb4ba1e00a5ce7a6ad47b1f351e21bcfa93b55d8af83ad996",
+      "sha256": "45557d696e521aaf1d74003fb87ef175f208bb842b36e3d36909baf95eec5de1",
       "state": "generated"
     },
     "dev.toolfactory/tool.schema.json": {
@@ -136,11 +136,11 @@
       "state": "generated"
     },
     "Dockerfile": {
-      "sha256": "2224315e2c6214b355cbdb69282df6ed7dbcf6f3625fc4cb9c4bdf9d523662a4",
+      "sha256": "68471afa8c7649f54fc5b86ac3116c8b42ec6078aa49b457fa6a21c460337e0e",
       "state": "generated"
     },
     "gemini-extension.json": {
-      "sha256": "9e9d5f72f85e4284425b4805258f97bfd8ae8b981fca49f50345a79ce18270e5",
+      "sha256": "73b95fee2554a439b7bbd9b2d495893f2bc54859723f90341cb47f5e03250563",
       "state": "generated"
     },
     "hosts/browser/.gitignore": {
@@ -168,7 +168,7 @@
       ]
     },
     "hosts/browser/entrypoints/options/index.html": {
-      "sha256": "10484c75bdf45587f7134a4bb6df051d4e3e717d5a569af6704246c33fddc622",
+      "sha256": "ade0f8ee11cb2934117b566e398b64ac4ff74c47f6c6222adf9358ccd9791113",
       "state": "generated"
     },
     "hosts/browser/entrypoints/options/main.tsx": {
@@ -176,7 +176,7 @@
       "state": "generated"
     },
     "hosts/browser/entrypoints/popup/index.html": {
-      "sha256": "ea24760531f0d2d86376713ff51a45070eedb5431d4a891acbd0523e382163e0",
+      "sha256": "147ddfddc1e9220c3cc253604f7c86f320a9e7e33ab610ac1c9a4ef0315847e3",
       "state": "generated"
     },
     "hosts/browser/entrypoints/popup/main.tsx": {
@@ -188,7 +188,7 @@
       "state": "generated"
     },
     "hosts/browser/package.json": {
-      "sha256": "6bc863908162d630f25c31097c38777b70feff89e7557e45e2ab1a0d7c391685",
+      "sha256": "44d1b46abd2827cdfacee8f57e4cd1470848ce7c64598ae248901bbd2f9a9582",
       "state": "generated",
       "keys": [
         "name",
@@ -221,7 +221,7 @@
       ]
     },
     "hosts/browser/README.md": {
-      "sha256": "da28bfd552d9261a535d740e0da6f313a3be2e8a89b4345b22ec81b26ce0b13b",
+      "sha256": "c3198aa969f37169eb68cb880903893ff313da5a71f7a2f3a0038a57dabae657",
       "state": "generated"
     },
     "hosts/browser/TARGETS.md": {
@@ -233,7 +233,7 @@
       "state": "generated"
     },
     "hosts/browser/tests/smoke.mjs": {
-      "sha256": "4a69287ed73c3197a71269c29d67840e7d102bb302ea7f00bf4e296ed35a0a4c",
+      "sha256": "781eca50a652aa6328bf14d1f0c9350a66fbb4dd6ec6df19ccc997eb3eea59e5",
       "state": "generated"
     },
     "hosts/browser/tsconfig.json": {
@@ -241,7 +241,7 @@
       "state": "generated"
     },
     "hosts/browser/utils/mcp.ts": {
-      "sha256": "e08727b98fd89b157abf05c07a59dcbb5049980f8122883008ec53dc1e0b6060",
+      "sha256": "51da86510fa30e3fc2f129d8dcc5e7c7a673983e31dd9d6b24dd8b92d2b58f3a",
       "state": "generated"
     },
     "hosts/browser/utils/page.css": {
@@ -261,7 +261,7 @@
       "state": "generated"
     },
     "hosts/browser/wxt.config.ts": {
-      "sha256": "6c50c913eb05fe46683a475465aa8f14d9f270904fd26060764ca15b18b13c5c",
+      "sha256": "02686fa6469ec1f1ea6a8bdfa53fa03cf932200dade049f66ff8cce16d633462",
       "state": "generated",
       "regions": [
         {
@@ -271,39 +271,39 @@
       ]
     },
     "hosts/dsh/cordis.local.patch.yml": {
-      "sha256": "f419f6d6fe50d914d0662e583dac3aa2236ccec0cc33b21db60e6a111a79f5a4",
+      "sha256": "d2e66deacfcb9205d8c0e81542cfd8548d31c6dba69418497cf3aabd1a251601",
       "state": "generated"
     },
     "hosts/dsh/cordis.patch.yml": {
-      "sha256": "2e22ea1b18214c05330de4ef910e8b87ad1d78852fe27f19dccd6054e2d63d93",
+      "sha256": "bc93ef478c97d321f34ce31d777d5f77083c688f88b70956db869b8c09319a97",
       "state": "generated"
     },
     "hosts/dsh/package.json": {
-      "sha256": "fe837f413273483803811a8aa893afd44303197d6204fefe8e915be81604674e",
+      "sha256": "7654fcca02bc3412949ae6a4db757de1424cd49da6b1adbb993e7e1d9df434b4",
       "state": "generated"
     },
-    "hosts/hermes/papervizagent_codex_hermes/__init__.py": {
-      "sha256": "460673cbc79a315c46b529b04f234b35e379337745e8bf91d5e49517ae35bcca",
+    "hosts/hermes/papervizagent_hermes/__init__.py": {
+      "sha256": "cf6a52b68cc0d03fb87f1d706ea26dc2cd63373bd039cf5b7be55ac3c4c87a85",
       "state": "generated"
     },
-    "hosts/hermes/papervizagent_codex_hermes/plugin.yaml": {
-      "sha256": "0bb461c8ce59d9022c3f90e495e68c0d03904ba3f9f04f642c5af1a3e216070f",
+    "hosts/hermes/papervizagent_hermes/plugin.yaml": {
+      "sha256": "6ff327d7bc6a2f3148f06cbf8cb0b3916b546ec53d496992efe765e9d8e60e86",
       "state": "generated"
     },
     "hosts/hermes/pyproject.toml": {
-      "sha256": "3d35f8c209fc823fd162dafb077d21dbd4607c1ac858e55e5d6b5f2fdedaf59e",
+      "sha256": "907a6fad06f96ccfec75b9cfcb561a5598a8a5a0907efae956cf7b0e8645eac8",
       "state": "generated"
     },
     "hosts/hermes/README.md": {
-      "sha256": "3898738133df759ccef00f47bdf99266d5290114d0ea33f8578d1df586650ae5",
+      "sha256": "9aa5e36be28a8693335c0d581eda1952fdff67825f8f0e5b0243b16c1f02c2ef",
       "state": "generated"
     },
     "hosts/hermes/tests/test_plugin.py": {
-      "sha256": "8c7cf96c1e934ebe655ffefb8f9c1779fd1065f9345f41dfc6efa32b0033a581",
+      "sha256": "431fe5062abcccb3d44df56620045ed69e5200a1a6597171720fa999389ef2fd",
       "state": "generated"
     },
     "hosts/mcpb/manifest.json": {
-      "sha256": "76d997941cd58df6c8d17805021633e6344a865ff4a2ed83a61dfd61c091ad97",
+      "sha256": "c705c11144a6e519eb08876e114cdfb1ae8e0dbe1f2b1c4e6f3dd8368bff1b96",
       "state": "generated"
     },
     "hosts/openclaw/.npmrc": {
@@ -311,31 +311,31 @@
       "state": "generated"
     },
     "hosts/openclaw/e2e/fixtures.json": {
-      "sha256": "b0048fd8b474aef7a50d354cdd6404908f82fad581fe75e9704658c80634ef57",
+      "sha256": "f8cda84ea382d0604dd2405a9c52ceea9ca2b456c65d22dfea7fb65b28f075d9",
       "state": "generated"
     },
     "hosts/openclaw/e2e/openclaw.e2e.test.ts": {
-      "sha256": "3c2fda0e6a05d545af291646bffce915b57c9edae5ec7e637f3a2030e82d1270",
+      "sha256": "f6d50443e03ebfa3fc27fa9b9c4dea3b669a6227dc7234afccfb89c6499df5bd",
       "state": "generated"
     },
     "hosts/openclaw/openclaw.plugin.json": {
-      "sha256": "2376d27459dee1493828564a10c5d205645b827ecd11692736d5b63297811fe3",
+      "sha256": "a1e35dbcaa3417e4d19aaac24a5fc256a8f653ff8fdbfc2678c44f492aab0df7",
       "state": "generated"
     },
     "hosts/openclaw/package.json": {
-      "sha256": "8fa33350d92100d162ce5866701ab1223ece83fe8f4f918978b560df3dd5ed46",
+      "sha256": "840ded6891667d532fb2b7bbaa7d234230c925451d0449039c681f55d3fe2f32",
       "state": "generated"
     },
     "hosts/openclaw/README.md": {
-      "sha256": "081b1e584accb1279b69f72f25902a244d53558739168b21f425a39239447ce7",
+      "sha256": "0e7e313cd98fdc62fec4515a201235a529c111f7c4289258b9b1d835198144fb",
       "state": "generated"
     },
     "hosts/openclaw/src/index.test.ts": {
-      "sha256": "ef567540ae3ae4484aed84dbacfce7a343ce4d82617e90c54c4e253127bc42dd",
+      "sha256": "561939e344f3210e2441780d307b7b81ed8f9852eb590ae2aa576deb1164ccd7",
       "state": "generated"
     },
     "hosts/openclaw/src/index.ts": {
-      "sha256": "dc47740173a03370da5e6bc7fa55f28ecfbfc56275f10ffb4b25fb2de9ccd2d4",
+      "sha256": "d450b9116da7cf7542b9963456afb95e4d16154745d8306274b0f1ccc3a2750f",
       "state": "generated",
       "regions": [
         {
@@ -357,11 +357,11 @@
       "state": "generated"
     },
     "mcp.json": {
-      "sha256": "7b5eacf4cb6abadd50eb6e03fe29eba18bb1abf7fcb15d5e1f27d94aef117a40",
+      "sha256": "9604dfa9aac2eea23bf19722fcc127ac54cd91a09e6ef5750f8caddf4cf40a71",
       "state": "generated"
     },
     "package.json": {
-      "sha256": "4816be2d336fe2f0b44501b912438ab17af50c29ff6ebe2d59ea366d670a7895",
+      "sha256": "088311c39418186a297ce5ce646d0c10011a5f8de32853143b2cb582e9a609b9",
       "state": "generated",
       "keys": [
         "name",
@@ -379,7 +379,7 @@
       ]
     },
     "pyproject.toml": {
-      "sha256": "ffa54fa773f177d14ecce6d28070495852fe53acc014a678fa32e8fb1fd8fa66",
+      "sha256": "c4525e1be9c3ed3c1708202a09033b52ef06ebd0ac5958d179d332d6542f92b6",
       "state": "generated",
       "keys": [
         "project.name",
@@ -400,7 +400,7 @@
       ]
     },
     "README.md": {
-      "sha256": "465a9ba4fc6ac573d39c21a9fe76b1f372cf65a2850da853f569828bcd29a1a3",
+      "sha256": "b100c0a1c34235490fb69594b2ac4b32bd7f1ce70a78f83f6857a73e080fd017",
       "state": "generated",
       "regions": [
         {
@@ -424,11 +424,11 @@
       ]
     },
     "server.json": {
-      "sha256": "c073ec818c96fd4ee4c3e4e8ea0a10ade641065088d3ae70f39a9925d26f0f16",
+      "sha256": "0a9225dbba5130c2a814590ffdea875fd1366eeb391f88cd9ffe367076ae219b",
       "state": "generated"
     },
-    "skills/papervizagent-codex/SKILL.md": {
-      "sha256": "49c797dd81127826097b0cacfbc1273fe79aa5182ccc5245b4b3540606e650e0",
+    "skills/papervizagent/SKILL.md": {
+      "sha256": "7dfb020c6c09c46133275b30dc21e34b60c2d4246248be6ff972e12811f06907",
       "state": "generated",
       "regions": [
         {
@@ -441,27 +441,27 @@
         }
       ]
     },
-    "src/papervizagent_codex/toolfactory/__init__.py": {
+    "src/papervizagent/toolfactory/__init__.py": {
       "sha256": "05223e9e78e801c03e217fdbf9b432c3924e06a4c7c4b8bf54764a87d4aaf197",
       "state": "generated"
     },
-    "src/papervizagent_codex/toolfactory/cli.py": {
-      "sha256": "931b5f5408b19193c787a50d3f417e756a121f80d45c2f4083981c6d6f2fd5d0",
+    "src/papervizagent/toolfactory/cli.py": {
+      "sha256": "a9301bf5ddca9b413e93eace3cad2f315702d5ab81b26d1c6a55d16b1973d65e",
       "state": "generated"
     },
-    "src/papervizagent_codex/toolfactory/config.py": {
-      "sha256": "26e603b65f99d0a0fee32385c77a7ad397493e75c0bbbff78e727d63c177855e",
+    "src/papervizagent/toolfactory/config.py": {
+      "sha256": "b41d1a8d3e589ffa02ef826e5a5b148f016b96ab27a70b71cdee337347d4b17b",
       "state": "generated"
     },
-    "src/papervizagent_codex/toolfactory/mcp.py": {
-      "sha256": "47e5f50a159e43c889e6a078a1c579d98862ad27bc0e2d3ce80602dccf99b5f7",
+    "src/papervizagent/toolfactory/mcp.py": {
+      "sha256": "ce342c6b9c7126bc16ad513195638a39ba3697b5007bbcdc8c9c9c2906f2d28e",
       "state": "generated"
     },
-    "src/papervizagent_codex/toolfactory/types.py": {
+    "src/papervizagent/toolfactory/types.py": {
       "sha256": "986eb29b841fe1b8e80a7ba6a0e3422fe96107131f89f8077074293788f8c900",
       "state": "generated"
     },
-    "src/papervizagent_codex/toolfactory/web.py": {
+    "src/papervizagent/toolfactory/web.py": {
       "sha256": "f5cc9527ee5ff9cb1ca88eabe4c1f9039a80edb7ddb909b576d63b0ecc2202e8",
       "state": "generated"
     },
@@ -474,11 +474,11 @@
       "state": "generated"
     },
     "web/index.html": {
-      "sha256": "74e7051a5c847342de7796f0b462dcabe1f03a42d1528d45f57ade7b4b0e5d05",
+      "sha256": "f625dfb03886a1c8d4e22c7cc0d808d5b22b2190801ab3a083def9dea8dadf7d",
       "state": "generated"
     },
     "web/package.json": {
-      "sha256": "8707de47b593bf942ac642d625219cf7811c32078b99747c1a5ccf2e3b1537a6",
+      "sha256": "c9627ffab1618967ea95eebef7d2c677294d00e7d9ba9465d0ed95745d2b792d",
       "state": "generated",
       "keys": [
         "name",
@@ -512,7 +512,7 @@
       ]
     },
     "web/smoke.mjs": {
-      "sha256": "c50eeeee732e333f59d05bca841e804dfa011cd68814067951933f6da1ddb6d2",
+      "sha256": "164bbd512f9ec9d95c929c459bc5b2c1a4f1f419a7d38015a8a62c2eb1d8fd51",
       "state": "generated"
     },
     "web/src/App.tsx": {
@@ -538,7 +538,7 @@
       "state": "generated"
     },
     "web/src/ops.json": {
-      "sha256": "e990edb12ae425d7f4e4c712b24b5cb5944a2bfe0b0edffef9720443df301236",
+      "sha256": "52b7ea0927109aea4a729adcca629f3179c1b7988f632c135397fdd93098700d",
       "state": "generated"
     },
     "web/src/schema-form.tsx": {

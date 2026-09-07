@@ -1,17 +1,17 @@
 - insert:
-    - id: mcp-papervizagent-codex
+    - id: mcp-papervizagent
       name: "@deepseek-ai/dsh-mcp-client"
       config:
-        serverName: papervizagent-codex
+        serverName: papervizagent
         transport: stdio
         command: uvx
         args:
           - --from
-          - papervizagent-codex==0.3.0
-          - papervizagent-codex
+          - papervizagent==0.3.0
+          - papervizagent
           - mcp
         env:
-          PAPERVIZAGENT_CODEX_CONFIG: !!js process.env.PAPERVIZAGENT_CODEX_CONFIG ?? ""
+          PAPERVIZAGENT_CONFIG: !!js process.env.PAPERVIZAGENT_CONFIG ?? ""
           CODEX_OAUTH_TOKEN: !!js process.env.CODEX_OAUTH_TOKEN ?? ""
           CODEX_ACCOUNT_ID: !!js process.env.CODEX_ACCOUNT_ID ?? ""
           GOOGLE_API_KEY: !!js process.env.GOOGLE_API_KEY ?? ""

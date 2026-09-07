@@ -1,7 +1,7 @@
 {
-  "name": "papervizagent-codex-dsh",
+  "name": "papervizagent-dsh",
   "version": "0.3.0",
-  "description": "DSH bundle for papervizagent-codex: attaches its MCP server through @deepseek-ai/dsh-mcp-client.",
+  "description": "DSH bundle for papervizagent: attaches its MCP server through @deepseek-ai/dsh-mcp-client.",
   "license": "Apache-2.0",
   "files": [
     "cordis.patch.yml"

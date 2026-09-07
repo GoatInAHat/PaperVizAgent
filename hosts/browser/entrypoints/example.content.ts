@@ -18,6 +18,6 @@ export default defineContentScript({
       type: "mcp",
       request: { method: "tools/call", params: { name: "…", arguments: {} } },
     });
-    console.log("papervizagent-codex", answer);
+    console.log("papervizagent", answer);
   },
 });

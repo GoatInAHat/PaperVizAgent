@@ -1,12 +1,12 @@
 {
-  "name": "papervizagent-codex",
+  "name": "papervizagent",
   "version": "0.3.0",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "author": {
     "name": "GoatInAHat"
   },
-  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex",
-  "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent",
+  "repository": "https://github.com/GoatInAHat/PaperVizAgent",
   "license": "Apache-2.0",
   "keywords": [
     "scientific-figures",
@@ -17,12 +17,12 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "PaperVizAgent for Codex",
+    "displayName": "PaperVizAgent",
     "shortDescription": "Scientific figures with native tools or configurable providers.",
     "longDescription": "Upstream PaperVizAgent roles, configurable model providers, and native Codex defaults with optional overrides.",
     "developerName": "GoatInAHat",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": "Use $papervizagent-codex with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
+    "defaultPrompt": "Use $papervizagent with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
   }
 }

@@ -1,11 +1,11 @@
 {
-  "name": "papervizagent-codex",
+  "name": "papervizagent",
   "interface": {
-    "displayName": "PaperVizAgent for Codex"
+    "displayName": "PaperVizAgent"
   },
   "plugins": [
     {
-      "name": "papervizagent-codex",
+      "name": "papervizagent",
       "source": {
         "source": "local",
         "path": "."

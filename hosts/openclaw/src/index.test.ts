@@ -3,7 +3,7 @@ import { getToolPluginMetadata } from "openclaw/plugin-sdk/tool-plugin";
 import { describe, expect, it } from "vitest";
 import entry from "./index.js";
 
-describe("papervizagent-codex", () => {
+describe("papervizagent", () => {
   it("declares tool metadata", () => {
     expect(getToolPluginMetadata(entry)?.tools.map((tool) => tool.name)).toEqual(["generate","infer","models","status","web"]);
   });

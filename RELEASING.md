@@ -21,8 +21,8 @@ created by its account owner. No registry credential is stored in this repositor
 
 ## Registry setup
 
-- **PyPI:** create a pending trusted publisher for project `papervizagent-codex`,
-  owner `GoatInAHat`, repository `PaperVizAgent-codex`, workflow `release.yml`,
+- **PyPI:** create a pending trusted publisher for project `papervizagent`,
+  owner `GoatInAHat`, repository `PaperVizAgent`, workflow `release.yml`,
   environment `pypi`. Set GitHub variable `PYPI_TRUSTED_PUBLISHER=true` only
   after that record exists. No long-lived PyPI token is needed.
 - **npm:** publish the first tested launcher package, configure npm's GitHub

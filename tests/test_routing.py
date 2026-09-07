@@ -11,8 +11,8 @@ import types
 import unittest
 from unittest.mock import AsyncMock, patch
 
-from papervizagent_codex.backends import Backend, token_credentials
-from papervizagent_codex.config import Model, Settings, load_settings
+from papervizagent.backends import Backend, token_credentials
+from papervizagent.config import Model, Settings, load_settings
 
 
 class RoutingTest(unittest.IsolatedAsyncioTestCase):

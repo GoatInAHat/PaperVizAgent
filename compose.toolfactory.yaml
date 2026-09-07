@@ -11,7 +11,7 @@ services:
     command:
       - sh
       - -c
-      - openclaw plugins install --link /work/hosts/openclaw --force --accept-capabilities && openclaw plugins inspect papervizagent-codex --runtime --json
+      - openclaw plugins install --link /work/hosts/openclaw --force --accept-capabilities && openclaw plugins inspect papervizagent --runtime --json
   hermes:
     image: buildpack-deps:bookworm
     volumes:
@@ -24,6 +24,6 @@ services:
     command:
       - bash
       - -c
-      - curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --commit 180291162ff4df0d42b5dc4fecd08005cf7cebf9 --skip-setup --skip-browser --skip-computer-use --non-interactive --no-skills && hermes plugins doctor /work/hosts/hermes/papervizagent_codex_hermes --ci
+      - curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash -s -- --commit 180291162ff4df0d42b5dc4fecd08005cf7cebf9 --skip-setup --skip-browser --skip-computer-use --non-interactive --no-skills && hermes plugins doctor /work/hosts/hermes/papervizagent_hermes --ci
 volumes:
   PLUGIN_DATA: {}

@@ -1,5 +1,5 @@
 [project]
-name = "papervizagent-codex"
+name = "papervizagent"
 version = "0.3.0"
 description = "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available."
 readme = "README.md"
@@ -12,11 +12,11 @@ keywords = [ "scientific-figures", "research", "papervizagent", "paperbanana", "
 name = "GoatInAHat"
 
 [project.scripts]
-papervizagent-codex = "papervizagent_codex.toolfactory.cli:main"
+papervizagent = "papervizagent.toolfactory.cli:main"
 
 [project.urls]
-Repository = "https://github.com/GoatInAHat/PaperVizAgent-codex"
-Homepage = "https://github.com/GoatInAHat/PaperVizAgent-codex"
+Repository = "https://github.com/GoatInAHat/PaperVizAgent"
+Homepage = "https://github.com/GoatInAHat/PaperVizAgent"
 
 [build-system]
 requires = [ "hatchling" ]
@@ -26,15 +26,15 @@ build-backend = "hatchling.build"
 artifacts = [ "web/dist/**" ]
 
 [tool.hatch.build.targets.wheel]
-packages = [ "src/papervizagent_codex" ]
-only-include = [ "src/papervizagent_codex", "web/dist" ]
+packages = [ "src/papervizagent" ]
+only-include = [ "src/papervizagent", "web/dist" ]
 
 [tool.hatch.build.targets.wheel.sources]
 src = ""
-"web/dist" = "papervizagent_codex/web"
+"web/dist" = "papervizagent/web"
 
 [tool.hatch.build.targets.sdist]
-only-include = [ "pyproject.toml", "README.md", "LICENSE", "LICENSE.md", "LICENSE.txt", "NOTICE", "NOTICE.md", "NOTICE.txt", "src/papervizagent_codex", "web/dist" ]
+only-include = [ "pyproject.toml", "README.md", "LICENSE", "LICENSE.md", "LICENSE.txt", "NOTICE", "NOTICE.md", "NOTICE.txt", "src/papervizagent", "web/dist" ]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"

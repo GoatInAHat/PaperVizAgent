@@ -12,7 +12,7 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-from papervizagent_codex_hermes import register
+from papervizagent_hermes import register
 
 
 class _State:

@@ -13,8 +13,8 @@ import httpx2
 import openai
 from pydantic import SecretStr
 
-from papervizagent_codex.backends import provider_generate
-from papervizagent_codex.config import Model
+from papervizagent.backends import provider_generate
+from papervizagent.config import Model
 
 
 TEXT = [{"type": "text", "text": "method details"}]

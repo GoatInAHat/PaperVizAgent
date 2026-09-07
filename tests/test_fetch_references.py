@@ -10,7 +10,7 @@ from unittest.mock import patch
 from urllib.error import URLError
 import zlib
 
-SCRIPT = Path(__file__).resolve().parents[1] / "skills/papervizagent-codex/scripts/fetch_references.py"
+SCRIPT = Path(__file__).resolve().parents[1] / "skills/papervizagent/scripts/fetch_references.py"
 SPEC = importlib.util.spec_from_file_location("fetch_references", SCRIPT)
 fetch = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(fetch)

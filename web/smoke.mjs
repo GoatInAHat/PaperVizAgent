@@ -4,14 +4,14 @@ import { readFile } from "node:fs/promises"
 import { chromium } from "playwright"
 
 const page = JSON.parse(await readFile(new URL("./src/ops.json", import.meta.url), "utf8"))
-const KERNEL = ["uv","run","--quiet","python","-m","papervizagent_codex.toolfactory.mcp"]
+const KERNEL = ["uv","run","--quiet","python","-m","papervizagent.toolfactory.mcp"]
 // A token of this run's own, so the smoke never depends on whether the author has paired, and
 // the fragment-to-bearer path the page uses is what gets exercised.
 const TOKEN = `smoke-${Math.random().toString(36).slice(2)}`
 
 const kernel = spawn(KERNEL[0], [...KERNEL.slice(1), "--http", "0"], {
   stdio: ["ignore", "ignore", "pipe"],
-  env: { ...process.env, "PAPERVIZAGENT_CODEX_MCP_TOKEN": TOKEN },
+  env: { ...process.env, "PAPERVIZAGENT_MCP_TOKEN": TOKEN },
 })
 const origin = await new Promise((resolve, reject) => {
   let output = ""

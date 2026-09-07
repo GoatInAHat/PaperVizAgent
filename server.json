@@ -1,24 +1,24 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
-  "name": "io.github.GoatInAHat/papervizagent-codex",
+  "name": "io.github.GoatInAHat/papervizagent",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and",
   "version": "0.3.0",
   "repository": {
-    "url": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+    "url": "https://github.com/GoatInAHat/PaperVizAgent",
     "source": "github"
   },
-  "websiteUrl": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "websiteUrl": "https://github.com/GoatInAHat/PaperVizAgent",
   "packages": [
     {
       "registryType": "pypi",
-      "identifier": "papervizagent-codex",
+      "identifier": "papervizagent",
       "version": "0.3.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
-          "name": "PAPERVIZAGENT_CODEX_CONFIG",
+          "name": "PAPERVIZAGENT_CONFIG",
           "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
         },
         {
@@ -49,13 +49,13 @@
     },
     {
       "registryType": "oci",
-      "identifier": "ghcr.io/goatinahat/papervizagent-codex:0.3.0",
+      "identifier": "ghcr.io/goatinahat/papervizagent:0.3.0",
       "transport": {
         "type": "stdio"
       },
       "environmentVariables": [
         {
-          "name": "PAPERVIZAGENT_CODEX_CONFIG",
+          "name": "PAPERVIZAGENT_CONFIG",
           "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
         },
         {
