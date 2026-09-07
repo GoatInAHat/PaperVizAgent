@@ -1,0 +1,28 @@
+{
+  "name": "papervizagent-codex",
+  "version": "0.3.0",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoatInAHat/PaperVizAgent-codex.git"
+  },
+  "keywords": [
+    "scientific-figures",
+    "research",
+    "papervizagent",
+    "paperbanana",
+    "codex"
+  ],
+  "type": "module",
+  "bin": {
+    "papervizagent-codex": "./bin/papervizagent-codex.mjs"
+  },
+  "files": [
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
+  "mcpName": "io.github.GoatInAHat/papervizagent-codex"
+}

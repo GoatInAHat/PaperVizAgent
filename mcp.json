@@ -1,0 +1,15 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json",
+  "mcpServers": {
+    "papervizagent-codex": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "papervizagent-codex==0.3.0",
+        "papervizagent-codex",
+        "mcp"
+      ]
+    }
+  }
+}

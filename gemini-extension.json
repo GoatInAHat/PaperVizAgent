@@ -1,0 +1,53 @@
+{
+  "name": "papervizagent-codex",
+  "version": "0.3.0",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
+  "mcpServers": {
+    "papervizagent-codex": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "papervizagent-codex==0.3.0",
+        "papervizagent-codex",
+        "mcp"
+      ]
+    }
+  },
+  "contextFileName": "AGENTS.md",
+  "settings": [
+    {
+      "name": "papervizagent_codex_config",
+      "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration.",
+      "envVar": "PAPERVIZAGENT_CODEX_CONFIG"
+    },
+    {
+      "name": "codex_oauth_token",
+      "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted.",
+      "envVar": "CODEX_OAUTH_TOKEN",
+      "sensitive": true
+    },
+    {
+      "name": "codex_account_id",
+      "description": "Optional account ID for an external token whose JWT does not contain it.",
+      "envVar": "CODEX_ACCOUNT_ID"
+    },
+    {
+      "name": "google_api_key",
+      "description": "Optional Gemini API key.",
+      "envVar": "GOOGLE_API_KEY",
+      "sensitive": true
+    },
+    {
+      "name": "openai_api_key",
+      "description": "Optional OpenAI API key, separate from Codex OAuth.",
+      "envVar": "OPENAI_API_KEY",
+      "sensitive": true
+    },
+    {
+      "name": "anthropic_api_key",
+      "description": "Optional Anthropic API key.",
+      "envVar": "ANTHROPIC_API_KEY",
+      "sensitive": true
+    }
+  ]
+}

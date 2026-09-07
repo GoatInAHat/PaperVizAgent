@@ -153,6 +153,12 @@ if hook.is_file():
 PY
 
 # Project setup: the dependencies this project's toolchain needs.
+if command -v uv >/dev/null 2>&1; then
+    uv sync
+else
+    echo "uv not found: https://docs.astral.sh/uv/getting-started/installation/, then rerun .agents/setup" >&2
+    exit 1
+fi
 # /tf:setup
 
 # Anything else this project needs at setup time (codegen, migrations) goes

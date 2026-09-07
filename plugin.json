@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "papervizagent-codex",
-  "version": "0.2.0",
-  "description": "Generate and revise scientific diagrams and data plots through separate native Codex Retriever, Planner, Stylist, Visualizer, and Critic agents. Uses official PaperVizAgent prompts, retrieved references, and native tools with no API keys or model configuration.",
+  "version": "0.3.0",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "license": "Apache-2.0",
   "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
   "author": {
@@ -14,5 +14,6 @@
     "papervizagent",
     "paperbanana",
     "codex"
-  ]
+  ],
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex"
 }

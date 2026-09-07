@@ -31,13 +31,19 @@ CLAUDE.local.md
 /.factory/skills/
 
 # ─── toolfactory ──────────────────────────────────────────
+.venv/
+__pycache__/
 dist/
 .env
 .env.*
 !.env.example
+# npm writes this when the host plugin is validated; its only dependency on this repo is file:../..
+hosts/*/package-lock.json
+hosts/*/uv.lock
 # Build products: generated and locked like every other file, rebuilt rather than tracked.
 dev.toolfactory/coverage.json
 dev.toolfactory/inspector.json
+web/src/ops.json
 # /tf:ignore
 
 # ─── Secrets & env ────────────────────────────────────────
