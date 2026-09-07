@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/google-research/papervizagent",
+  "revision": "e088a8fff74cc363b6897c0843631fff76484908",
+  "license": "Apache-2.0",
+  "vendored": ["agents", "utils/config.py", "utils/image_utils.py", "utils/paperviz_processor.py", "style_guides"],
+  "adaptations": "Provider calls use the host backend; plot execution is bounded; retrieval-none and critic iteration handling are corrected."
+}
