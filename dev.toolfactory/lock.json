@@ -120,7 +120,7 @@
       "state": "generated"
     },
     "COVERAGE.md": {
-      "sha256": "53c69d00f4219ca0c384cd41282e39acfba6afed619f6111f76357eb97289074",
+      "sha256": "c227125d356c706c1751a961b94a7f461abfb8d2a9fa9b53f07c902149bcea6b",
       "state": "generated"
     },
     "dev.toolfactory/coverage.json": {
@@ -137,7 +137,7 @@
     },
     "Dockerfile": {
       "sha256": "68471afa8c7649f54fc5b86ac3116c8b42ec6078aa49b457fa6a21c460337e0e",
-      "state": "generated"
+      "state": "manual"
     },
     "gemini-extension.json": {
       "sha256": "73b95fee2554a439b7bbd9b2d495893f2bc54859723f90341cb47f5e03250563",
