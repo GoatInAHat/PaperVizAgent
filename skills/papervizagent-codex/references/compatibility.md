@@ -19,11 +19,19 @@ fresh native Codex subagents and persisted artifact handoffs.
 
 ## Deliberate differences
 
-- Models and inference transport: native Codex models/image tools using the
-  current sign-in replace provider API clients. Codex follows the orchestration
-  skill; the original Python processor is not running. Native tool availability is
-  required; model sampling, exact pixel resolution, and benchmark parity
-  cannot be promised.
+- Models and inference transport: the runtime resolves each role/modality from
+  explicit configuration first, then verified host-native tools, then an
+  available Codex capability only for the missing modality. Configured provider
+  calls are fresh per-role requests/threads; host-native calls are fresh
+  subagent contexts. The original Python processor is not running. A host name
+  alone does not establish text, vision, delegation, or image capability, and
+  model sampling, exact pixel resolution, and benchmark parity cannot be
+  promised.
+- Configuration and settings: runtime configuration is loaded from the
+  `PAPERVIZAGENT_CODEX_CONFIG` JSON/YAML path and environment, never from an
+  authentication-token argument. The adapter passes complete upstream request
+  data/settings to the resolved provider or native tool, then applies only
+  explicit allowed overrides.
 - Defaults: one full-pipeline candidate suits a conversational request. The
   original Streamlit demo defaults to ten planner+critic candidates, 21:9.
   Those are UI defaults, not universal algorithm settings. User overrides
