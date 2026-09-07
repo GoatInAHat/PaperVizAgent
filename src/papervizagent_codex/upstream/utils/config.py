@@ -36,6 +36,7 @@ class ExpConfig:
     retrieval_setting: Literal["auto", "manual", "random", "none"] = "auto"
     max_critic_rounds: int = 3
     plot_timeout_seconds: float = 30
+    plot_dpi: int = 300
     model_name: str = ""
     image_model_name: str = ""
     work_dir: Path = Path(__file__).parent.parent

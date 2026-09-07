@@ -28,6 +28,7 @@ async def run_pipeline(
     temperature: float = 1.0,
     max_critic_rounds: int = 3,
     plot_timeout_seconds: float = 30,
+    plot_dpi: int = 300,
     do_eval: bool = False,
     timestamp: str | None = None,
     **upstream_options: Any,
@@ -45,6 +46,8 @@ async def run_pipeline(
         raise ValueError("max_critic_rounds must be non-negative")
     if plot_timeout_seconds <= 0:
         raise ValueError("plot_timeout_seconds must be positive")
+    if plot_dpi <= 0:
+        raise ValueError("plot_dpi must be positive")
     config = ExpConfig(
         dataset_name=dataset_name,
         task_name=task_name,
@@ -54,6 +57,7 @@ async def run_pipeline(
         retrieval_setting=retrieval_setting,
         max_critic_rounds=max_critic_rounds,
         plot_timeout_seconds=plot_timeout_seconds,
+        plot_dpi=plot_dpi,
         timestamp=timestamp,
         work_dir=Path(work_dir),
         backend=backend,
