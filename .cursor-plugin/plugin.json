@@ -1,0 +1,56 @@
+{
+  "name": "papervizagent-codex",
+  "version": "0.3.0",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
+  "author": {
+    "name": "GoatInAHat"
+  },
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "license": "Apache-2.0",
+  "keywords": [
+    "scientific-figures",
+    "research",
+    "papervizagent",
+    "paperbanana",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./mcp.json",
+  "variables": {
+    "type": "object",
+    "properties": {
+      "PAPERVIZAGENT_CODEX_CONFIG": {
+        "type": "string",
+        "title": "papervizagent_codex_config",
+        "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
+      },
+      "CODEX_OAUTH_TOKEN": {
+        "type": "string",
+        "title": "codex_oauth_token",
+        "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted."
+      },
+      "CODEX_ACCOUNT_ID": {
+        "type": "string",
+        "title": "codex_account_id",
+        "description": "Optional account ID for an external token whose JWT does not contain it."
+      },
+      "GOOGLE_API_KEY": {
+        "type": "string",
+        "title": "google_api_key",
+        "description": "Optional Gemini API key."
+      },
+      "OPENAI_API_KEY": {
+        "type": "string",
+        "title": "openai_api_key",
+        "description": "Optional OpenAI API key, separate from Codex OAuth."
+      },
+      "ANTHROPIC_API_KEY": {
+        "type": "string",
+        "title": "anthropic_api_key",
+        "description": "Optional Anthropic API key."
+      }
+    },
+    "required": []
+  }
+}

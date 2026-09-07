@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "papervizagent-codex",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
+  "owner": {
+    "name": "GoatInAHat"
+  },
+  "plugins": [
+    {
+      "name": "papervizagent-codex",
+      "source": "./",
+      "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available."
+    }
+  ]
+}

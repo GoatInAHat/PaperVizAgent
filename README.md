@@ -15,7 +15,27 @@ OpenAI integration.
 [![Agent Skill](https://img.shields.io/badge/Agent_Skill-available-5B5BD6)](https://github.com/GoatInAHat/PaperVizAgent-codex)
 
 - **Agent Skill** — `npx skills add GoatInAHat/PaperVizAgent-codex`
+- **MCP server** — `uvx papervizagent-codex mcp` [![Install in VS Code](https://img.shields.io/badge/VS_Code-Install_Server-0098FF?style=flat-square&logo=visualstudiocode&logoColor=white)](https://vscode.dev/redirect/mcp/install?name=papervizagent-codex&config=%7B%22command%22%3A%22uvx%22%2C%22args%22%3A%5B%22papervizagent-codex%22%2C%22mcp%22%5D%7D) [![Install in Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en/install-mcp?name=papervizagent-codex&config=eyJjb21tYW5kIjoidXZ4IiwiYXJncyI6WyJwYXBlcnZpemFnZW50LWNvZGV4IiwibWNwIl19)
+- **Claude Desktop extension** — download `papervizagent-codex.mcpb` from the GitHub Release and double-click to install
+- **Claude Code plugin** — `claude plugin marketplace add GoatInAHat/PaperVizAgent-codex`, then `claude plugin install papervizagent-codex@papervizagent-codex`
 - **Codex plugin** — `codex plugin marketplace add GoatInAHat/PaperVizAgent-codex`, then `codex plugin add papervizagent-codex@papervizagent-codex`
+- **Gemini CLI extension** — `gemini extensions install https://github.com/GoatInAHat/PaperVizAgent-codex`
+- **OpenClaw plugin** — `openclaw plugins install --link hosts/openclaw` from a checkout; published: `openclaw plugins install clawhub:openclaw-plugin-papervizagent-codex`
+- **Hermes plugin** — `hermes plugins install https://github.com/GoatInAHat/PaperVizAgent-codex#hosts/hermes/papervizagent_codex_hermes`
+- **DSH plugin** (experimental) — `dsh plugin --profile <profile> add ./hosts/dsh` from a checkout, or the release tarball `papervizagent-codex-dsh-0.3.0.tgz`
+- **Browser extension** — from a checkout: `npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt build`,
+  then `chrome://extensions` → developer mode → Load unpacked → `hosts/browser/.output/chrome-mv3`
+  (Firefox: `npm --prefix hosts/browser exec --no -- web-ext run`). Each GitHub Release attaches the
+  store uploads `papervizagent-codex-0.3.0-chrome.zip`, `papervizagent-codex-0.3.0-firefox.zip`, `papervizagent-codex-0.3.0-edge.zip`, and the Mozilla-signed `.xpi`,
+  which is the only download-and-install channel now that Chrome no longer keeps side-loaded unpacked
+  extensions; the Chrome Web Store, Firefox Add-ons and Edge Add-ons listings appear once the release's
+  submit step has each store's credentials. Then pair it: `uvx papervizagent-codex mcp --http --pair`
+  prints the `<url>#<token>` the extension's options page accepts.
+- **Web app** — `uvx papervizagent-codex mcp --http --open` serves the operations page beside the
+  MCP endpoint on one port and opens it; over MCP or a skill, the `web` operation does the same and
+  returns the URL.
+- **npm package** — `npm install papervizagent-codex`; requires `uv`, and `papervizagent-codex` delegates to `uvx --from papervizagent-codex==0.3.0 papervizagent-codex`
+- **PyPI package** — `uv add papervizagent-codex`
 
 <!-- /tf:install -->
 
@@ -139,3 +159,7 @@ standard-library reference helper are authored here. See
 hashes. [NOTICE](NOTICE) describes attribution and modifications. Code is
 licensed under [Apache-2.0](LICENSE); downloaded reference figures retain their
 source provenance and are not redistributed by this plugin.
+
+<!-- tf:mcp-name -->
+<!-- mcp-name: io.github.GoatInAHat/papervizagent-codex -->
+<!-- /tf:mcp-name -->

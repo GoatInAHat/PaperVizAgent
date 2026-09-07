@@ -1,0 +1,88 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.GoatInAHat/papervizagent-codex",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and",
+  "version": "0.3.0",
+  "repository": {
+    "url": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+    "source": "github"
+  },
+  "websiteUrl": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "identifier": "papervizagent-codex",
+      "version": "0.3.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "PAPERVIZAGENT_CODEX_CONFIG",
+          "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
+        },
+        {
+          "name": "CODEX_OAUTH_TOKEN",
+          "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted.",
+          "isSecret": true
+        },
+        {
+          "name": "CODEX_ACCOUNT_ID",
+          "description": "Optional account ID for an external token whose JWT does not contain it."
+        },
+        {
+          "name": "GOOGLE_API_KEY",
+          "description": "Optional Gemini API key.",
+          "isSecret": true
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "description": "Optional OpenAI API key, separate from Codex OAuth.",
+          "isSecret": true
+        },
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "description": "Optional Anthropic API key.",
+          "isSecret": true
+        }
+      ]
+    },
+    {
+      "registryType": "oci",
+      "identifier": "ghcr.io/goatinahat/papervizagent-codex:0.3.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "name": "PAPERVIZAGENT_CODEX_CONFIG",
+          "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
+        },
+        {
+          "name": "CODEX_OAUTH_TOKEN",
+          "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted.",
+          "isSecret": true
+        },
+        {
+          "name": "CODEX_ACCOUNT_ID",
+          "description": "Optional account ID for an external token whose JWT does not contain it."
+        },
+        {
+          "name": "GOOGLE_API_KEY",
+          "description": "Optional Gemini API key.",
+          "isSecret": true
+        },
+        {
+          "name": "OPENAI_API_KEY",
+          "description": "Optional OpenAI API key, separate from Codex OAuth.",
+          "isSecret": true
+        },
+        {
+          "name": "ANTHROPIC_API_KEY",
+          "description": "Optional Anthropic API key.",
+          "isSecret": true
+        }
+      ]
+    }
+  ]
+}

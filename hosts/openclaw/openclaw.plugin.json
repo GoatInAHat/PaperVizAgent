@@ -1,0 +1,67 @@
+{
+  "id": "papervizagent-codex",
+  "name": "Papervizagent Codex",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
+  "version": "0.3.0",
+  "configSchema": {
+    "type": "object",
+    "properties": {
+      "papervizagent_codex_config": {
+        "type": "string",
+        "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
+      },
+      "codex_oauth_token": {
+        "type": "string",
+        "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "codex_account_id": {
+        "type": "string",
+        "description": "Optional account ID for an external token whose JWT does not contain it."
+      },
+      "google_api_key": {
+        "type": "string",
+        "description": "Optional Gemini API key.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "openai_api_key": {
+        "type": "string",
+        "description": "Optional OpenAI API key, separate from Codex OAuth.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "anthropic_api_key": {
+        "type": "string",
+        "description": "Optional Anthropic API key.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      }
+    }
+  },
+  "uiHints": {
+    "codex_oauth_token": {
+      "sensitive": true
+    },
+    "google_api_key": {
+      "sensitive": true
+    },
+    "openai_api_key": {
+      "sensitive": true
+    },
+    "anthropic_api_key": {
+      "sensitive": true
+    }
+  },
+  "activation": {
+    "onStartup": true
+  },
+  "contracts": {
+    "tools": []
+  }
+}

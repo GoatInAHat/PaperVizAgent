@@ -1,10 +1,11 @@
 {
   "name": "papervizagent-codex",
-  "version": "0.2.0",
-  "description": "Generate and revise scientific diagrams and data plots through separate native Codex Retriever, Planner, Stylist, Visualizer, and Critic agents. Uses official PaperVizAgent prompts, retrieved references, and native tools with no API keys or model configuration.",
+  "version": "0.3.0",
+  "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "author": {
     "name": "GoatInAHat"
   },
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex",
   "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
   "license": "Apache-2.0",
   "keywords": [
@@ -15,10 +16,21 @@
     "codex"
   ],
   "skills": "./skills/",
+  "mcpServers": {
+    "papervizagent-codex": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "papervizagent-codex==0.3.0",
+        "papervizagent-codex",
+        "mcp"
+      ]
+    }
+  },
   "interface": {
     "displayName": "PaperVizAgent for Codex",
-    "shortDescription": "Scientific figures from paper text using your existing Codex sign-in.",
-    "longDescription": "Reference-driven scientific figures through separate native Codex agents, original PaperVizAgent role prompts, and iterative critique/regeneration. Existing Codex sign-in; no API keys or model configuration.",
+    "shortDescription": "Scientific figures with native tools or configurable providers.",
+    "longDescription": "Upstream PaperVizAgent roles, configurable model providers, and native Codex defaults with optional overrides.",
     "developerName": "GoatInAHat",
     "category": "Productivity",
     "capabilities": [],

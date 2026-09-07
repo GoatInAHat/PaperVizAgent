@@ -2,26 +2,85 @@
   "$schema": "./tool.schema.json",
   "schemaVersion": 1,
   "identity": "plugin.json",
-  "binding": "typescript",
-  "runtime": "none",
+  "binding": "python",
+  "runtime": "kernel",
   "surfaces": [
     "skill",
-    "codex"
+    "agent-plugins",
+    "claude",
+    "codex",
+    "cursor",
+    "gemini",
+    "mcp",
+    "cli",
+    "pypi",
+    "npm",
+    "mcp-registry",
+    "mcpb",
+    "openclaw-native",
+    "hermes-native",
+    "clawhub",
+    "web",
+    "dsh",
+    "browser-extension"
   ],
   "bundle": {
     "runtime": "package"
   },
   "tests": {
-    "examples": {}
+    "examples": {
+      "status": {}
+    }
   },
   "codex": {
     "interface": {
       "displayName": "PaperVizAgent for Codex",
-      "shortDescription": "Scientific figures from paper text using your existing Codex sign-in.",
-      "longDescription": "Reference-driven scientific figures through separate native Codex agents, original PaperVizAgent role prompts, and iterative critique/regeneration. Existing Codex sign-in; no API keys or model configuration.",
+      "shortDescription": "Scientific figures with native tools or configurable providers.",
+      "longDescription": "Upstream PaperVizAgent roles, configurable model providers, and native Codex defaults with optional overrides.",
       "developerName": "GoatInAHat",
       "category": "Productivity",
       "defaultPrompt": "Use $papervizagent-codex with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
+    }
+  },
+  "config": {
+    "type": "object",
+    "properties": {
+      "papervizagent_codex_config": {
+        "type": "string",
+        "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
+      },
+      "codex_oauth_token": {
+        "type": "string",
+        "description": "Optional externally supplied Codex OAuth access token. Existing Codex sign-in is used when omitted.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "codex_account_id": {
+        "type": "string",
+        "description": "Optional account ID for an external token whose JWT does not contain it."
+      },
+      "google_api_key": {
+        "type": "string",
+        "description": "Optional Gemini API key.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "openai_api_key": {
+        "type": "string",
+        "description": "Optional OpenAI API key, separate from Codex OAuth.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      },
+      "anthropic_api_key": {
+        "type": "string",
+        "description": "Optional Anthropic API key.",
+        "x-toolfactory": {
+          "sensitive": true
+        }
+      }
     }
   }
 }

@@ -1,9 +1,8 @@
 ---
 name: papervizagent-codex
-description: Generate and revise scientific diagrams and data plots through
-  separate native Codex Retriever, Planner, Stylist, Visualizer, and Critic
-  agents. Uses official PaperVizAgent prompts, retrieved references, and native
-  tools with no API keys or model configuration.
+description: Scientific figures with upstream PaperVizAgent, separate roles,
+  configurable model providers and Codex subscription fallback. Host-native
+  defaults where tools are available.
 license: Apache-2.0
 ---
 
@@ -118,4 +117,8 @@ image. Resume at the requested stage with new role contexts and new output paths
 Never overwrite prior artifacts or describe a partially resumed run as a new
 full pipeline.
 
-<!-- tf:operations --><!-- /tf:operations -->
+<!-- tf:operations -->
+## Operations
+
+_No operations yet: run `toolfactory introspect` after adding one to the kernel._
+<!-- /tf:operations -->
