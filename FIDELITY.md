@@ -1,8 +1,12 @@
+> In v0.3, the distribution was renamed from `PaperVizAgent-codex` /
+> `papervizagent-codex` to `PaperVizAgent` / `papervizagent`. Archived run records
+> retain their original identifiers; Codex remains one supported backend.
+
 # Current implementation: v0.3
 
 The Python runtime now reuses the pinned upstream processor and seven role
 classes, not just the prompts. See
-[src/papervizagent_codex/upstream/UPSTREAM.json](src/papervizagent_codex/upstream/UPSTREAM.json)
+[src/papervizagent/upstream/UPSTREAM.json](src/papervizagent/upstream/UPSTREAM.json)
 for source hashes and modifications. Native skill execution remains available.
 
 Per-role/per-modality provider routing is the inference adapter. Gemini,

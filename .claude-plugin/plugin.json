@@ -1,13 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
-  "name": "papervizagent-codex",
+  "name": "papervizagent",
   "version": "0.3.0",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "author": {
     "name": "GoatInAHat"
   },
-  "homepage": "https://github.com/GoatInAHat/PaperVizAgent-codex",
-  "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "homepage": "https://github.com/GoatInAHat/PaperVizAgent",
+  "repository": "https://github.com/GoatInAHat/PaperVizAgent",
   "license": "Apache-2.0",
   "keywords": [
     "scientific-figures",
@@ -17,9 +17,9 @@
     "codex"
   ],
   "userConfig": {
-    "papervizagent_codex_config": {
+    "papervizagent_config": {
       "type": "string",
-      "title": "papervizagent_codex_config",
+      "title": "papervizagent_config",
       "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
     },
     "codex_oauth_token": {
@@ -53,16 +53,16 @@
     }
   },
   "mcpServers": {
-    "papervizagent-codex": {
+    "papervizagent": {
       "command": "uvx",
       "args": [
         "--from",
-        "papervizagent-codex==0.3.0",
-        "papervizagent-codex",
+        "papervizagent==0.3.0",
+        "papervizagent",
         "mcp"
       ],
       "env": {
-        "PAPERVIZAGENT_CODEX_CONFIG": "${user_config.papervizagent_codex_config}",
+        "PAPERVIZAGENT_CONFIG": "${user_config.papervizagent_config}",
         "CODEX_OAUTH_TOKEN": "${user_config.codex_oauth_token}",
         "CODEX_ACCOUNT_ID": "${user_config.codex_account_id}",
         "GOOGLE_API_KEY": "${user_config.google_api_key}",

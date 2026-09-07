@@ -1,14 +1,14 @@
 {
-  "name": "papervizagent-codex",
+  "name": "papervizagent",
   "version": "0.3.0",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "mcpServers": {
-    "papervizagent-codex": {
+    "papervizagent": {
       "command": "uvx",
       "args": [
         "--from",
-        "papervizagent-codex==0.3.0",
-        "papervizagent-codex",
+        "papervizagent==0.3.0",
+        "papervizagent",
         "mcp"
       ]
     }
@@ -16,9 +16,9 @@
   "contextFileName": "AGENTS.md",
   "settings": [
     {
-      "name": "papervizagent_codex_config",
+      "name": "papervizagent_config",
       "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration.",
-      "envVar": "PAPERVIZAGENT_CODEX_CONFIG"
+      "envVar": "PAPERVIZAGENT_CONFIG"
     },
     {
       "name": "codex_oauth_token",

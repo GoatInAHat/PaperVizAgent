@@ -13,11 +13,11 @@ COPY src ./src
 RUN uv sync --no-dev
 
 FROM python:3.12-slim-bookworm
-LABEL io.modelcontextprotocol.server.name="io.github.GoatInAHat/papervizagent-codex"
+LABEL io.modelcontextprotocol.server.name="io.github.GoatInAHat/papervizagent"
 WORKDIR /app
 COPY --from=build /app/.venv ./.venv
 COPY --from=build /app/src ./src
 COPY --from=build /app/pyproject.toml ./
-COPY --from=web /app/web/dist ./src/papervizagent_codex/web
+COPY --from=web /app/web/dist ./src/papervizagent/web
 ENV PATH="/app/.venv/bin:$PATH"
-ENTRYPOINT ["python","-m","papervizagent_codex.toolfactory.mcp"]
+ENTRYPOINT ["python","-m","papervizagent.toolfactory.mcp"]

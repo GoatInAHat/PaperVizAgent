@@ -13,12 +13,12 @@ import { Type } from "typebox";
  * Lazy, so that importing this module resolves no path and touches no disk — every host loader
  * and `plugin-inspector check --runtime` import the entry long before any tool runs.
  */
-const dataDir = () => join(resolveStateDir(), "plugin-data", "papervizagent-codex");
+const dataDir = () => join(resolveStateDir(), "plugin-data", "papervizagent");
 
 const execFileAsync = promisify(execFile);
 
 const repoRoot =
-  process.env["PAPERVIZAGENT_CODEX_ROOT"] ?? fileURLToPath(new URL("../../../", import.meta.url));
+  process.env["PAPERVIZAGENT_ROOT"] ?? fileURLToPath(new URL("../../../", import.meta.url));
 
 /**
  * Shim variant: the core is Python, so every call crosses a process boundary and config
@@ -29,18 +29,18 @@ async function kernel(name: string, params: unknown, config: unknown): Promise<u
   for (const [key, value] of Object.entries((config ?? {}) as Record<string, unknown>)) {
     if (value !== undefined && value !== null) env[key.toUpperCase().replace(/[^A-Z0-9]/g, "_")] = String(value);
   }
-  env["PAPERVIZAGENT_CODEX_DATA_DIR"] = dataDir();
+  env["PAPERVIZAGENT_DATA_DIR"] = dataDir();
   const { stdout } = await execFileAsync(
     "uv",
-    ["run", "python", "-m", "papervizagent_codex.toolfactory.cli", name, "--json", JSON.stringify(params)],
+    ["run", "python", "-m", "papervizagent.toolfactory.cli", name, "--json", JSON.stringify(params)],
     { cwd: repoRoot, env },
   );
   return JSON.parse(stdout) as unknown;
 }
 
 const entry = defineToolPlugin({
-  id: "papervizagent-codex",
-  name: "Papervizagent Codex",
+  id: "papervizagent",
+  name: "Papervizagent",
   description: "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   activation: {
     "onStartup": true
@@ -48,7 +48,7 @@ const entry = defineToolPlugin({
   configSchema: Type.Unsafe<Record<string, unknown>>({
     "type": "object",
     "properties": {
-      "papervizagent_codex_config": {
+      "papervizagent_config": {
         "type": "string",
         "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
       },

@@ -1,14 +1,4 @@
 {
-  "papervizagent-codex": {
-    "command": "uv",
-    "args": [
-      "run",
-      "--quiet",
-      "python",
-      "-m",
-      "papervizagent_codex.toolfactory.mcp"
-    ]
-  },
   "toolfactory": {
     "command": "npx",
     "args": [
@@ -27,6 +17,16 @@
     "command": "npx",
     "args": [
       "@playwright/mcp@latest"
+    ]
+  },
+  "papervizagent": {
+    "command": "uv",
+    "args": [
+      "run",
+      "--quiet",
+      "python",
+      "-m",
+      "papervizagent.toolfactory.mcp"
     ]
   }
 }

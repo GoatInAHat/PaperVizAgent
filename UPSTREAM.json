@@ -25,12 +25,12 @@
     "utils/__init__.py": "88afce9983c7ca848103e8a3fd6b58475603d875a6543974cf88c39bac898aaa"
   },
   "adapted_resources": [
-    "skills/papervizagent-codex/SKILL.md",
-    "skills/papervizagent-codex/references/compatibility.md",
-    "skills/papervizagent-codex/references/formats.md",
-    "skills/papervizagent-codex/references/retrieval.md",
-    "skills/papervizagent-codex/references/roles.md",
-    "skills/papervizagent-codex/references/workflow.md"
+    "skills/papervizagent/SKILL.md",
+    "skills/papervizagent/references/compatibility.md",
+    "skills/papervizagent/references/formats.md",
+    "skills/papervizagent/references/retrieval.md",
+    "skills/papervizagent/references/roles.md",
+    "skills/papervizagent/references/workflow.md"
   ],
   "modifications": [
     "Upstream Python processor and seven roles are reused with a narrow inference adapter; the skill also supports fresh native contexts.",
@@ -41,108 +41,108 @@
   ],
   "vendored_resources": [
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-critic.md",
+      "path": "skills/papervizagent/references/upstream/diagram-critic.md",
       "source": "agents/critic_agent.py",
       "symbol": "DIAGRAM_CRITIC_AGENT_SYSTEM_PROMPT",
       "sha256": "f6fdbafed6b3579e824eaceae476ab45f29670b0ffd133d593fbc56a927ed016"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-critic.md",
+      "path": "skills/papervizagent/references/upstream/plot-critic.md",
       "source": "agents/critic_agent.py",
       "symbol": "PLOT_CRITIC_AGENT_SYSTEM_PROMPT",
       "sha256": "3eb72e151a6853da52c119d28b5a1909cdec67978b158b45c3527060953a5293"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-planner.md",
+      "path": "skills/papervizagent/references/upstream/diagram-planner.md",
       "source": "agents/planner_agent.py",
       "symbol": "DIAGRAM_PLANNER_AGENT_SYSTEM_PROMPT",
       "sha256": "1b059d041a32622b069243ac4ab4a9d00fe5033c42cd12c4fd4dfdbdfa5858f4"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-planner.md",
+      "path": "skills/papervizagent/references/upstream/plot-planner.md",
       "source": "agents/planner_agent.py",
       "symbol": "PLOT_PLANNER_AGENT_SYSTEM_PROMPT",
       "sha256": "e9cdc04ace6a7a8c42b7785c573c5e6b0d4f4293528aa74029645da3b4d531e5"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-suggestion.md",
+      "path": "skills/papervizagent/references/upstream/diagram-suggestion.md",
       "source": "agents/polish_agent.py",
       "symbol": "DIAGRAM_SUGGESTION_SYSTEM_PROMPT",
       "sha256": "e40efab2790c4e438f66c0254a465b3e3f2f71e4009b3f84445403a345011488"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-suggestion.md",
+      "path": "skills/papervizagent/references/upstream/plot-suggestion.md",
       "source": "agents/polish_agent.py",
       "symbol": "PLOT_SUGGESTION_SYSTEM_PROMPT",
       "sha256": "b59029a99379db3f8baed395ad0968b9f831ad763f45869dc84987b8bd44982a"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-polish.md",
+      "path": "skills/papervizagent/references/upstream/diagram-polish.md",
       "source": "agents/polish_agent.py",
       "symbol": "DIAGRAM_POLISH_AGENT_SYSTEM_PROMPT",
       "sha256": "d97e49c77429d03fe42d2dfbc32e49b7bb693e437e47645a63b4c9eb6bbd05ab"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-polish.md",
+      "path": "skills/papervizagent/references/upstream/plot-polish.md",
       "source": "agents/polish_agent.py",
       "symbol": "PLOT_POLISH_AGENT_SYSTEM_PROMPT",
       "sha256": "e51d4a2822705a8b6fcb48de2e3ba412c60d9193583ac3dc7c339731c1dc1917"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-retriever.md",
+      "path": "skills/papervizagent/references/upstream/diagram-retriever.md",
       "source": "agents/retriever_agent.py",
       "symbol": "DIAGRAM_RETRIEVER_AGENT_SYSTEM_PROMPT",
       "sha256": "197ea2985126a88af1d96506ea8c2c98c66645420213261e3a6986de37040e43"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-retriever.md",
+      "path": "skills/papervizagent/references/upstream/plot-retriever.md",
       "source": "agents/retriever_agent.py",
       "symbol": "PLOT_RETRIEVER_AGENT_SYSTEM_PROMPT",
       "sha256": "9642a56de5956da1e46701bb59c73392eda7a123dd89a72a96e50eb10afed2ea"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-stylist.md",
+      "path": "skills/papervizagent/references/upstream/diagram-stylist.md",
       "source": "agents/stylist_agent.py",
       "symbol": "DIAGRAM_STYLIST_AGENT_SYSTEM_PROMPT",
       "sha256": "cd3dcaded2ac613e084dfd0081b509e6d2b181f588395728fa56c53e032bbf8e"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-stylist.md",
+      "path": "skills/papervizagent/references/upstream/plot-stylist.md",
       "source": "agents/stylist_agent.py",
       "symbol": "PLOT_STYLIST_AGENT_SYSTEM_PROMPT",
       "sha256": "c95c82033e2fdfaa3a46a3de3afbcc2b9ad79faead1c39a49bd28c50b8f9cc13"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-vanilla.md",
+      "path": "skills/papervizagent/references/upstream/diagram-vanilla.md",
       "source": "agents/vanilla_agent.py",
       "symbol": "DIAGRAM_VANILLA_AGENT_SYSTEM_PROMPT",
       "sha256": "de8a2fa237832f3299d033bae40a0150f1ecea5e10c10155abafa29f14130fec"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-vanilla.md",
+      "path": "skills/papervizagent/references/upstream/plot-vanilla.md",
       "source": "agents/vanilla_agent.py",
       "symbol": "PLOT_VANILLA_AGENT_SYSTEM_PROMPT",
       "sha256": "f8b97c44a7a6699276ea8cd764567553691c5aa33e477c8f999ef4272d30edd2"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/diagram-visualizer.md",
+      "path": "skills/papervizagent/references/upstream/diagram-visualizer.md",
       "source": "agents/visualizer_agent.py",
       "symbol": "DIAGRAM_VISUALIZER_AGENT_SYSTEM_PROMPT",
       "sha256": "2058b92c09fc6564ac4950667285b1ee1f32efee494b5b2e18f72316492ce91c"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/plot-visualizer.md",
+      "path": "skills/papervizagent/references/upstream/plot-visualizer.md",
       "source": "agents/visualizer_agent.py",
       "symbol": "PLOT_VISUALIZER_AGENT_SYSTEM_PROMPT",
       "sha256": "a8018dba4db19101160688026a2094fc76a036db63b238d7f508a7c4ca69581f"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/neurips2025_plot_style_guide.md",
+      "path": "skills/papervizagent/references/upstream/neurips2025_plot_style_guide.md",
       "source": "style_guides/neurips2025_plot_style_guide.md",
       "sha256": "a98397d2cd15a98abf88152c19efdca82ef3f27d66f23f73ed0f88e44e474e92"
     },
     {
-      "path": "skills/papervizagent-codex/references/upstream/neurips2025_diagram_style_guide.md",
+      "path": "skills/papervizagent/references/upstream/neurips2025_diagram_style_guide.md",
       "source": "style_guides/neurips2025_diagram_style_guide.md",
       "sha256": "d2aee50170d9de995bae01c45737a779853c07a34c1ce106219dc5790ee5bea5"
     }
@@ -162,5 +162,5 @@
       "verification_download_bytes": 1629273
     }
   },
-  "runtime_provenance": "src/papervizagent_codex/upstream/UPSTREAM.json"
+  "runtime_provenance": "src/papervizagent/upstream/UPSTREAM.json"
 }

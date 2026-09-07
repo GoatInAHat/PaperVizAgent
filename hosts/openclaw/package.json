@@ -1,5 +1,5 @@
 {
-  "name": "openclaw-plugin-papervizagent-codex",
+  "name": "openclaw-plugin-papervizagent",
   "version": "0.3.0",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "type": "module",

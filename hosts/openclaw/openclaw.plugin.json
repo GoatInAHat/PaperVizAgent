@@ -1,12 +1,12 @@
 {
-  "id": "papervizagent-codex",
-  "name": "Papervizagent Codex",
+  "id": "papervizagent",
+  "name": "Papervizagent",
   "description": "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
   "version": "0.3.0",
   "configSchema": {
     "type": "object",
     "properties": {
-      "papervizagent_codex_config": {
+      "papervizagent_config": {
         "type": "string",
         "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
       },

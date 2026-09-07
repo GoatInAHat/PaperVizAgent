@@ -39,6 +39,8 @@ jobs:
         run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: install
         run: uv sync
+      - name: Install core into Hermes
+        run: uv pip install --python "$HOME/.hermes/hermes-agent/venv/bin/python" --editable .
       - name: toolfactory check
         run: npx --yes toolfactory@0.1.2 check
       - name: toolfactory build (output files)

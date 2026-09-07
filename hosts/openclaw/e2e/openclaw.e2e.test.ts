@@ -120,9 +120,9 @@ beforeAll(async () => {
   await oc(["plugins", "install", "--link", pluginDir, "--force", "--accept-capabilities"]);
 }, 300_000);
 
-describe("papervizagent-codex in a real OpenClaw agent turn", () => {
+describe("papervizagent in a real OpenClaw agent turn", () => {
   it("registers its tools at runtime", async () => {
-    const inspected = JSON.parse(await oc(["plugins", "inspect", "papervizagent-codex", "--runtime", "--json"]));
+    const inspected = JSON.parse(await oc(["plugins", "inspect", "papervizagent", "--runtime", "--json"]));
     expect(inspected.plugin.status).toBe("loaded");
     expect(inspected.plugin.toolNames).toEqual(["generate","infer","models","status","web"]);
   });
@@ -137,6 +137,6 @@ describe("papervizagent-codex in a real OpenClaw agent turn", () => {
       ]),
     );
     expect(turn.meta.agentMeta.terminalReceipt.successfulToolNames).toContain("status");
-    expect(turn.payloads[0].text).toBe("PAPERVIZAGENT_CODEX_OK");
+    expect(turn.payloads[0].text).toBe("PAPERVIZAGENT_OK");
   }, 180_000);
 });

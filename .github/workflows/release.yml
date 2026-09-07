@@ -90,6 +90,8 @@ jobs:
         run: echo "$HOME/.local/bin" >> "$GITHUB_PATH"
       - name: install
         run: uv sync
+      - name: Install core into Hermes
+        run: uv pip install --python "$HOME/.hermes/hermes-agent/venv/bin/python" --editable .
       - name: toolfactory check
         run: npx --yes toolfactory@0.1.2 check
       - name: toolfactory build (output files)
@@ -124,12 +126,12 @@ jobs:
           EDGE_API_KEY: ${{ secrets.EDGE_API_KEY }}
         run: |-
           npm=false; if [ "$NPM_TRUSTED_PUBLISHER" = true ] || [ -n "$NPM_TOKEN" ]; then npm=true; else echo "::notice::npm: not published at this tag — https://www.npmjs.com/settings/~/tokens"; fi; echo "npm=$npm" >> "$GITHUB_OUTPUT"
-          pypi=false; if curl -fsS -o /dev/null https://pypi.org/pypi/papervizagent-codex/json || [ -n "$PYPI_TRUSTED_PUBLISHER" ]; then pypi=true; else echo "::notice::pypi: not published at this tag — https://pypi.org/manage/account/publishing/"; fi; echo "pypi=$pypi" >> "$GITHUB_OUTPUT"
+          pypi=false; if curl -fsS -o /dev/null https://pypi.org/pypi/papervizagent/json || [ -n "$PYPI_TRUSTED_PUBLISHER" ]; then pypi=true; else echo "::notice::pypi: not published at this tag — https://pypi.org/manage/account/publishing/"; fi; echo "pypi=$pypi" >> "$GITHUB_OUTPUT"
           oci=false; if echo "::notice::ghcr.io publishes a private image on the first push whatever the repository's visibility; make it public once at https://github.com/goatinahat?tab=packages -> Package settings -> Danger Zone."; then oci=true; else echo "::notice::oci: not published at this tag — https://github.com/settings/packages"; fi; echo "oci=$oci" >> "$GITHUB_OUTPUT"
           mcp_registry=false; if [ "$npm" = true ] && [ "$pypi" = true ] && [ "$oci" = true ]; then mcp_registry=true; else echo "::notice::mcp-registry: not published at this tag — https://registry.modelcontextprotocol.io"; fi; echo "mcp_registry=$mcp_registry" >> "$GITHUB_OUTPUT"
           clawhub_package=false; if [ -n "$CLAWHUB_TOKEN" ]; then clawhub_package=true; else echo "::notice::clawhub-package: not published at this tag — https://clawhub.ai"; fi; echo "clawhub_package=$clawhub_package" >> "$GITHUB_OUTPUT"
           clawhub_skill=false; if [ -n "$CLAWHUB_TOKEN" ]; then clawhub_skill=true; else echo "::notice::clawhub-skill: not published at this tag — https://clawhub.ai"; fi; echo "clawhub_skill=$clawhub_skill" >> "$GITHUB_OUTPUT"
-          pages=false; if gh api repos/GoatInAHat/PaperVizAgent-codex/pages >/dev/null 2>&1; then pages=true; else echo "::notice::pages: not published at this tag — https://github.com/GoatInAHat/PaperVizAgent-codex/settings/pages"; fi; echo "pages=$pages" >> "$GITHUB_OUTPUT"
+          pages=false; if gh api repos/GoatInAHat/PaperVizAgent/pages >/dev/null 2>&1; then pages=true; else echo "::notice::pages: not published at this tag — https://github.com/GoatInAHat/PaperVizAgent/settings/pages"; fi; echo "pages=$pages" >> "$GITHUB_OUTPUT"
           chrome=false; if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then chrome=true; else echo "::notice::chrome: not published at this tag — https://chrome.google.com/webstore/devconsole"; fi; echo "chrome=$chrome" >> "$GITHUB_OUTPUT"
           firefox=false; if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then firefox=true; else echo "::notice::firefox: not published at this tag — https://addons.mozilla.org/developers/addon/api/key/"; fi; echo "firefox=$firefox" >> "$GITHUB_OUTPUT"
           edge=false; if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then edge=true; else echo "::notice::edge: not published at this tag — https://partner.microsoft.com/dashboard/microsoftedge/publishapi"; fi; echo "edge=$edge" >> "$GITHUB_OUTPUT"
@@ -166,17 +168,17 @@ jobs:
       - name: python distributions
         run: uv build --out-dir dist/release/pypi
       - name: MCPB bundle
-        run: rm -rf dist/mcpb && mkdir -p dist/mcpb && tar -xzf dist/release/pypi/*.tar.gz -C dist/mcpb --strip-components=1 && cp hosts/mcpb/manifest.json dist/mcpb/manifest.json && npx -y @anthropic-ai/mcpb@2.1.2 pack dist/mcpb dist/release/papervizagent-codex.mcpb
+        run: rm -rf dist/mcpb && mkdir -p dist/mcpb && tar -xzf dist/release/pypi/*.tar.gz -C dist/mcpb --strip-components=1 && cp hosts/mcpb/manifest.json dist/mcpb/manifest.json && npx -y @anthropic-ai/mcpb@2.1.2 pack dist/mcpb dist/release/papervizagent.mcpb
       - name: OpenClaw plugin tarball
         run: npm --prefix hosts/openclaw install && npm --prefix hosts/openclaw run build && npm pack ./hosts/openclaw --pack-destination dist/release
       - name: DSH bundle tarball
         run: npm pack ./hosts/dsh --pack-destination dist/release
       - name: plugin bundle
-        run: set -- plugin.json mcp.json skills .claude-plugin .codex-plugin .cursor-plugin; for path in LICENSE LICENSE.md LICENSE.txt NOTICE NOTICE.md NOTICE.txt; do if [ -f "$path" ]; then set -- "$@" "$path"; fi; done; zip -qr dist/release/papervizagent-codex-plugin.zip "$@"
+        run: set -- plugin.json mcp.json skills .claude-plugin .codex-plugin .cursor-plugin; for path in LICENSE LICENSE.md LICENSE.txt NOTICE NOTICE.md NOTICE.txt; do if [ -f "$path" ]; then set -- "$@" "$path"; fi; done; zip -qr dist/release/papervizagent-plugin.zip "$@"
       - name: web tarball
-        run: tar -czf dist/release/papervizagent-codex-web.tar.gz -C web/dist .
+        run: tar -czf dist/release/papervizagent-web.tar.gz -C web/dist .
       - name: browser extension zips
-        run: npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b chrome && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b firefox && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b edge && cp hosts/browser/.output/papervizagent-codex-0.3.0-chrome.zip dist/release/ && cp hosts/browser/.output/papervizagent-codex-0.3.0-firefox.zip dist/release/ && cp hosts/browser/.output/papervizagent-codex-0.3.0-edge.zip dist/release/ && cp hosts/browser/.output/papervizagent-codex-0.3.0-sources.zip dist/release/
+        run: npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b chrome && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b firefox && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b edge && cp hosts/browser/.output/papervizagent-0.3.0-chrome.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-firefox.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-edge.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-sources.zip dist/release/
       - name: Firefox signed xpi (only when FIREFOX_JWT_ISSUER/FIREFOX_JWT_SECRET are set)
         run: if [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then npm --prefix hosts/browser exec --no -- web-ext sign --channel=unlisted --api-key="$FIREFOX_JWT_ISSUER" --api-secret="$FIREFOX_JWT_SECRET" --source-dir hosts/browser/.output/firefox-mv2 --artifacts-dir dist/release; fi
       - name: coverage report
@@ -211,7 +213,7 @@ jobs:
       - name: npm publish
         env:
           NPM_TOKEN: ${{ vars.NPM_TRUSTED_PUBLISHER != 'true' && secrets.NPM_TOKEN || '' }}
-        run: 'if npm view papervizagent-codex@0.3.0 version >/dev/null 2>&1; then echo "::notice::npm: papervizagent-codex@0.3.0 already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish release-assets/papervizagent-codex-0.3.0.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish release-assets/papervizagent-codex-0.3.0.tgz --access public; fi'
+        run: 'if npm view papervizagent@0.3.0 version >/dev/null 2>&1; then echo "::notice::npm: papervizagent@0.3.0 already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish ./release-assets/papervizagent-0.3.0.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish ./release-assets/papervizagent-0.3.0.tgz --access public; fi'
   publish-pypi:
     needs:
       - gate
@@ -251,9 +253,9 @@ jobs:
       - id: meta
         uses: docker/metadata-action@v6
         with:
-          images: ghcr.io/goatinahat/papervizagent-codex
+          images: ghcr.io/goatinahat/papervizagent
           tags: type=semver,pattern={{version}},value=${{ inputs.tag || github.ref_name }}
-          labels: io.modelcontextprotocol.server.name=io.github.GoatInAHat/papervizagent-codex
+          labels: io.modelcontextprotocol.server.name=io.github.GoatInAHat/papervizagent
       - uses: docker/build-push-action@v7
         with:
           context: .
@@ -289,7 +291,7 @@ jobs:
     uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
     with:
       package_artifact_name: release-assets
-      package_artifact_path: openclaw-plugin-papervizagent-codex-0.3.0.tgz
+      package_artifact_path: openclaw-plugin-papervizagent-0.3.0.tgz
       dry_run: false
       wait_for_publication: true
     secrets:
@@ -299,7 +301,7 @@ jobs:
     needs: gate
     uses: openclaw/clawhub/.github/workflows/skill-publish.yml@main
     with:
-      skill_path: skills/papervizagent-codex
+      skill_path: skills/papervizagent
       dry_run: false
     secrets:
       clawhub_token: ${{ secrets.CLAWHUB_TOKEN }}
@@ -341,17 +343,17 @@ jobs:
       - name: wxt submit --dry-run (zips, plus a live credential read for Chrome and Firefox)
         run: |-
           flags=""
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-codex-0.3.0-chrome.zip"; fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-codex-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-codex-0.3.0-sources.zip"; fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-codex-0.3.0-edge.zip"; fi
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-0.3.0-chrome.zip"; fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.3.0-sources.zip"; fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-0.3.0-edge.zip"; fi
           if [ -z "$flags" ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
           npm --prefix hosts/browser exec --no -- wxt submit --dry-run $flags
       - name: wxt submit
         run: |-
           flags=""
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-codex-0.3.0-chrome.zip"; fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-codex-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-codex-0.3.0-sources.zip"; fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-codex-0.3.0-edge.zip"; fi
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-0.3.0-chrome.zip"; fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.3.0-sources.zip"; fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-0.3.0-edge.zip"; fi
           if [ -z "$flags" ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
           npm --prefix hosts/browser exec --no -- wxt submit $flags
   release:

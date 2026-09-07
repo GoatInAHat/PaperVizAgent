@@ -17,7 +17,7 @@ import { chromium } from "playwright";
 const extension = fileURLToPath(new URL("../.output/chrome-mv3", import.meta.url));
 const CASE = {"name":"status","arguments":{}};
 const TOKEN = "smoke-token";
-const MARKER = "papervizagent-codex-browser-smoke";
+const MARKER = "papervizagent-browser-smoke";
 
 const seen = [];
 const kernel = createServer((request, response) => {
@@ -36,7 +36,7 @@ const kernel = createServer((request, response) => {
 await new Promise((resolve) => kernel.listen(0, "127.0.0.1", resolve));
 const endpoint = `http://127.0.0.1:${kernel.address().port}/mcp`;
 
-const profile = mkdtempSync(join(tmpdir(), "papervizagent-codex-browser-"));
+const profile = mkdtempSync(join(tmpdir(), "papervizagent-browser-"));
 // `channel: "chromium"` is the full build; the headless shell cannot side-load an extension.
 const context = await chromium.launchPersistentContext(profile, {
   channel: "chromium",

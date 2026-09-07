@@ -17,13 +17,13 @@ backends. Local live tests use the normal signed-in Codex account and are not CI
 ## Ownership
 
 Edit `plugin.json` for identity/version, `dev.toolfactory/tool.json` for surfaces,
-`src/papervizagent_codex/{config,backends,ops}.py` for runtime behavior, and skill
+`src/papervizagent/{config,backends,ops}.py` for runtime behavior, and skill
 bodies/reference adapters for native behavior. ToolFactory owns generated
 kernels, host adapters, manifests, skill frontmatter, README installation regions
 and the lock. Never edit generated regions; adopt first when necessary.
 `AGENTS.md` is adopted; CI and release workflows are generated again in v0.3.
 
-Reuse upstream source in `src/papervizagent_codex/upstream`. Keep original prompt
+Reuse upstream source in `src/papervizagent/upstream`. Keep original prompt
 constants unchanged and retain source hashes and modified-file notices. The
 standard-library reference helper remains reusable by native hosts. Do not add a
 second pipeline engine or a custom OAuth implementation.

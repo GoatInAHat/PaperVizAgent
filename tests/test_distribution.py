@@ -16,7 +16,7 @@ class DistributionTest(unittest.TestCase):
         for resource in provenance['vendored_resources']:
             if 'symbol' not in resource:
                 continue
-            source = ROOT / 'src/papervizagent_codex/upstream' / resource['source']
+            source = ROOT / 'src/papervizagent/upstream' / resource['source']
             if not source.exists():
                 continue
             values = {node.targets[0].id: ast.literal_eval(node.value)
@@ -46,8 +46,8 @@ class DistributionTest(unittest.TestCase):
                         self.assertTrue((document.parent / target).exists())
 
     def test_skill_documents_portable_capability_resolution(self):
-        skill = (ROOT / "skills/papervizagent-codex/SKILL.md").read_text()
-        roles = (ROOT / "skills/papervizagent-codex/references/roles.md").read_text()
+        skill = (ROOT / "skills/papervizagent/SKILL.md").read_text()
+        roles = (ROOT / "skills/papervizagent/references/roles.md").read_text()
 
         self.assertIn("`status`", skill)
         self.assertIn("`infer(role, modality, system, contents,\noptions)`", skill)

@@ -1,5 +1,5 @@
-PaperVizAgent-codex
-Copyright 2026 PaperVizAgent-codex contributors
+PaperVizAgent
+Copyright 2026 PaperVizAgent contributors
 
 This product includes material derived from PaperVizAgent (formerly
 PaperBanana), Copyright 2026 Google LLC, licensed under the Apache License,
@@ -27,7 +27,7 @@ Their names and product names identify the source projects and host products.
 Version 0.3 additionally includes modified Apache-2.0 Python source from Google
 Research PaperVizAgent at e088a8fff74cc363b6897c0843631fff76484908.
 Original copyright notices are retained. Source hashes and adapter differences
-are recorded in src/papervizagent_codex/upstream/UPSTREAM.json.
+are recorded in src/papervizagent/upstream/UPSTREAM.json.
 
 Generated adapters use ToolFactory, distributed under MIT by GoatInAHat:
 https://github.com/GoatInAHat/toolfactory

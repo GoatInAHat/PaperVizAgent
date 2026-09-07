@@ -1,7 +1,11 @@
 # Configuration
 
+The tool, command and Python package are now `papervizagent`. Use
+`PAPERVIZAGENT_CONFIG` and `PAPERVIZAGENT_DATA_DIR` for its paths.
+Provider-specific names such as `CODEX_OAUTH_TOKEN` remain unchanged.
+
 All surfaces use the same optional JSON/YAML file, selected by
-`PAPERVIZAGENT_CODEX_CONFIG`. An absent file setting means native tools in the
+`PAPERVIZAGENT_CONFIG`. An absent file setting means native tools in the
 skill and managed Codex sign-in in the standalone runtime. No model IDs are
 hardcoded into automatic selection.
 

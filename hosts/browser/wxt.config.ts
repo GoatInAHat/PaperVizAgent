@@ -16,7 +16,7 @@ const web = resolve(import.meta.dirname, "../../web/src");
 export const generated = {
   modules: ["@wxt-dev/module-react"],
   // The release assets carry the tool's name, not this package's local one.
-  zip: { name: "papervizagent-codex" },
+  zip: { name: "papervizagent" },
   vite: () => ({
     plugins: [
       tailwindcss(),
@@ -36,14 +36,14 @@ export const generated = {
   // with background scripts for Firefox and Safari, `host_permissions` folded into
   // `permissions` where the format has no such key.
   manifest: ({ browser }: { browser: string }) => ({
-    name: "papervizagent-codex",
+    name: "papervizagent",
     permissions: PERMISSIONS.filter(
       (permission) => CHROMIUM.includes(browser) || !CHROMIUM_ONLY.includes(permission),
     ),
     host_permissions: HOST_PERMISSIONS,
     browser_specific_settings: {
       gecko: {
-        id: "papervizagent-codex@GoatInAHat.github.io",
+        id: "papervizagent@GoatInAHat.github.io",
         // The floor for `storage.session` and for the data-collection key below.
         strict_min_version: "140.0",
         // Everything this extension sends goes to the kernel on this machine, so there is no
@@ -51,7 +51,7 @@ export const generated = {
         data_collection_permissions: { required: ["none"] },
       },
     },
-    action: { default_title: "papervizagent-codex" },
+    action: { default_title: "papervizagent" },
   }),
 };
 // /tf:config

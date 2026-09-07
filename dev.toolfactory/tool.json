@@ -34,19 +34,19 @@
   },
   "codex": {
     "interface": {
-      "displayName": "PaperVizAgent for Codex",
+      "displayName": "PaperVizAgent",
       "shortDescription": "Scientific figures with native tools or configurable providers.",
       "longDescription": "Upstream PaperVizAgent roles, configurable model providers, and native Codex defaults with optional overrides.",
       "developerName": "GoatInAHat",
       "category": "Productivity",
-      "defaultPrompt": "Use $papervizagent-codex with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
+      "defaultPrompt": "Use $papervizagent with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
     },
     "mcp": false
   },
   "config": {
     "type": "object",
     "properties": {
-      "papervizagent_codex_config": {
+      "papervizagent_config": {
         "type": "string",
         "description": "Optional path to shared PaperVizAgent JSON/YAML model and pipeline configuration."
       },
