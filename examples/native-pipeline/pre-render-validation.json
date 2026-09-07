@@ -1,0 +1,41 @@
+{
+  "guidance_and_descriptions": [
+    {
+      "path": "role-guidance/diagram-planner.md",
+      "bytes": 1073,
+      "sha256_verified": true
+    },
+    {
+      "path": "role-guidance/diagram-stylist.md",
+      "bytes": 3349,
+      "sha256_verified": true
+    },
+    {
+      "path": "role-guidance/diagram-visualizer.md",
+      "bytes": 214,
+      "sha256_verified": true
+    },
+    {
+      "path": "role-guidance/diagram-critic.md",
+      "bytes": 3421,
+      "sha256_verified": true
+    },
+    {
+      "path": "role-guidance/neurips2025_diagram_style_guide.md",
+      "bytes": 6270,
+      "sha256_verified": true
+    },
+    {
+      "path": "candidate-01/planner-description.md",
+      "bytes": 9378,
+      "nonempty": true
+    },
+    {
+      "path": "candidate-01/stylist-description.md",
+      "bytes": 11546,
+      "nonempty": true
+    }
+  ],
+  "image_budget": 2,
+  "retrieval": "none"
+}

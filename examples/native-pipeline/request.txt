@@ -1,0 +1,1 @@
+Create a scientific methodology diagram from the preserved source.md. Use full mode, retrieval none, one candidate, and at most TWO image-tool calls total. Save complete run and figure artifacts here. Use fresh native role contexts sequentially; no external model process, API keys, provider setup, or public mutations.

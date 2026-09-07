@@ -1,0 +1,38 @@
+{
+  "native_role_ids_unique": true,
+  "fresh_context_all_roles": true,
+  "actual_image_calls": 2,
+  "image_budget": 2,
+  "renders": [
+    {
+      "stage": "planner",
+      "image": "candidate-01/figure-planner.png",
+      "png_header_valid": true,
+      "dimensions_px": [
+        1774,
+        887
+      ],
+      "bytes": 939257,
+      "sha256": "cc7c016a61017792cc22e79e8494c02a21f3de6dc15584d51f0fe40e89eb2321",
+      "literal_prompt_composition_verified": true
+    },
+    {
+      "stage": "stylist",
+      "image": "candidate-01/figure-stylist.png",
+      "png_header_valid": true,
+      "dimensions_px": [
+        1755,
+        896
+      ],
+      "bytes": 882900,
+      "sha256": "b9834f74909eac46dd3fd2eb9e24960b18b47d3e3870750dc2c0cc66fe45afe6",
+      "literal_prompt_composition_verified": true
+    }
+  ],
+  "critic_json_valid": true,
+  "critic_revision_saved_complete": true,
+  "stop_reason": "budget_exhausted",
+  "selected_image_exists": true,
+  "all_role_outputs_exist": true,
+  "all_roles_finished": true
+}

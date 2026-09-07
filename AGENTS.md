@@ -1,21 +1,23 @@
 # PaperVizAgent for Codex
 
-This is a native Codex instruction plugin. Keep planning, generation, and review
-in the active host session. Do not add an inference client, OAuth-token reader,
-provider configuration, MCP server, or local model runtime.
+This is a native Codex port of the official PaperVizAgent role pipeline.
+Runtime use requires fresh native subagents, bounded role inputs, and real
+artifact handoffs. Do not collapse roles into a single conversation or add
+an inference client, OAuth-token reader, provider configuration, or MCP server.
+The standard-library reference helper fetches public data; it performs no
+inference. Native host/dependency tools provide plotting and rendering support.
 
-The skill body and its references are authored sources. ToolFactory generates
-the plugin manifest, marketplace entry, skill frontmatter, and install section.
-Edit `plugin.json` and `dev.toolfactory/tool.json`, then run `make build`.
-Never hand-edit generated paths in `dev.toolfactory/lock.json`; use ToolFactory
-`adopt` before taking ownership. The adopted CI/release workflows and this file
-are intentional; see CONTRIBUTING.md.
+ToolFactory generates plugin/marketplace metadata, skill frontmatter, and the
+README install region. Edit plugin.json and dev.toolfactory/tool.json, then
+run make build. Never hand-edit generated regions or lock.json; use ToolFactory
+adopt before taking ownership. CI/release and this file are deliberately adopted.
 
-Run `make check validate package` after metadata or packaging changes. Behavioral
-cases are in `evals/cases.json`; use a fresh Codex task for material skill changes
-and inspect the actual output. Preserve sources, exact prompts, candidates, and
-an honest visual review. Never claim a live evaluation ran when it did not.
+Run make check validate package after changes. Material workflow changes also
+need independent live tests using evals/cases.json and actual artifact inspection.
+Record role IDs, isolation, critic round state, image calls and stop reasons.
+Do not claim live evaluation or benchmark equivalence from package validation.
 
-Keep upstream provenance and Apache-2.0 attribution intact. Preserve scientific
-labels and connections during stylistic changes. Do not treat images as
-editable vectors or infer measurements from paper prose.
+Original role prompts and style guides are vendored with provenance in
+UPSTREAM.json. Keep their wording intact; native adapters and deliberate
+differences belong in references/compatibility.md and FIDELITY.md.
+Preserve upstream attribution, user science, exact data and meaningful legends.

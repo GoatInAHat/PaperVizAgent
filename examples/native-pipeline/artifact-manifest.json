@@ -1,0 +1,139 @@
+{
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 1745,
+      "sha256": "6611acc687ada95eec5297f14d4699b1a9637261b0576c5827d6cdb6bc3293b3"
+    },
+    {
+      "path": "candidate-01/coordinator-planner-inspection.json",
+      "bytes": 813,
+      "sha256": "8ce6ee04eef0c0cfd7c94cc8a2aca8663acb0eb1c64cfc2fdcd3d2da218ac670"
+    },
+    {
+      "path": "candidate-01/coordinator-stylist-inspection.json",
+      "bytes": 725,
+      "sha256": "8a254cfa45e9f018ac794b289738b29745fe2ecf171e0092d9295be43826d3da"
+    },
+    {
+      "path": "candidate-01/critic-0.json",
+      "bytes": 12473,
+      "sha256": "8ddfb784d1543e2f1d4d6ad6c12c442da3720c4a95e1ae755542fce76bf96ef8"
+    },
+    {
+      "path": "candidate-01/critic-description-0.md",
+      "bytes": 11474,
+      "sha256": "d75aad61ea97ab9e3c2783541fdfcf26aae115ceb49e015cf4aea6d458e219f8"
+    },
+    {
+      "path": "candidate-01/figure-planner.png",
+      "bytes": 939257,
+      "sha256": "cc7c016a61017792cc22e79e8494c02a21f3de6dc15584d51f0fe40e89eb2321"
+    },
+    {
+      "path": "candidate-01/figure-stylist.png",
+      "bytes": 882900,
+      "sha256": "b9834f74909eac46dd3fd2eb9e24960b18b47d3e3870750dc2c0cc66fe45afe6"
+    },
+    {
+      "path": "candidate-01/planner-description.md",
+      "bytes": 9378,
+      "sha256": "9eb3c929c8fce3b74ace6fcfe6d2b90cd090ea1d97a1c8dcedc3c7f269f01ba2"
+    },
+    {
+      "path": "candidate-01/prompt-planner.md",
+      "bytes": 9698,
+      "sha256": "aa0923707c4c34a299941bc620ffe4660393f6abef62ce129e5addb1f5772a29"
+    },
+    {
+      "path": "candidate-01/prompt-stylist.md",
+      "bytes": 11866,
+      "sha256": "3e4642a5e62786e2d84e0efd779aef0bc3008aa3437a7c69336c5e86dc96e375"
+    },
+    {
+      "path": "candidate-01/render-planner.json",
+      "bytes": 2022,
+      "sha256": "fd38c4babe6681a9a454f2eb36d7f688764e9f511487abb874d33b59db6a46af"
+    },
+    {
+      "path": "candidate-01/render-stylist.json",
+      "bytes": 1887,
+      "sha256": "03b3fcb00023feaf440ca23dee8a9c5da2ae963fe770d1ef7e50a9c32487a188"
+    },
+    {
+      "path": "candidate-01/retrieval.json",
+      "bytes": 170,
+      "sha256": "16df6e9bc61f6901680c5012204940e0b2bfb7651b3b5070a89437dede5984b9"
+    },
+    {
+      "path": "candidate-01/review.md",
+      "bytes": 5044,
+      "sha256": "b8e6010767b4c9873072dd4f738384ccc0c0f681b74699c1df78dad7f79b7405"
+    },
+    {
+      "path": "candidate-01/stylist-description.md",
+      "bytes": 11546,
+      "sha256": "0bef554db19e383189d8fa87c1773d8352356607ae26be8a10f2be8cb8760f2f"
+    },
+    {
+      "path": "caption.txt",
+      "bytes": 119,
+      "sha256": "fe9a2dd692bfcaff82a3ee3bd9d2416f9780d8e96e6d1b385e623496c13576d5"
+    },
+    {
+      "path": "pre-render-validation.json",
+      "bytes": 892,
+      "sha256": "e7352d9ea967d6d2ad644ce59ba062c6a6f9cd8f6db6f6495f2e54ed5e6ba732"
+    },
+    {
+      "path": "request.txt",
+      "bytes": 320,
+      "sha256": "8ae2734cbf059f027570845399ca04984011ee123c4407e0baf56480e928d800"
+    },
+    {
+      "path": "role-guidance/diagram-critic.md",
+      "bytes": 3421,
+      "sha256": "f6fdbafed6b3579e824eaceae476ab45f29670b0ffd133d593fbc56a927ed016"
+    },
+    {
+      "path": "role-guidance/diagram-planner.md",
+      "bytes": 1073,
+      "sha256": "1b059d041a32622b069243ac4ab4a9d00fe5033c42cd12c4fd4dfdbdfa5858f4"
+    },
+    {
+      "path": "role-guidance/diagram-stylist.md",
+      "bytes": 3349,
+      "sha256": "cd3dcaded2ac613e084dfd0081b509e6d2b181f588395728fa56c53e032bbf8e"
+    },
+    {
+      "path": "role-guidance/diagram-visualizer.md",
+      "bytes": 214,
+      "sha256": "2058b92c09fc6564ac4950667285b1ee1f32efee494b5b2e18f72316492ce91c"
+    },
+    {
+      "path": "role-guidance/neurips2025_diagram_style_guide.md",
+      "bytes": 6270,
+      "sha256": "d2aee50170d9de995bae01c45737a779853c07a34c1ce106219dc5790ee5bea5"
+    },
+    {
+      "path": "run.json",
+      "bytes": 8346,
+      "sha256": "eaa63968c7c5d60d518ab0b84469edccbb0b4c03a5f8e0f75a128e0dbca838b5"
+    },
+    {
+      "path": "semantic-checks.json",
+      "bytes": 632,
+      "sha256": "7c2c0841ad339f350cf03565aebc4e05efb67ca99245f3aca2305523efda074e"
+    },
+    {
+      "path": "source.md",
+      "bytes": 637,
+      "sha256": "854137486e165f29afb061e5573375da7aebc19bcd26065edb369e5e9e491874"
+    },
+    {
+      "path": "validation.json",
+      "bytes": 1020,
+      "sha256": "6d9f79edb8fc60884cb22c1f5dfe87ca461420c3b209296d63bd7919f6f135ae"
+    }
+  ]
+}

@@ -53,6 +53,15 @@ report successful benchmark retrieval. If Python is unavailable, host-native
 fetch tools may retrieve the same pinned metadata and selected images while
 preserving the full candidate scope, input pairs, and provenance.
 
+## Explicit no-reference and supplied-reference requests
+
+For `none`, perform no network retrieval and record an empty reference list and
+the explicit setting. Planner still runs from target source/caption; it must not
+open a missing ref.json. For supplied references, inspect the provided images
+and preserve their paired source/caption when available; record `supplied`, not
+benchmark `auto`. The upstream manual/random benchmark ablations are not
+implemented by this helper. Report that distinction if those modes are requested.
+
 ## Source and rights
 
 The authoritative code is [Google Research PaperVizAgent at the pinned revision](https://github.com/google-research/papervizagent/tree/e088a8fff74cc363b6897c0843631fff76484908),
@@ -78,3 +87,8 @@ Images resolve beneath the same task directory using the URL-encoded
 [PaperBananaBench dataset](https://huggingface.co/datasets/dwzhu/PaperBananaBench)
 currently provides a 265,846,711-byte ZIP without a dataset card or a separate
 license file in the archive; the extracted author Space avoids that full download.
+
+Both metadata files above were compared with their corresponding entries in the
+official dataset ZIP at revision `a876264bcd1e826a0320f805f8fb1cd705cf510f`:
+bytes, hashes, IDs, and record order are identical. Verification used bounded
+HTTP Range reads (1,629,273 archive bytes), not the full download.

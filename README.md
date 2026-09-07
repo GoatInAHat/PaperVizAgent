@@ -1,12 +1,13 @@
 # PaperVizAgent for Codex
 
-Scientific figures from paper text, using the Codex session you're already
-signed into. No API keys, model configuration, MCP server, or GPU setup.
+Scientific figures through separate native Codex agents, using the session
+you're already signed into. No API keys, model configuration, MCP server, or GPU setup.
 
-An independent adaptation of [Google Research's PaperVizAgent](https://github.com/google-research/papervizagent)
-(formerly PaperBanana), packaged with [ToolFactory](https://github.com/GoatInAHat/toolfactory).
-The planning, styling, and critique guidance is derived from the official
-implementation. This project is not an official Google or OpenAI integration.
+An independent port of [Google Research's PaperVizAgent](https://github.com/google-research/papervizagent)
+(formerly PaperBanana), built with [ToolFactory](https://github.com/GoatInAHat/toolfactory).
+It preserves the original role prompts, complete style guides, reference-driven
+planning, and critic/regeneration loop. This is not an official Google or
+OpenAI integration.
 
 <!-- tf:install -->
 ## Install
@@ -18,99 +19,123 @@ implementation. This project is not an official Google or OpenAI integration.
 
 <!-- /tf:install -->
 
-After installation, start a new Codex task and ask:
+After installation, start a new Codex task:
 
 ```text
 Use $papervizagent-codex to turn this paper's methods section into a scientific
 diagram. Use this caption: "Overview of our inference pipeline."
 ```
 
-Attach your paper or paste the relevant text. A sketch or style reference is
-optional. You can also request a revision of an existing figure, a native
-editable SVG, or a plot from actual data.
+Attach the paper or paste the relevant source. The default workflow uses full
+mode, automatic reference retrieval, one candidate, and three critic rounds.
+You can request a different mode, a smaller image budget, supplied references,
+or no retrieval in ordinary language.
 
-## How it works
+## Actual separate agents
 
-| Stage | Execution |
+The main Codex agent coordinates files and state. Each role receives a fresh
+native context with its original prompt and explicit inputs.
+
+| Role | Input and behavior |
 |---|---|
-| Read and select references | Active Codex model; supplied references or bundled layout guidance |
-| Plan | Explicit elements, connections, evidence, labels, and invariants |
-| Style | Visual details added without changing scientific meaning |
-| Render | Codex's built-in image-generation tool |
-| Review and revise | Codex inspects the actual image, applies targeted edits, and keeps the best candidate |
+| Retriever | Ranks the real reference pool using target methods/data and caption; retrieves up to ten source/caption/image examples |
+| Planner | Inspects those examples and writes a complete target description |
+| Stylist | Refines the planner description using the complete task-specific style guide |
+| Visualizer | Renders the description through native image generation, or executable Matplotlib code for plots |
+| Critic | Independently inspects the current image against its description and raw source; returns a critique and complete revised description |
 
-The default is one candidate with up to two correction passes, stopping early
-when no actionable defects remain. Ask for a smaller budget when you want only
-a draft. Every figure comes with its specification, exact prompts, and a concise
-visual review. Follow-up changes preserve the prior versions and scientific
-invariants.
+The Critic's revised description produces a **new image from text**. Editing an
+existing bitmap is a separate user-requested workflow. Every critic round uses a
+fresh context; no headings or role-play substitute for actual delegation.
 
-The plugin uses the current session's model for reasoning and visual review.
-The host chooses the built-in image model. OpenAI currently documents that path
-as GPT Image 2 using included Codex usage limits; image generation consumes
-those limits faster than ordinary text turns. This plugin has no inference
-client and never reads or forwards OAuth tokens.
-[Codex image-generation documentation](https://learn.chatgpt.com/docs/image-generation)
+Full mode retains both planner and styled initial renders. With up to three
+critic-driven regenerations, that is at most five visible image-tool calls per
+candidate, with early stopping. A smaller requested budget is respected and
+recorded as a partial run when it prevents a stage. Failed visible calls count
+against the budget; there are no automatic retries. Subagents and reference
+processing also consume the signed-in account's usage.
 
-## Requirements and outputs
+The available modes are full, planner_critic, planner_stylist, planner, vanilla,
+retriever, and polish. Explicit editable SVG is an additional renderer.
+[Workflow details](skills/papervizagent-codex/references/workflow.md) document
+their role graphs and stopping rules.
 
-- A signed-in Codex session with built-in image generation and visual inspection
-  available. No separate model account or key is required.
-- Installation is the only plugin setup. Node/Python development tooling belongs
-  to the repository's build checks, not the installed image workflow.
-- Figures are saved to your requested location or a new directory under
-  `outputs/figures/`, subject to the host's workspace rules.
-- If native image generation is unavailable, the skill preserves a specification
-  and prompt and reports the limitation. It doesn't silently switch providers.
+## Reference retrieval without setup
 
-Raster figures remain raster figures. For an explicit editable request, Codex
-authors native SVG elements and inspects the rendering; there is no promise of
-lossless raster-to-vector conversion. Quantitative plots use executable code and
-supplied data, with plotting source retained. Neither path needs another model.
+The plugin fetches pinned metadata and only selected images from the original
+author's public PaperBanana Space. It does not download the entire dataset
+archive or bundle third-party paper figures.
+
+A Python 3.9+ standard-library helper handles downloads, caching, checksums and
+materialization; Codex performs the ranking. No Python packages or inference
+credentials are needed for retrieval. The complete first-200 diagram candidate
+pool is processed in batches rather than silently truncating source methods.
+The Planner receives the selected complete methods/data, captions and actual
+images. See [retrieval provenance](skills/papervizagent-codex/references/retrieval.md).
+
+When network/reference access is unavailable, the run explicitly records
+no-reference operation. Supplied references and an explicit no-retrieval request
+also work. Manual/random benchmark ablations are not implemented by the helper.
+
+## Host requirements and artifacts
+
+Use a current signed-in Codex session with native subagents, image generation,
+visual inspection, and file access. Native agent configuration is inherited;
+the plugin does not write custom-agent files or read OAuth tokens.
+[Official subagent documentation](https://learn.chatgpt.com/docs/agent-configuration/subagents)
+
+The host's image tool chooses its available model and supported dimensions.
+Image usage is subject to the account's included limits.
+[Official image-generation documentation](https://learn.chatgpt.com/docs/image-generation)
+
+The reference helper uses available host Python; native fetch tools can provide
+the same data if Python is absent. Data plots use the host's available
+Python/Matplotlib runtime, preserving source and raw data. A missing capability
+is reported explicitly; no alternate model provider is launched.
+
+A run saves source/caption, retrieval provenance, separate descriptions, exact
+prompts, all real outputs, structured critic results, and run.json with role IDs,
+rounds, failures, selected output, and stop reason. Figures go to the requested
+directory or a new directory under outputs/figures/, respecting host rules.
+Raster output remains raster; requested SVG uses native editable elements.
+
+## Fidelity and validation
+
+v0.1.0 collapsed roles into one context and changed several core behaviors.
+v0.2 restores separate contexts, real retrieval, full prompts/guides, pipeline
+modes, separate evolution artifacts, the original three-round critic contract,
+and task-specific plotting.
+
+[FIDELITY.md](FIDELITY.md) records the audit, exact source evidence, and remaining
+adaptations: native models/transport, one conversational candidate, batched
+retrieval, caption inference when absent, preserved meaningful legends, and an
+additional SVG renderer. The original demo's ten-candidate planner+critic default
+is not silently described as this plugin's default.
+
+The port does not inherit the paper's benchmark results. The qualitative Critic
+is distinct from the original ground-truth evaluation. Review scientific
+content and venue requirements before treating any output as final.
+[Evaluation cases and observed results](evals/README.md)
 
 ## Example
 
-![Tested scientific workflow](examples/retrieval/figure-v2.png)
+![Previously tested scientific workflow](examples/retrieval/figure-v2.png)
 
-Generated from the synthetic method below using native Codex image generation.
-The [original](examples/retrieval/figure-v1.png),
-[revision prompt](examples/retrieval/prompt-v2.md), and
-[visual review](examples/retrieval/review.md) show a tested edit that retained the
-scientific connections.
-
-Try the fully specified [retrieval method](examples/method.md):
-
-```text
-Use $papervizagent-codex to illustrate examples/method.md. Keep the original
-question flowing into the generator and mark the question encoder frozen.
-```
-
-The test source specifies the method completely, so the output can be checked
-for missing connections and invented stages. See [behavioral evaluations](evals/README.md)
-for test cases and recorded results.
-
-## What is adapted
-
-| Official PaperVizAgent | This Codex adaptation |
-|---|---|
-| Specialized agents making direct model API calls | Staged instructions executed by the active Codex session |
-| Retrieved benchmark reference figures | Optional supplied references and authored layout heuristics; no benchmark download |
-| Model-specific image client | Native Codex image tool, using the existing sign-in |
-| Critic/refinement loop | Visual review, bounded targeted edits, and saved candidate history |
-| Statistical plotting code | Data-grounded code or native SVG, with source retained |
-
-The adaptation does not inherit the paper's benchmark results. Its changed
-models and reference strategy need their own evaluation. Review scientific
-content and the target venue's requirements before treating a figure as final.
+This example is retained from the v0.1 native rendering/edit test. It demonstrates
+image output, not evidence of the new role orchestration. The
+[synthetic source](examples/method.md), [original image](examples/retrieval/figure-v1.png),
+[edit prompt](examples/retrieval/prompt-v2.md), and
+[visual review](examples/retrieval/review.md) are available for inspection.
+Current native-role tests are recorded separately under evals/.
 
 ## Development
 
-The installed plugin is instructions and references. ToolFactory owns the
-manifest, marketplace entry, skill metadata, and installation projections. The
-workflow prose under `skills/papervizagent-codex/` is authored here.
+ToolFactory owns the manifest, marketplace entry, skill metadata and installation
+projections. The skill's coordinator instructions, native-role adapters, and
+standard-library reference helper are authored here. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for regeneration and validation.
 
-The exact upstream source revision and file hashes are recorded in
-[UPSTREAM.json](UPSTREAM.json). [NOTICE](NOTICE) describes attribution and
-modifications. The repository is licensed under [Apache-2.0](LICENSE).
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for regeneration and verification.
+[UPSTREAM.json](UPSTREAM.json) records exact source, prompt, guide and metadata
+hashes. [NOTICE](NOTICE) describes attribution and modifications. Code is
+licensed under [Apache-2.0](LICENSE); downloaded reference figures retain their
+source provenance and are not redistributed by this plugin.

@@ -1,0 +1,43 @@
+{
+  "attempt_count": 1,
+  "status": "completed_with_observed_defects",
+  "native_tool": "image_gen__imagegen",
+  "input_mode": "new_generation",
+  "reference_image_count": 0,
+  "prompt_path": "candidate-01/prompt-stylist.md",
+  "started_at": "2026-09-07T17:09:12.461452+00:00",
+  "completed_at": "2026-09-07T17:17:20.804Z",
+  "tool_result_metadata": {
+    "keys": [
+      "image_url",
+      "output_hint"
+    ],
+    "image_mime_type": "image/png",
+    "image_url_encoding": "data_url_base64",
+    "image_url_characters": 1177222
+  },
+  "saved_path": "candidate-01/figure-stylist.png",
+  "inspection_status": "inspected_saved_local_image",
+  "dimensions": {
+    "width": 1755,
+    "height": 896
+  },
+  "file_size_bytes": 882900,
+  "sha256": "b9834f74909eac46dd3fd2eb9e24960b18b47d3e3870750dc2c0cc66fe45afe6",
+  "source_copy_sha256_matches": true,
+  "inspection_tool": "native view_image",
+  "inspected_at": "2026-09-07T17:17:53.113378+00:00",
+  "observed_defects": [
+    "The image includes the title \"Inference workflow\" despite the final prompt instruction not to include figure titles.",
+    "The \"Indexed passages\" label sits across and interrupts the vertical index-to-retriever connector instead of being placed alongside it."
+  ],
+  "observed_preserved_elements": [
+    "All seven sequential visual elements are present.",
+    "Exactly five passage cards P1 through P5 appear in order and feed a collection bus toward the generator.",
+    "The original-question upper bypass reaches the generator.",
+    "The document index is marked Read-only and feeds upward toward the retriever.",
+    "Only the encoder is marked Frozen; both semantic legend items and the supplied caption are visible.",
+    "The output includes citation tokens [P1] and [P4]."
+  ],
+  "publication_note": "Host cache paths/output hints removed and run paths made relative. Image/prompt bytes unchanged."
+}

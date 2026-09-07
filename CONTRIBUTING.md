@@ -3,7 +3,7 @@
 Consumers install the Codex plugin and use their existing Codex session. The
 tools below are only for maintaining and validating this repository.
 
-Install Git, GNU Make, Node.js 24 with npm, uv, and zip. Then run:
+Install Git, GNU Make, Node.js 24 with npm, Python 3.9+, uv, and zip. Then run:
 
 ```sh
 make build
@@ -13,7 +13,7 @@ make check validate package
 The Makefile checks out the exact ToolFactory revision in
 `dev.toolfactory/source.mk` into the ignored `.cache/toolfactory/` directory and
 installs its locked dependencies with pnpm 10.33.0. It uses no model credentials.
-`check` detects generated-file drift, `validate` runs the upstream Agent Skills
+`check` detects generated-file drift and runs the standard-library reference-helper tests, `validate` runs the upstream Agent Skills
 validator and a real Codex marketplace/install/list cycle in temporary storage,
 and the Makefile packages the distributable under `dist/release/`.
 
@@ -41,6 +41,10 @@ project guidance, source-pinned CI, and a GitHub-only release with no registry
 credentials. Other generated agent-configuration files retain ToolFactory's
 template ownership. Running `.agents/setup` is optional developer integration;
 it is not part of consumer installation.
+
+The reference helper is the only installed Python helper; it uses the standard
+library and performs no model inference. Vendored prompts/guides are checked by
+hash against UPSTREAM.json; native adapters carry deliberate behavior changes.
 
 ## Behavior changes
 

@@ -1,0 +1,47 @@
+{
+  "attempt_count": 1,
+  "status": "generated_saved_inspected_with_preview_limitation",
+  "mode": "native_imagegen",
+  "new_generation": true,
+  "reference_images": false,
+  "prompt_path": "candidate-01/prompt-planner.md",
+  "prompt_sha256": "aa0923707c4c34a299941bc620ffe4660393f6abef62ce129e5addb1f5772a29",
+  "attempt_recorded_at": "2026-09-07T17:02:42.740360+00:00",
+  "tool_result_metadata": {
+    "keys": [
+      "image_url",
+      "output_hint"
+    ],
+    "image_mime": "image/png"
+  },
+  "output_path": "candidate-01/figure-planner.png",
+  "byte_count": 939257,
+  "sha256": "cc7c016a61017792cc22e79e8494c02a21f3de6dc15584d51f0fe40e89eb2321",
+  "source_sha256": "cc7c016a61017792cc22e79e8494c02a21f3de6dc15584d51f0fe40e89eb2321",
+  "copy_verified_unchanged": true,
+  "dimensions_px": {
+    "width": 1774,
+    "height": 887
+  },
+  "generation_completed_at": "2026-09-07T17:03:59.253303+00:00",
+  "inspection": {
+    "local_native_view_image_calls": 2,
+    "local_file_readable": true,
+    "local_preview_limitation": "Native view_image returned a small upper-left crop in the displayed result, including at original detail. Full composition was visible in the native generation preview; saved file is byte-identical to that output.",
+    "generation_preview_observations": {
+      "five_distinct_passage_cards": true,
+      "labels_P1_through_P5": true,
+      "question_bypass_to_generator": true,
+      "read_only_index_to_retriever": true,
+      "frozen_encoder_badge_and_legend": true,
+      "answer_citations_P1_P4": true,
+      "caption_present": true
+    },
+    "observed_defects": [
+      "An upper-left title, Inference workflow, appears despite the literal final instruction not to include figure titles.",
+      "Passage-card connecting bus has small visible gaps from card borders; grouping remains intelligible."
+    ],
+    "inspected_at": "2026-09-07T17:04:56.037034+00:00"
+  },
+  "publication_note": "Host cache paths/output hints removed and run paths made relative. Image/prompt bytes unchanged."
+}

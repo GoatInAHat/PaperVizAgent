@@ -1,7 +1,7 @@
 {
   "name": "papervizagent-codex",
-  "version": "0.1.0",
-  "description": "Create and revise scientific methodology diagrams, model architecture figures, and research workflows from paper text, captions, or sketches. Uses native Codex image generation and visual review with no API keys. Also supports requested editable diagrams and data-grounded plots.",
+  "version": "0.2.0",
+  "description": "Generate and revise scientific diagrams and data plots through separate native Codex Retriever, Planner, Stylist, Visualizer, and Critic agents. Uses official PaperVizAgent prompts, retrieved references, and native tools with no API keys or model configuration.",
   "author": {
     "name": "GoatInAHat"
   },
@@ -18,10 +18,10 @@
   "interface": {
     "displayName": "PaperVizAgent for Codex",
     "shortDescription": "Scientific figures from paper text using your existing Codex sign-in.",
-    "longDescription": "Plan, generate, inspect, and revise scientific diagrams with native Codex tools. An independent adaptation of Google Research PaperVizAgent, formerly PaperBanana. No API keys or provider configuration.",
+    "longDescription": "Reference-driven scientific figures through separate native Codex agents, original PaperVizAgent role prompts, and iterative critique/regeneration. Existing Codex sign-in; no API keys or model configuration.",
     "developerName": "GoatInAHat",
     "category": "Productivity",
     "capabilities": [],
-    "defaultPrompt": "Use $papervizagent-codex to turn the supplied paper methods and caption into a scientific figure, then inspect and refine it."
+    "defaultPrompt": "Use $papervizagent-codex with separate native agents to turn the supplied methods and caption into a scientific figure, retrieve references, and run the critic/regeneration loop."
   }
 }

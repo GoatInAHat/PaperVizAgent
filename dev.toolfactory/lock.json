@@ -41,7 +41,7 @@
       "state": "generated"
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "17f30bdccdb7baebd7bb09b8173305e815f71fba00edeef51a292c6aeaacff8f",
+      "sha256": "9e701a6e210730023361fe23006e382f412bcd5207dbf91cb446514dc0fee798",
       "state": "generated"
     },
     ".cursor/environment.json": {
@@ -127,7 +127,7 @@
       ]
     },
     "skills/papervizagent-codex/SKILL.md": {
-      "sha256": "71e4975145015ae6e51c1ac9dcf48b65e79c2568a2f79ac63688a37d9e11dcdc",
+      "sha256": "a2fbc6db466de862e8ec9d60aa9916ecef5dcda5933627e960b6840b81174285",
       "state": "generated",
       "regions": [
         {

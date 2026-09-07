@@ -1,41 +1,46 @@
-# Editable diagrams and quantitative plots
+# Plot and editable renderers
 
-Use this reference only for a requested editable format or a quantitative plot.
-
-## Editable SVG diagrams
-
-For an explicit SVG/vector request, use the active Codex model to author actual
-SVG elements for labels, shapes, and connectors, then render and inspect them
-with the host's available browser or image tools. Preserve source evidence,
-invariants, and review history as in the main workflow. Parse the SVG as XML and
-inspect the rendered output; valid XML alone doesn't establish visual quality.
-
-Represent editable components with native text/path/shape elements. Do not embed
-a full raster figure in an SVG and describe it as editable. Disclose any embedded
-raster illustrations and their limits. If faithful vector reconstruction of an
-existing bitmap isn't feasible with the available tools, explain what can and
-cannot be made editable rather than promising lossless conversion.
-
-This direct SVG path is an added Codex capability. It is not PaperVizAgent's
-original raster pipeline, AutoFigure-Edit, or CraftEditor, and it uses no SAM
-server or raster-to-vector model.
+Both formats retain the same separate Retriever, Planner, optional Stylist,
+Visualizer, and Critic contexts as the main pipeline. Select the plot-specific
+original role prompts for statistical plots; editable conceptual diagrams use
+the diagram prompts with the explicit SVG renderer adapter.
 
 ## Statistical plots
 
-Use executable plotting code with the user's actual data, following
-PaperVizAgent's code-rendered plot approach. Do not ask an image model to invent
-or redraw quantitative marks. Use an installed plotting library when available;
-for a simple chart, native SVG from the data is also suitable. Do not install a
-model SDK or request inference credentials.
+The original renderer asks a model for Python Matplotlib code, executes it, and
+preserves the source. Use that path with the host's available Python/Matplotlib
+runtime. Ask Codex's native runtime/dependency tool when one exists; do not
+assume a system Python has Matplotlib or install a model SDK.
 
-Preserve the data and runnable plotting source alongside the output. Explicitly
-map columns/variables to axes, units, groupings, and aggregation. Derive values
-from supplied data; do not infer hidden samples, uncertainty intervals, statistical
-significance, or missing measurements. If raw values are unavailable, ask for
-them or clearly distinguish a conceptual schematic from a quantitative result.
+Planner receives raw data plus visual intent and actual selected reference
+plots; its description must enumerate every value and visual mapping. Stylist
+reads the complete original plot guide and preserves all values. Visualizer
+writes runnable Matplotlib source from the complete description, executes it,
+and retains the raw input, source, output, and any error. Save requested SVG/PDF
+in addition to a raster preview when the installed renderer supports them.
 
-Check the plotted values, category order, axis domains and scales, units,
-uncertainty intervals where supplied, labels, and legends against the input.
-Inspect the resulting graphic at its intended display size. Keep SVG/PDF exports
-when supported and requested. Report the renderer and any unavailable dependency
-instead of claiming an export succeeded.
+Check values, categories, scales, units, aggregation, and supplied uncertainty.
+Do not infer hidden measurements, confidence intervals, significance, or sample
+sizes. Missing raw data prevents a quantitative plot; distinguish a conceptual
+sketch rather than fabricating results.
+
+Feed actual plot/code failures into a fresh Critic as explicitly missing-render
+input. Critic can repair the description, then Visualizer writes/executes new
+source; text-only failure review must not be called visual inspection.
+Successful execution alone does not validate quantitative accuracy.
+
+If Matplotlib is unavailable, report that renderer limitation. An explicitly
+requested simple editable SVG may use native SVG code from the same data, with
+the substitution recorded; do not silently claim the original renderer ran.
+
+## Native editable SVG diagrams — additional renderer
+
+For an explicit vector request, Visualizer authors native text/path/shape
+elements from the current complete description. Parse the XML and inspect an
+actual rendering with available host tools. Critic receives that rendering and
+the same source/description contract. A subsequent regeneration produces new
+SVG source, preserving the previous version.
+
+Do not wrap a raster in SVG and call it editable. Disclose any embedded raster
+illustrations. This renderer is an added Codex capability, not an implementation
+of SAM, AutoFigure-Edit, CraftEditor, or lossless bitmap vectorization.

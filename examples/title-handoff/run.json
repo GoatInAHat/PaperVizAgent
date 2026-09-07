@@ -1,0 +1,26 @@
+{
+  "test": "shared-title-caption-handoff",
+  "status": "text_regression_passed",
+  "image_calls": 0,
+  "new_render_tested": false,
+  "role_invocations": [
+    {
+      "role": "Stylist",
+      "agent_id": "/root/title_stylist_regression",
+      "context_isolation": "fork_turns:none",
+      "output": "stylist-description.md",
+      "report": "stylist-report.md"
+    },
+    {
+      "role": "Critic",
+      "agent_id": "/root/title_critic_regression",
+      "context_isolation": "fork_turns:none",
+      "output": "critic.json",
+      "report": "critic-report.md",
+      "actual_image_inspected": "../native-pipeline/candidate-01/figure-stylist.png"
+    }
+  ],
+  "adapter_path": "../../skills/papervizagent-codex/references/roles.md",
+  "adapter_sha256": "8a40551f6e0f7c35125e3928446f440063b464c44d8c96480adf5b27322295d5",
+  "parent_review": "Both complete descriptions exclude internal overall title/caption, remove positive placement/font instructions for them, and retain five passages, question bypass, frozen encoder, read-only index and meaningful legends. No new image was generated."
+}

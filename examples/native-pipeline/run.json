@@ -1,0 +1,227 @@
+{
+  "schema_version": 1,
+  "upstream_revision": "e088a8fff74cc363b6897c0843631fff76484908",
+  "mode": "full",
+  "task": "diagram",
+  "requested_retrieval_mode": "none",
+  "candidate_count": 1,
+  "max_critic_rounds": 3,
+  "image_budget": 2,
+  "announced_max_image_calls": 2,
+  "actual_image_call_count": 2,
+  "caption_status": "supplied_in_source",
+  "status": "budget_limited",
+  "role_invocations": [
+    {
+      "role": "Planner",
+      "stage": "planner",
+      "agent_id": "/root/native_pipeline_smoke/planner",
+      "context_isolation": "fork_turns:none",
+      "input_paths": [
+        "source.md",
+        "caption.txt",
+        "candidate-01/retrieval.json"
+      ],
+      "output_paths": [
+        "candidate-01/planner-description.md"
+      ],
+      "status": "completed",
+      "tool_bridge": null,
+      "original_prompt_path": "role-guidance/diagram-planner.md",
+      "output_sha256": "9eb3c929c8fce3b74ace6fcfe6d2b90cd090ea1d97a1c8dcedc3c7f269f01ba2"
+    },
+    {
+      "role": "Stylist",
+      "stage": "stylist",
+      "agent_id": "/root/native_pipeline_smoke/stylist",
+      "context_isolation": "fork_turns:none",
+      "input_paths": [
+        "source.md",
+        "caption.txt",
+        "candidate-01/planner-description.md",
+        "role-guidance/neurips2025_diagram_style_guide.md"
+      ],
+      "original_prompt_path": "role-guidance/diagram-stylist.md",
+      "output_paths": [
+        "candidate-01/stylist-description.md"
+      ],
+      "status": "completed",
+      "tool_bridge": null,
+      "output_sha256": "0bef554db19e383189d8fa87c1773d8352356607ae26be8a10f2be8cb8760f2f"
+    },
+    {
+      "role": "Visualizer",
+      "stage": "render_planner",
+      "agent_id": "/root/native_pipeline_smoke/visualizer_planner",
+      "context_isolation": "fork_turns:none",
+      "input_paths": [
+        "candidate-01/planner-description.md"
+      ],
+      "original_prompt_path": "role-guidance/diagram-visualizer.md",
+      "output_paths": [
+        "candidate-01/prompt-planner.md",
+        "candidate-01/render-planner.json",
+        "candidate-01/figure-planner.png"
+      ],
+      "status": "completed",
+      "tool_bridge": null,
+      "allocated_max_image_calls": 1,
+      "prompt_composition_verified": true,
+      "exact_prompt_sha256": "aa0923707c4c34a299941bc620ffe4660393f6abef62ce129e5addb1f5772a29",
+      "actual_image_calls": 1,
+      "coordinator_local_image_inspection": "Full image displayed and inspected successfully; worker preview crop issue not reproduced."
+    },
+    {
+      "role": "Visualizer",
+      "stage": "render_stylist",
+      "agent_id": "/root/native_pipeline_smoke/visualizer_stylist",
+      "context_isolation": "fork_turns:none",
+      "input_paths": [
+        "candidate-01/stylist-description.md"
+      ],
+      "original_prompt_path": "role-guidance/diagram-visualizer.md",
+      "output_paths": [
+        "candidate-01/prompt-stylist.md",
+        "candidate-01/render-stylist.json",
+        "candidate-01/figure-stylist.png"
+      ],
+      "status": "completed",
+      "tool_bridge": null,
+      "allocated_max_image_calls": 1,
+      "prompt_composition_verified": true,
+      "exact_prompt_sha256": "3e4642a5e62786e2d84e0efd779aef0bc3008aa3437a7c69336c5e86dc96e375",
+      "actual_image_calls": 1,
+      "coordinator_local_image_inspection": "Full saved image displayed and inspected successfully."
+    },
+    {
+      "role": "Critic",
+      "stage": "critic_0",
+      "round": 0,
+      "agent_id": "/root/native_pipeline_smoke/critic_0",
+      "context_isolation": "fork_turns:none",
+      "input_paths": [
+        "source.md",
+        "caption.txt",
+        "candidate-01/stylist-description.md",
+        "candidate-01/figure-stylist.png"
+      ],
+      "original_prompt_path": "role-guidance/diagram-critic.md",
+      "output_paths": [
+        "candidate-01/critic-0.json"
+      ],
+      "status": "completed_revision_required",
+      "tool_bridge": null,
+      "actual_image_inspected": true,
+      "strict_json_validated": true,
+      "output_sha256": "8ddfb784d1543e2f1d4d6ad6c12c442da3720c4a95e1ae755542fce76bf96ef8"
+    }
+  ],
+  "skipped_stages": [
+    {
+      "stage": "retriever",
+      "reason": "Explicit retrieval none; no network retrieval requested."
+    },
+    {
+      "stage": "render_critic_0",
+      "reason": "Two image-tool calls already attempted successfully; explicit user budget exhausted."
+    },
+    {
+      "stage": "critic_1",
+      "reason": "Stopped after critic_0 because required regeneration cannot run within image budget."
+    },
+    {
+      "stage": "critic_2",
+      "reason": "Stopped after critic_0 because required regeneration cannot run within image budget."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "candidate-01",
+      "retrieval_status": "none",
+      "selected_reference_ids": [],
+      "renders": [
+        {
+          "stage": "planner",
+          "description": "candidate-01/planner-description.md",
+          "exact_prompt": "candidate-01/prompt-planner.md",
+          "image": "candidate-01/figure-planner.png",
+          "metadata": "candidate-01/render-planner.json",
+          "status": "completed",
+          "sha256": "cc7c016a61017792cc22e79e8494c02a21f3de6dc15584d51f0fe40e89eb2321",
+          "dimensions_px": {
+            "width": 1774,
+            "height": 887
+          },
+          "image_calls": 1
+        },
+        {
+          "stage": "stylist",
+          "description": "candidate-01/stylist-description.md",
+          "exact_prompt": "candidate-01/prompt-stylist.md",
+          "image": "candidate-01/figure-stylist.png",
+          "metadata": "candidate-01/render-stylist.json",
+          "status": "completed",
+          "sha256": "b9834f74909eac46dd3fd2eb9e24960b18b47d3e3870750dc2c0cc66fe45afe6",
+          "dimensions_px": {
+            "width": 1755,
+            "height": 896
+          },
+          "image_calls": 1
+        }
+      ],
+      "critics": [
+        {
+          "round": 0,
+          "status": "revision_required",
+          "input_image": "candidate-01/figure-stylist.png",
+          "input_description": "candidate-01/stylist-description.md",
+          "result": "candidate-01/critic-0.json",
+          "complete_revised_description": "candidate-01/critic-description-0.md",
+          "actual_image_inspected": true,
+          "strict_json_validated": true
+        }
+      ],
+      "current_critic_round": 0,
+      "selected_image": "candidate-01/figure-stylist.png",
+      "stop_reason": "budget_exhausted",
+      "unresolved_limitations": [
+        "Independent Critic requests removal of embedded caption; revision saved but not rendered because both image calls are spent.",
+        "Selected image includes Inference workflow title despite exact Visualizer prompt no-title instruction. Planner and Stylist descriptions request the title, and Critic revision explicitly preserves it, so conflicting role instructions remain.",
+        "Indexed passages label interrupts vertical index-to-retriever connector."
+      ],
+      "selected_description": "candidate-01/stylist-description.md",
+      "next_resume_stage": "render_critic_0",
+      "coordinator_semantic_check": "source requirements preserved; no scientific regression observed",
+      "regression_rollback": false
+    }
+  ],
+  "input_hashes": {
+    "source.md": "854137486e165f29afb061e5573375da7aebc19bcd26065edb369e5e9e491874",
+    "caption.txt": "fe9a2dd692bfcaff82a3ee3bd9d2416f9780d8e96e6d1b385e623496c13576d5"
+  },
+  "saved_role_guidance": [
+    {
+      "path": "role-guidance/diagram-planner.md",
+      "sha256": "1b059d041a32622b069243ac4ab4a9d00fe5033c42cd12c4fd4dfdbdfa5858f4"
+    },
+    {
+      "path": "role-guidance/diagram-stylist.md",
+      "sha256": "cd3dcaded2ac613e084dfd0081b509e6d2b181f588395728fa56c53e032bbf8e"
+    },
+    {
+      "path": "role-guidance/diagram-visualizer.md",
+      "sha256": "2058b92c09fc6564ac4950667285b1ee1f32efee494b5b2e18f72316492ce91c"
+    },
+    {
+      "path": "role-guidance/diagram-critic.md",
+      "sha256": "f6fdbafed6b3579e824eaceae476ab45f29670b0ffd133d593fbc56a927ed016"
+    },
+    {
+      "path": "role-guidance/neurips2025_diagram_style_guide.md",
+      "sha256": "d2aee50170d9de995bae01c45737a779853c07a34c1ce106219dc5790ee5bea5"
+    }
+  ],
+  "image_calls_in_flight_max": 0,
+  "review_path": "candidate-01/review.md",
+  "native_tool_bridge_used": false
+}

@@ -1,0 +1,20 @@
+{
+  "image": "figure-stylist.png",
+  "full_local_image_inspected": true,
+  "source_semantics": {
+    "frozen_encoder": true,
+    "query_vector_to_nearest_neighbor_retriever": true,
+    "exactly_five_passages_P1_P5": true,
+    "original_question_to_generator": true,
+    "all_five_passages_grouped_to_generator": true,
+    "read_only_index_to_retriever": true,
+    "answer_contains_passage_citations": true,
+    "excluded_stages_absent": true
+  },
+  "observed_defects": [
+    "Image includes title Inference workflow despite no-title instruction.",
+    "Indexed passages label interrupts the vertical index-to-retriever connector."
+  ],
+  "scientific_regression_from_planner": false,
+  "regression_rollback_required": false
+}

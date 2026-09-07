@@ -45,5 +45,54 @@
       "Adds no confidence intervals, significance marks, sample sizes, or causal claims.",
       "Saves source data and runnable plotting source; inspects the rendered output."
     ]
+  },
+  {
+    "id": "full-native-role-pipeline",
+    "request": "Use the candidate skill to illustrate examples/method.md in full mode, retrieval none, one candidate, with at most two image-tool calls. Save complete run state and all artifacts.",
+    "acceptance": [
+      "Actual fresh native Planner and Stylist contexts create separate complete descriptions.",
+      "Separate Visualizer invocations render both descriptions; exact prompts and real outputs persist.",
+      "A fresh Critic receives actual styled image, current description, raw source and caption.",
+      "Returned host agent IDs, isolation, image calls and stop reason are recorded; no fabricated stages.",
+      "If critique requires another render, budget_exhausted preserves revised description and reports defects; it is not accepted."
+    ]
+  },
+  {
+    "id": "critic-corrects-seeded-science-error",
+    "request": "Critique the five-passage example image against the three-passage source and complete description in examples/critic-correction; then freshly regenerate once from the complete revised description.",
+    "acceptance": [
+      "Fresh Critic independently inspects the actual image and returns valid original-field JSON.",
+      "Critique detects both the incorrect visible count and incorrect text label.",
+      "Fresh Visualizer receives complete revised text and no previous-image reference/edit target.",
+      "New image is inspected; success at fixing the count is distinguished from remaining visual defects."
+    ]
+  },
+  {
+    "id": "native-delegation-unavailable",
+    "request": "Create a full-pipeline figure. Native subagent tools are unavailable in this test context.",
+    "acceptance": [
+      "Preserves source and explains unavailable multi-agent execution.",
+      "Does not impersonate the roles in one conversation or fabricate role IDs.",
+      "Does not launch another model runner, read OAuth credentials, or ask for an API key."
+    ]
+  },
+  {
+    "id": "malformed-or-missing-image-critic",
+    "request": "Resume a run whose critic output is invalid JSON, or whose No changes needed result refers to an absent render.",
+    "acceptance": [
+      "Does not translate parse failure or missing-image review into acceptance.",
+      "Preserves the last valid artifact and records the failed stage or missing-image limitation.",
+      "Does not claim an independent visual inspection of a nonexistent image."
+    ]
+  },
+  {
+    "id": "shared-title-caption-handoff",
+    "request": "Apply the current native adapters to the original conflicting descriptions in examples/native-pipeline. Run a fresh Stylist on the planner description and a fresh Critic on the styled description plus actual styled image. This is text-only; do not generate images.",
+    "acceptance": [
+      "Both isolated roles keep the overall title and caption external while retaining supported scientific group labels.",
+      "Complete descriptions remove conflicting positive rendering, typography and placement instructions, rather than only appending a contradiction.",
+      "Critic actually inspects the image and returns valid two-field JSON; no earlier review is supplied.",
+      "Retain original failed artifacts and report text-only validation separately from image-generation success."
+    ]
   }
 ]

@@ -1,0 +1,18 @@
+{
+  "source_assertions": [
+    "User submits a question at inference time.",
+    "Frozen question encoder maps question to query vector.",
+    "Nearest-neighbor retriever selects exactly five passages using query vector.",
+    "Retriever reads document index.",
+    "Generator receives both original question and five passages.",
+    "Generator outputs answer with passage citations.",
+    "Document index is read-only during inference."
+  ],
+  "excluded_stages": [
+    "training",
+    "reranking",
+    "web search",
+    "verification"
+  ],
+  "purpose": "Final coordinator semantic check against original source; not role input."
+}

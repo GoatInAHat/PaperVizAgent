@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case": "critic-corrects-seeded-science-error",
+  "input_image": "../retrieval/figure-v1.png",
+  "input_source": "source.md",
+  "input_description": "description.md",
+  "critic": {
+    "agent_id": "/root/independent_critic_smoke",
+    "context_isolation": "fork_turns:none",
+    "output": "critic-0.json",
+    "status": "completed"
+  },
+  "visualizer": {
+    "agent_id": "/root/critic_regeneration_smoke",
+    "context_isolation": "fork_turns:none",
+    "description": "critic-description-0.md",
+    "prompt": "prompt-critic-0.md",
+    "output": "figure-critic-0.png",
+    "request_type": "fresh text-to-image; no previous/reference image arguments",
+    "image_calls": 1,
+    "status": "generated and inspected"
+  },
+  "selected_image": "figure-critic-0.png",
+  "sha256": "4658a11cc6086340480f8ce54a230a3ee3a4116dd16f0be4a072c55df322c812",
+  "result": "Pass for independent error detection and text-based regeneration; partial against full visual specification",
+  "remaining_defects": [
+    "Inference time boundary label missing",
+    "Passage arrow originates at middle card/group rather than brace midpoint",
+    "Faint gradients differ from flat-fill request"
+  ],
+  "limitations": [
+    "This is a seeded single critic/visualizer test, not a whole full-pipeline run",
+    "No independent second Critic evaluated the regenerated image; Visualizer and parent inspected it"
+  ]
+}
