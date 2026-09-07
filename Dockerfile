@@ -8,16 +8,16 @@ RUN npm -C web run build
 
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS build
 WORKDIR /app
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock README.md LICENSE NOTICE ./
 COPY src ./src
-RUN uv sync --no-dev
+RUN uv sync --frozen --no-dev
 
 FROM python:3.12-slim-bookworm
 LABEL io.modelcontextprotocol.server.name="io.github.GoatInAHat/papervizagent"
 WORKDIR /app
 COPY --from=build /app/.venv ./.venv
 COPY --from=build /app/src ./src
-COPY --from=build /app/pyproject.toml ./
+COPY --from=build /app/pyproject.toml /app/README.md /app/LICENSE /app/NOTICE ./
 COPY --from=web /app/web/dist ./src/papervizagent/web
 ENV PATH="/app/.venv/bin:$PATH"
 ENTRYPOINT ["python","-m","papervizagent.toolfactory.mcp"]
