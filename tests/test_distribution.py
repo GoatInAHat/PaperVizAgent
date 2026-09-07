@@ -1,6 +1,7 @@
 """Check distributed source provenance and local documentation links."""
 
 import hashlib
+import ast
 import json
 from pathlib import Path
 import re
@@ -10,6 +11,21 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class DistributionTest(unittest.TestCase):
+    def test_runtime_prompts_equal_preserved_upstream_prompts(self):
+        provenance = json.loads((ROOT / 'UPSTREAM.json').read_text())
+        for resource in provenance['vendored_resources']:
+            if 'symbol' not in resource:
+                continue
+            source = ROOT / 'src/papervizagent_codex/upstream' / resource['source']
+            if not source.exists():
+                continue
+            values = {node.targets[0].id: ast.literal_eval(node.value)
+                      for node in ast.parse(source.read_text()).body
+                      if isinstance(node, ast.Assign) and isinstance(node.targets[0], ast.Name)
+                      and isinstance(node.value, ast.Constant)}
+            prompt = re.sub(r'\A<!--.*?-->\s*', '', (ROOT / resource['path']).read_text(), flags=re.DOTALL)
+            self.assertEqual(values[resource['symbol']].strip(), prompt.strip())
+
     def test_vendored_prompts_and_guides_match_recorded_hashes(self):
         provenance = json.loads((ROOT / "UPSTREAM.json").read_text())
         for resource in provenance["vendored_resources"]:
@@ -35,7 +51,7 @@ class DistributionTest(unittest.TestCase):
 
         self.assertIn("`status`", skill)
         self.assertIn("`infer(role, modality, system, contents,\noptions)`", skill)
-        self.assertIn("`generate(upstreamdata, settings)`", skill)
+        self.assertIn("`generate(data, settings)`", skill)
         self.assertIn("explicit runtime\nconfiguration", skill)
         self.assertIn("fresh\nrequest/thread per role", roles)
         self.assertIn("Codex\n  only if", roles)

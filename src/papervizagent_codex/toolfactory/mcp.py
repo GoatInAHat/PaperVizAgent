@@ -136,7 +136,7 @@ def guard(app: Any, token: str, paths: "set[str]") -> Any:
 
 
 def web_dist() -> "Path | None":
-    """The built page: the wheel force-includes `web/dist` here, a checkout has it in place."""
+    """The wheel maps `web/dist` here at package time; a checkout has it in place."""
     package = Path(__file__).resolve().parent.parent
     for candidate in (package / "web", package.parent.parent / "web" / "dist"):
         if candidate.is_dir():

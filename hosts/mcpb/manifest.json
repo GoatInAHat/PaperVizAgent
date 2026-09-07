@@ -44,7 +44,28 @@
       }
     }
   },
-  "tools": [],
+  "tools": [
+    {
+      "name": "generate",
+      "description": "Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess."
+    },
+    {
+      "name": "infer",
+      "description": "Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace."
+    },
+    {
+      "name": "models",
+      "description": "Read models and capabilities available through the configured Codex subscription. No inference."
+    },
+    {
+      "name": "status",
+      "description": "Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model."
+    },
+    {
+      "name": "web",
+      "description": "Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL."
+    }
+  ],
   "user_config": {
     "papervizagent_codex_config": {
       "type": "string",

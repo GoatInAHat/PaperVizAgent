@@ -5,6 +5,6 @@ import entry from "./index.js";
 
 describe("papervizagent-codex", () => {
   it("declares tool metadata", () => {
-    expect(getToolPluginMetadata(entry)?.tools.map((tool) => tool.name)).toEqual([]);
+    expect(getToolPluginMetadata(entry)?.tools.map((tool) => tool.name)).toEqual(["generate","infer","models","status","web"]);
   });
 });

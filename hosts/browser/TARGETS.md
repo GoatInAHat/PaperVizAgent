@@ -7,7 +7,13 @@ every per-browser manifest difference — MV2 against MV3, `background.scripts` 
 `background.service_worker`, `browser_action` against `action`, `host_permissions` folded into
 `permissions` — is WXT's transform, not this project's.
 
-No operation reaches this surface; what the extension does is the authored code in `entrypoints/`.
+| Operation | Chromium (chrome, edge) | Firefox | Safari |
+|---|---|---|---|
+| `generate` | native | native | native |
+| `infer` | native | native | native |
+| `models` | native | native | native |
+| `status` | native | native | native |
+| `web` | native | native | native |
 
 ## What the table cannot tell you
 

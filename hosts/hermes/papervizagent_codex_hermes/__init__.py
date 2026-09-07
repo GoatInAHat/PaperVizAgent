@@ -13,20 +13,186 @@ import json
 import os
 from typing import Any, Callable
 
-from papervizagent_codex.ops import OPERATIONS
+from papervizagent_codex.ops import OPERATIONS as AUTHORED_OPERATIONS
 from papervizagent_codex.toolfactory.config import context
+from papervizagent_codex.toolfactory.web import OPERATION as WEB_OPERATION
 from pydantic import BaseModel
 
 TOOLSET = "papervizagent_codex"
 REQUIRES_ENV = []
 TOOLS = json.loads(
-    r"""[]"""
+    r"""[
+  {
+    "name": "generate",
+    "description": "Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "additionalProperties": true,
+          "description": "Upstream input dictionary, including content and visual_intent; polish accepts its upstream image fields.",
+          "title": "Data",
+          "type": "object"
+        },
+        "settings": {
+          "additionalProperties": true,
+          "description": "Upstream pipeline settings; overrides the configuration file pipeline section. No credentials.",
+          "title": "Settings",
+          "type": "object"
+        },
+        "num_candidates": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Defaults to pipeline.num_candidates or 1.",
+          "title": "Num Candidates"
+        },
+        "max_concurrent": {
+          "anyOf": [
+            {
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Defaults to pipeline.max_concurrent or 4.",
+          "title": "Max Concurrent"
+        }
+      },
+      "required": [
+        "data"
+      ],
+      "title": "generateArguments"
+    }
+  },
+  {
+    "name": "infer",
+    "description": "Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "role": {
+          "enum": [
+            "retriever",
+            "planner",
+            "stylist",
+            "visualizer",
+            "critic",
+            "vanilla",
+            "polish"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "modality": {
+          "enum": [
+            "llm",
+            "vlm",
+            "image"
+          ],
+          "title": "Modality",
+          "type": "string"
+        },
+        "system": {
+          "default": "",
+          "title": "System",
+          "type": "string"
+        },
+        "contents": {
+          "items": {
+            "additionalProperties": true,
+            "type": "object"
+          },
+          "title": "Contents",
+          "type": "array"
+        },
+        "contents_file": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Optional local JSON file containing content blocks, useful for image handoffs.",
+          "title": "Contents File"
+        },
+        "options": {
+          "additionalProperties": true,
+          "title": "Options",
+          "type": "object"
+        }
+      },
+      "required": [
+        "role",
+        "modality"
+      ],
+      "title": "inferArguments"
+    }
+  },
+  {
+    "name": "models",
+    "description": "Read models and capabilities available through the configured Codex subscription. No inference.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "title": "modelsArguments"
+    }
+  },
+  {
+    "name": "status",
+    "description": "Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model.",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "native": {
+          "description": "Capabilities verified by the calling host; never inferred from the host name.",
+          "items": {
+            "enum": [
+              "llm",
+              "vlm",
+              "image"
+            ],
+            "type": "string"
+          },
+          "title": "Native",
+          "type": "array"
+        }
+      },
+      "title": "statusArguments"
+    }
+  },
+  {
+    "name": "web",
+    "description": "Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL.",
+    "parameters": {
+      "type": "object",
+      "properties": {},
+      "title": "webArguments"
+    }
+  }
+]"""
 )
 
 
 def _ready() -> bool:
     """Hermes gates dispatch on this: every declared credential has to be present."""
     return all(os.environ.get(name) for name in REQUIRES_ENV)
+
+
+OPERATIONS = [*AUTHORED_OPERATIONS, WEB_OPERATION]
 
 
 def _operation(name: str) -> Any:

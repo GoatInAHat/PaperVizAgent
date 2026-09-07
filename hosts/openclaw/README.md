@@ -11,6 +11,7 @@ npm install
 npm run plugin:build
 npm run plugin:validate
 npm test
+npm run test:e2e
 ```
 
 `.npmrc` sets `install-links=true`. OpenClaw's install-time safety scan refuses a
@@ -33,6 +34,21 @@ openclaw plugins disable papervizagent-codex
 plugin installed as a package; against a linked checkout it reports conflicting registry rows
 and changes nothing (openclaw 2026.8.2).
 
+## End to end, without an LLM key
+
+`npm run test:e2e` runs one real OpenClaw agent turn against a scripted OpenAI-compatible
+model (`@copilotkit/aimock`, the same package OpenClaw's own QA lane uses). `e2e/fixtures.json`
+is projected from `dev.toolfactory/ops.json` and `tool.json`'s `tests.examples`: the model asks
+for `status` with those arguments, and answers `PAPERVIZAGENT_CODEX_OK` only when the tool's own
+result comes back carrying what its output schema promises.
+
 ## Tools
 
-_No operation reaches this surface yet._
+- `generate` — Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess. (degraded:out-of-process)
+- `infer` — Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace. (degraded:out-of-process)
+- `models` — Read models and capabilities available through the configured Codex subscription. No inference. (degraded:out-of-process)
+- `status` — Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model. (degraded:out-of-process)
+- `web` — Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL. (degraded:out-of-process)
+
+Shim variant: the core is python, so each tool spawns the kernel CLI and no host
+capability is borrowed in-process. A native plugin requires a TypeScript core.

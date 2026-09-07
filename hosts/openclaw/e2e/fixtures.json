@@ -1,0 +1,26 @@
+{
+  "fixtures": [
+    {
+      "match": {
+        "toolName": "status",
+        "hasToolResult": false
+      },
+      "response": {
+        "toolCalls": [
+          {
+            "name": "status",
+            "arguments": {}
+          }
+        ]
+      }
+    },
+    {
+      "match": {
+        "hasToolResult": true
+      },
+      "response": {
+        "content": "PAPERVIZAGENT_CODEX_OK"
+      }
+    }
+  ]
+}

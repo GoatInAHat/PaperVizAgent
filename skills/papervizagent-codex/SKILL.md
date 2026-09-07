@@ -18,7 +18,8 @@ host substitutions are documented in [compatibility.md](references/compatibility
 
 Inspect the host tools once before starting. If the runtime is connected, call
 `status` with the verified native modalities. If an explicit configuration is
-present, load it through the runtime before choosing any role. A host with all
+present, load it through the runtime before choosing any role. Never open the
+credential-bearing configuration file in the role context. A host with all
 required native tools and no overrides needs no runtime startup. Call `models`
 only when Codex fallback is needed, to verify its subscription capabilities. Resolve
 each required modality independently, in this order: an explicit runtime
@@ -36,7 +37,12 @@ prompts, run state, or artifacts.
 For configured providers, invoke `infer(role, modality, system, contents,
 options)` as one fresh provider request/thread per role invocation. For a
 host-native role, use a fresh subagent context with no conversation history.
-Pass only the role's explicit input files, its original prompt, and the adapter
+Apply the native route's returned model and options through supported host
+controls. If `unavailable_options` is nonempty or the host cannot apply an
+explicit option, report that unsupported override instead of silently ignoring
+it. Use returned `pipeline.work_dir` for custom style guides and reference data,
+and preserve the returned pipeline settings. Pass only the role's explicit
+input files, its original prompt, and the adapter
 instructions in [roles.md](references/roles.md). In both cases, apply an
 explicit user override only when the selected runtime configuration permits it.
 
@@ -142,5 +148,40 @@ full pipeline.
 <!-- tf:operations -->
 ## Operations
 
-_No operations yet: run `toolfactory introspect` after adding one to the kernel._
+### generate
+
+Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess.
+
+Arguments: `data`, `settings`, `num_candidates`, `max_concurrent`.
+
+`papervizagent-codex generate --json '<arguments>'` prints a JSON result. MCP tool `generate` on server `papervizagent-codex` returns the same result as `structuredContent`.
+
+### infer
+
+Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace.
+
+Arguments: `role`, `modality`, `system`, `contents`, `contents_file`, `options`.
+
+`papervizagent-codex infer --json '<arguments>'` prints a JSON result. MCP tool `infer` on server `papervizagent-codex` returns the same result as `structuredContent`.
+
+### models
+
+Read models and capabilities available through the configured Codex subscription. No inference.
+
+`papervizagent-codex models --json '<arguments>'` prints a JSON result. MCP tool `models` on server `papervizagent-codex` returns the same result as `structuredContent`.
+
+### status
+
+Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model.
+
+Arguments: `native`.
+
+`papervizagent-codex status --json '<arguments>'` prints a JSON result. MCP tool `status` on server `papervizagent-codex` returns the same result as `structuredContent`.
+
+### web
+
+Open this tool's web app: serves the operations page and the MCP endpoint on a free local port, opens a browser there, and returns the URL.
+
+`papervizagent-codex web --json '<arguments>'` prints a JSON result. MCP tool `web` on server `papervizagent-codex` returns the same result as `structuredContent`.
+
 <!-- /tf:operations -->

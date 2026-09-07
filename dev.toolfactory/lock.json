@@ -54,7 +54,7 @@
       "state": "generated"
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "7f953c8f996419678ba769189f6db12b2f0c9c2c31a4fc44df8d0f46c8952ea5",
+      "sha256": "70885435c64273d60fc3afa17a179e57639a516392ab62029df8194187e19e2f",
       "state": "generated"
     },
     ".cursor-plugin/plugin.json": {
@@ -86,16 +86,16 @@
       "state": "generated"
     },
     ".github/workflows/ci.yml": {
-      "sha256": "b0f6f84f7d0848e033191dcc9b6cb3fe7485578486be95038cc39a641bab323e",
-      "state": "manual"
+      "sha256": "6f61e6efef0393734c9eacea3a07025e91ebd32b7af751b04f4ba29983ec520f",
+      "state": "generated"
     },
     ".github/workflows/copilot-setup-steps.yml": {
       "sha256": "2acbbf50f0610777823a3ccdf1fc7a533cfa2a236102cd4973fb516d5f9f24ab",
       "state": "generated"
     },
     ".github/workflows/release.yml": {
-      "sha256": "03ab99f7a6b32c25cec6cb57d5c27d342d26714e7ca2ef7f9898a9030e43fdc5",
-      "state": "manual"
+      "sha256": "27650211bc9c2aaa3f20abcfb5bd550582e6fe3bfc933f808eb1ae653357fd9c",
+      "state": "generated"
     },
     ".gitignore": {
       "sha256": "2cc1b321b2f3fa224ca34eef9d9ca8374c15cf58bc974dc974ba3c0b8ec9416a",
@@ -120,11 +120,11 @@
       "state": "generated"
     },
     "COVERAGE.md": {
-      "sha256": "38853cf1a87bd50afc6d9f1eb4c8708ed358c36c17acb05d0fedbc3b05a24d26",
+      "sha256": "ca89f40d9429b7cb0fc9ea875818f504c8c8178827f035879bd5e82abc521f44",
       "state": "generated"
     },
     "dev.toolfactory/coverage.json": {
-      "sha256": "3fb844cd8ca7522fade549cab7f40a9deca9a7defca7fc2940710b45a2ab3439",
+      "sha256": "ee5622f69550aea13d66355846ffb8e8b34d0ff93c47d4311e438833307ed291",
       "state": "generated"
     },
     "dev.toolfactory/inspector.json": {
@@ -132,11 +132,11 @@
       "state": "generated"
     },
     "dev.toolfactory/tool.schema.json": {
-      "sha256": "7903b767f80a213e05bc7ad71a08440a43a5ca1ffb62c2642ab99b383d76e153",
+      "sha256": "2608c18d3889e6d846e463ba044f7ce80af09eb8e6f43edb7656646da231774f",
       "state": "generated"
     },
     "Dockerfile": {
-      "sha256": "ac60a5ba05febce0eeb35953c1e09c59dba5472747722ab09e8bc2b8da800c48",
+      "sha256": "2224315e2c6214b355cbdb69282df6ed7dbcf6f3625fc4cb9c4bdf9d523662a4",
       "state": "generated"
     },
     "gemini-extension.json": {
@@ -225,15 +225,15 @@
       "state": "generated"
     },
     "hosts/browser/TARGETS.md": {
-      "sha256": "1b905ed523703c338e3a8690772906b28cbd0a9ec187339d144478d77862f5f4",
+      "sha256": "da7c75868dc60796f1ec13a2f1db8a8614ef1c11343d2be4f3409643cfdc171f",
       "state": "generated"
     },
     "hosts/browser/tests/background.test.ts": {
-      "sha256": "005dffe12d7f4d8fe9b28e57bbe61a359b41dfe0ceae5bc2b59456167d8223df",
+      "sha256": "486dad2f58b13a9791b348ee8996a814ffb194eace4cd7fd0c0d998edf4da5f9",
       "state": "generated"
     },
     "hosts/browser/tests/smoke.mjs": {
-      "sha256": "b9e69fba4b101ace62130f05a0034da1d54178c82c70a7ad80d427d4780601a4",
+      "sha256": "4a69287ed73c3197a71269c29d67840e7d102bb302ea7f00bf4e296ed35a0a4c",
       "state": "generated"
     },
     "hosts/browser/tsconfig.json": {
@@ -271,11 +271,11 @@
       ]
     },
     "hosts/dsh/cordis.local.patch.yml": {
-      "sha256": "356cec0816725336cae96bd2f2339999a66ca15444ff1678ac761c73fdc071f2",
+      "sha256": "f419f6d6fe50d914d0662e583dac3aa2236ccec0cc33b21db60e6a111a79f5a4",
       "state": "generated"
     },
     "hosts/dsh/cordis.patch.yml": {
-      "sha256": "7d24f4c7fed6e4f47995b94b263803aa8123f1859333eb74e402f8e516a5940a",
+      "sha256": "2e22ea1b18214c05330de4ef910e8b87ad1d78852fe27f19dccd6054e2d63d93",
       "state": "generated"
     },
     "hosts/dsh/package.json": {
@@ -283,11 +283,11 @@
       "state": "generated"
     },
     "hosts/hermes/papervizagent_codex_hermes/__init__.py": {
-      "sha256": "0acc0035dd9fa8efd82fc25f8bcc2514b0dc88144475c4789ddac7c3d339b859",
+      "sha256": "460673cbc79a315c46b529b04f234b35e379337745e8bf91d5e49517ae35bcca",
       "state": "generated"
     },
     "hosts/hermes/papervizagent_codex_hermes/plugin.yaml": {
-      "sha256": "2e2f056c5f28bde30d42dcde4e69cf1a3836619daf6084899c7d97d3f2108117",
+      "sha256": "0bb461c8ce59d9022c3f90e495e68c0d03904ba3f9f04f642c5af1a3e216070f",
       "state": "generated"
     },
     "hosts/hermes/pyproject.toml": {
@@ -295,39 +295,47 @@
       "state": "generated"
     },
     "hosts/hermes/README.md": {
-      "sha256": "406c19d6d87336def3ad1f2a2282053a6a5ecde713fff32a8c7df051196afdbe",
+      "sha256": "3898738133df759ccef00f47bdf99266d5290114d0ea33f8578d1df586650ae5",
       "state": "generated"
     },
     "hosts/hermes/tests/test_plugin.py": {
-      "sha256": "2aeafdb6cfb18614fd6f2c03d0cf0daa6f4448034effc437a43013705c2eedb2",
+      "sha256": "8c7cf96c1e934ebe655ffefb8f9c1779fd1065f9345f41dfc6efa32b0033a581",
       "state": "generated"
     },
     "hosts/mcpb/manifest.json": {
-      "sha256": "7f234cd9ebf02655e912b7e83533b2b6504f5cec88a75b0d470b4ae4a0b7639f",
+      "sha256": "76d997941cd58df6c8d17805021633e6344a865ff4a2ed83a61dfd61c091ad97",
       "state": "generated"
     },
     "hosts/openclaw/.npmrc": {
       "sha256": "2f460579e76dd78e75e907be8efdc26f79757e79fd895e4a5903aebe8ec5063a",
       "state": "generated"
     },
+    "hosts/openclaw/e2e/fixtures.json": {
+      "sha256": "b0048fd8b474aef7a50d354cdd6404908f82fad581fe75e9704658c80634ef57",
+      "state": "generated"
+    },
+    "hosts/openclaw/e2e/openclaw.e2e.test.ts": {
+      "sha256": "3c2fda0e6a05d545af291646bffce915b57c9edae5ec7e637f3a2030e82d1270",
+      "state": "generated"
+    },
     "hosts/openclaw/openclaw.plugin.json": {
-      "sha256": "50c4607ceaf876a3fe179c727985e1b564c1feb5a41dd02aaeba791534b33d96",
+      "sha256": "2376d27459dee1493828564a10c5d205645b827ecd11692736d5b63297811fe3",
       "state": "generated"
     },
     "hosts/openclaw/package.json": {
-      "sha256": "6c01005fc798c7730267d9489a576871f5c8d3c7422a6cb2ccd99af5f4595e18",
+      "sha256": "8fa33350d92100d162ce5866701ab1223ece83fe8f4f918978b560df3dd5ed46",
       "state": "generated"
     },
     "hosts/openclaw/README.md": {
-      "sha256": "f3aa48854225b6ba99ac19f56acb6995d102daf92005e9565ae6391a34077cf7",
+      "sha256": "081b1e584accb1279b69f72f25902a244d53558739168b21f425a39239447ce7",
       "state": "generated"
     },
     "hosts/openclaw/src/index.test.ts": {
-      "sha256": "b358e83455bc15cad1719fecaecf84f546c860a9ea69300c01bbc2e696b32d23",
+      "sha256": "ef567540ae3ae4484aed84dbacfce7a343ce4d82617e90c54c4e253127bc42dd",
       "state": "generated"
     },
     "hosts/openclaw/src/index.ts": {
-      "sha256": "097d1e095601fe3cb3e0dbda43fd484c7f9674f18e81b0777baab089313a3472",
+      "sha256": "dc47740173a03370da5e6bc7fa55f28ecfbfc56275f10ffb4b25fb2de9ccd2d4",
       "state": "generated",
       "regions": [
         {
@@ -342,6 +350,10 @@
     },
     "hosts/openclaw/vitest.config.ts": {
       "sha256": "4f49d01f0120eff8b5bac0c9abc9bf6263c8da9834d288ff884c1e397436209f",
+      "state": "generated"
+    },
+    "hosts/openclaw/vitest.e2e.config.ts": {
+      "sha256": "c6f0d6688fdb9eaf9e27ec6acf6165d2879de356905dcff566dc32eecf339bc7",
       "state": "generated"
     },
     "mcp.json": {
@@ -367,7 +379,7 @@
       ]
     },
     "pyproject.toml": {
-      "sha256": "7dcaef85ec3af5052726825a6fda33dd8fee349e4fbde7074f273f611fbd9dcd",
+      "sha256": "ffa54fa773f177d14ecce6d28070495852fe53acc014a678fa32e8fb1fd8fa66",
       "state": "generated",
       "keys": [
         "project.name",
@@ -380,11 +392,15 @@
         "project.urls.Repository",
         "project.readme",
         "project.scripts",
-        "tool.hatch.build.targets.wheel.force-include.web/dist"
+        "tool.hatch.build.artifacts",
+        "tool.hatch.build.targets.wheel.only-include",
+        "tool.hatch.build.targets.wheel.sources.src",
+        "tool.hatch.build.targets.wheel.sources.web/dist",
+        "tool.hatch.build.targets.sdist.only-include"
       ]
     },
     "README.md": {
-      "sha256": "5808d1f0e216362ee13a1c5275300128e6513f124ecd1749a7f00939007fb7c0",
+      "sha256": "465a9ba4fc6ac573d39c21a9fe76b1f372cf65a2850da853f569828bcd29a1a3",
       "state": "generated",
       "regions": [
         {
@@ -412,7 +428,7 @@
       "state": "generated"
     },
     "skills/papervizagent-codex/SKILL.md": {
-      "sha256": "a0f0c252f809d7610b2d0f7ba7e2771a70f2d8a5fdf634020c03da72638f236b",
+      "sha256": "49c797dd81127826097b0cacfbc1273fe79aa5182ccc5245b4b3540606e650e0",
       "state": "generated",
       "regions": [
         {
@@ -438,7 +454,7 @@
       "state": "generated"
     },
     "src/papervizagent_codex/toolfactory/mcp.py": {
-      "sha256": "161d3c2d37757d61ddce9b31cf397ec7d276f07d2b9bb5fe40565c8c68229a7e",
+      "sha256": "47e5f50a159e43c889e6a078a1c579d98862ad27bc0e2d3ce80602dccf99b5f7",
       "state": "generated"
     },
     "src/papervizagent_codex/toolfactory/types.py": {
@@ -522,7 +538,7 @@
       "state": "generated"
     },
     "web/src/ops.json": {
-      "sha256": "af325130ebf67d1ba4f13e920ebdbabb1e024bbc74c4a28df3f55abf397e8a72",
+      "sha256": "e990edb12ae425d7f4e4c712b24b5cb5944a2bfe0b0edffef9720443df301236",
       "state": "generated"
     },
     "web/src/schema-form.tsx": {

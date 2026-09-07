@@ -15,7 +15,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "playwright";
 
 const extension = fileURLToPath(new URL("../.output/chrome-mv3", import.meta.url));
-const CASE = {"name":"","arguments":{}};
+const CASE = {"name":"status","arguments":{}};
 const TOKEN = "smoke-token";
 const MARKER = "papervizagent-codex-browser-smoke";
 
@@ -58,8 +58,29 @@ try {
 
   const popup = await context.newPage();
   await popup.goto(`chrome-extension://${id}/popup.html`);
-  await popup.locator('[data-slot="pairing"]').waitFor();
-  console.log("PASS the popup renders the pairing form");
+  await popup.getByRole("button", { name: CASE.name, exact: true }).click();
+  for (const [name, value] of Object.entries(CASE.arguments)) {
+    if (typeof value === "string") await popup.locator(`[id="${CASE.name}-${name}"]`).fill(value);
+  }
+  console.log(`PASS the popup renders the ${CASE.name} form`);
+
+  await popup.getByRole("button", { name: "Run" }).click();
+  await popup.getByRole("tab", { name: "Result" }).click();
+  const result = popup.locator('pre[data-slot="result"]');
+  await result.waitFor({ state: "visible" });
+  const text = (await result.textContent()).trim();
+  if (!text.includes(MARKER)) throw new Error(`the popup rendered no result: ${text}`);
+  console.log(`PASS ${CASE.name} answered through the worker: ${text.replace(/\s+/g, " ")}`);
+
+  const call = seen.at(-1);
+  if (!call) throw new Error("the mock kernel was never called");
+  if (call.headers.authorization !== `Bearer ${TOKEN}`) {
+    throw new Error(`the worker sent no bearer token: ${call.headers.authorization}`);
+  }
+  if (call.body.params?.name !== CASE.name) {
+    throw new Error(`the worker called ${call.body.params?.name}, not ${CASE.name}`);
+  }
+  console.log(`PASS the worker sent Bearer <token> and Mcp-Name: ${call.headers["mcp-name"]}`);
 
   if (failures.length) throw new Error(`the extension raised: ${failures.join("; ")}`);
   console.log("PASS no uncaught page errors");
