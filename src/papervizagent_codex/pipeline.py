@@ -27,6 +27,7 @@ async def run_pipeline(
     retrieval_setting: str = "none",
     temperature: float = 1.0,
     max_critic_rounds: int = 3,
+    plot_timeout_seconds: float = 30,
     do_eval: bool = False,
     timestamp: str | None = None,
     **upstream_options: Any,
@@ -42,6 +43,8 @@ async def run_pipeline(
         raise TypeError(f"unsupported upstream option(s): {names}")
     if max_critic_rounds < 0:
         raise ValueError("max_critic_rounds must be non-negative")
+    if plot_timeout_seconds <= 0:
+        raise ValueError("plot_timeout_seconds must be positive")
     config = ExpConfig(
         dataset_name=dataset_name,
         task_name=task_name,
@@ -50,6 +53,7 @@ async def run_pipeline(
         exp_mode=exp_mode,
         retrieval_setting=retrieval_setting,
         max_critic_rounds=max_critic_rounds,
+        plot_timeout_seconds=plot_timeout_seconds,
         timestamp=timestamp,
         work_dir=Path(work_dir),
         backend=backend,
@@ -66,7 +70,4 @@ async def run_pipeline(
     )
     candidate = dict(data)
     candidate.setdefault("max_critic_rounds", max_critic_rounds)
-    result = await processor.process_single_query(candidate, do_eval=do_eval)
-    if exp_mode == "dev_retriever":
-        raise ValueError("dev_retriever does not produce an output image")
-    return result
+    return await processor.process_single_query(candidate, do_eval=do_eval)

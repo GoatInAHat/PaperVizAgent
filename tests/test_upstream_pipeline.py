@@ -54,6 +54,20 @@ class ScriptedBackend:
 
 
 class PipelineContractTests(unittest.IsolatedAsyncioTestCase):
+    async def test_retriever_mode_returns_data_without_an_image(self):
+        backend = ScriptedBackend()
+        with tempfile.TemporaryDirectory() as directory:
+            result = await run_pipeline(
+                backend,
+                {"content": "method", "visual_intent": "caption"},
+                work_dir=directory,
+                exp_mode="dev_retriever",
+                retrieval_setting="none",
+            )
+        self.assertEqual(result["top10_references"], [])
+        self.assertNotIn("eval_image_field", result)
+        self.assertEqual(backend.calls, [])
+
     async def test_full_pipeline_preserves_role_handoffs_and_retrieval_none(self):
         backend = ScriptedBackend(revisions=1)
         with tempfile.TemporaryDirectory() as directory:
@@ -77,6 +91,33 @@ class PipelineContractTests(unittest.IsolatedAsyncioTestCase):
         image = next(item for item in critic_call["contents"] if item["type"] == "image")
         self.assertEqual(image["source"]["type"], "base64")
         self.assertEqual(image["source"]["media_type"], "image/jpeg")
+
+    async def test_materialized_reference_helper_example_reaches_planner_as_vlm(self):
+        backend = ScriptedBackend()
+        with tempfile.TemporaryDirectory() as directory:
+            image_path = Path(directory) / "cached.png"
+            image_path.write_bytes(base64.b64decode(png_base64()))
+            await run_pipeline(
+                backend,
+                {
+                    "content": "method",
+                    "visual_intent": "caption",
+                    "retrieved_examples": [{
+                        "id": "ref-1",
+                        "content": "example method",
+                        "visual_intent": "example caption",
+                        "path_to_gt_image": "unused.png",
+                        "image": {"local_path": str(image_path)},
+                    }],
+                },
+                work_dir=directory,
+                exp_mode="dev_planner",
+                retrieval_setting="none",
+            )
+        planner = backend.calls[0]
+        self.assertEqual((planner["role"], planner["modality"]), ("planner", "vlm"))
+        image = next(item for item in planner["contents"] if item["type"] == "image")
+        self.assertEqual(image["source"]["media_type"], "image/png")
 
     async def test_more_than_three_critic_rounds_are_executed(self):
         backend = ScriptedBackend(revisions=4)
