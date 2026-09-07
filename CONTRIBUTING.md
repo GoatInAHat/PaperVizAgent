@@ -59,5 +59,5 @@ figures, datasets, or examples without checking their own licensing.
 
 Update the version in `plugin.json`, run `make build check validate package`,
 commit, and push a matching `vX.Y.Z` tag. The release workflow verifies the tag,
-reruns validation, and publishes the archive and coverage files to GitHub.
+reruns validation, and publishes the plugin archive to GitHub.
 It does not publish an npm package or submit to a curated plugin directory.
