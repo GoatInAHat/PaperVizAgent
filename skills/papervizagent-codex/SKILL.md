@@ -8,20 +8,37 @@ license: Apache-2.0
 
 # PaperVizAgent for Codex
 
-Run Google Research PaperVizAgent's reference-driven roles in **separate native
-Codex subagent contexts**. The current agent coordinates; it must not impersonate
-the Retriever, Planner, Stylist, Visualizer, or Critic in one conversation.
+Run Google Research PaperVizAgent's reference-driven roles in **separate role
+contexts**. The current agent coordinates; it must not impersonate the Retriever,
+Planner, Stylist, Visualizer, or Critic in one conversation.
 This is an independent port of the pinned official implementation; model and
 host substitutions are documented in [compatibility.md](references/compatibility.md).
 
-## Native execution
+## Capability resolution and role execution
 
-Use the host's available subagent tools with fresh context/no conversation
-history for each role invocation. Pass only the role's explicit input files,
-its original prompt, and the adapter instructions in
-[roles.md](references/roles.md). Inherit the current model and reasoning settings;
-do not configure models, read OAuth tokens, start a model process, or request
-API keys. No custom-agent installation or global configuration is needed.
+Inspect the host tools once before starting. If the runtime is connected, call
+`status` with the verified native modalities. If an explicit configuration is
+present, load it through the runtime before choosing any role. A host with all
+required native tools and no overrides needs no runtime startup. Call `models`
+only when Codex fallback is needed, to verify its subscription capabilities. Resolve
+each required modality independently, in this order: an explicit runtime
+configuration for that role/modality; a host-native capability that is actually
+present; then a Codex capability only when that modality is still missing and
+Codex exposes the required tool in this session.
+
+Do not treat a host name, model name, or advertised integration as proof that
+text, vision, delegation, or image generation is available. A missing image
+capability is a recorded unavailable render, not a promise that every host can
+generate images. Runtime configuration comes only from the configured JSON/YAML
+file path or environment; never put authentication tokens in tool arguments,
+prompts, run state, or artifacts.
+
+For configured providers, invoke `infer(role, modality, system, contents,
+options)` as one fresh provider request/thread per role invocation. For a
+host-native role, use a fresh subagent context with no conversation history.
+Pass only the role's explicit input files, its original prompt, and the adapter
+instructions in [roles.md](references/roles.md). In both cases, apply an
+explicit user override only when the selected runtime configuration permits it.
 
 Pass the same caption/title constraint to all roles: caption and overall title
 stay outside the image unless explicitly requested inside; supported phase and
@@ -29,16 +46,21 @@ group labels are allowed. Check descriptions at handoff for contradictory
 instructions before rendering.
 
 Wait for a role's actual result before dispatching its dependent role. Record
-the returned agent ID, input/output paths, and status. A failed or unavailable
-agent is not a completed stage. If native delegation is unavailable, preserve
-the input and report that the multi-agent workflow cannot run; do not silently
-substitute a single-agent performance. Respect the host's concurrency limits.
+the returned agent ID or provider request/thread ID, capability resolution,
+input/output paths, and status. A failed or unavailable role is not a completed
+stage. If neither a configured provider nor verified native delegation can run
+the role, preserve the input and report that the multi-agent workflow cannot
+run; do not silently substitute a single-agent performance.
 
-Use native image generation for diagrams and native code execution for plots.
-Discover current tool schemas; follow the bundled imagegen skill when available.
-If only the coordinator has the image tool, a separate Visualizer must still
-prepare the exact request and inspect the returned artifact; the coordinator
-may execute that unchanged request as a tool bridge. Record this bridge.
+For a single image role, call the native image tool or `infer` with modality
+`image`. The `generate(data, settings)` operation runs the entire upstream
+pipeline; use it only for a complete runtime-driven run, never as the image
+step inside another pipeline. Preserve the complete upstream settings and
+explicit overrides. For plots, use the resolved code-execution capability. If a
+host-native Visualizer lacks image generation but the coordinator has a verified
+one, the Visualizer must still prepare the exact request and inspect the returned
+artifact; the coordinator may execute that unchanged request as a tool bridge.
+Record the resolution and bridge.
 
 ## Start and route
 

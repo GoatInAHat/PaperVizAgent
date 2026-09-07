@@ -50,8 +50,10 @@ The coordinator owns `run.json`; workers own only assigned output files. Record:
 
 - schema_version: 1; upstream_revision; mode; task; requested retrieval mode;
   candidate count; max_critic_rounds (default 3); image budget if requested.
-- Per role invocation: role, stage/round, real agent ID, context isolation used,
-  input paths, output paths, status, and any tool bridge.
+- Per role invocation: role, stage/round, real agent ID or provider request/thread
+  ID, context isolation used, selected resolution (`config`, `host-native`,
+  `codex-fallback`, or `unavailable`), input/output paths, status, complete
+  upstream settings, explicit overrides, and any tool bridge.
 - Per candidate: retrieval status and selected IDs; every render's description,
   exact prompt, real output or failure; every critic result and its input image;
   current_critic_round; selected_image; stop_reason; unresolved limitations.
@@ -141,11 +143,14 @@ it, and report actual dimensions.
 
 ## Failure and resumption
 
-Keep stage status separate from artifact existence. Unavailable native agents,
-images, network, or plot libraries are explicit limitations. Retrieval may
+Keep stage status separate from artifact existence. Unavailable configured
+providers, native agents, images, network, or plot libraries are explicit
+limitations. Retrieval may
 degrade to none as upstream intends; do not pretend retrieval ran successfully.
 An unavailable image backend preserves completed descriptions and prompt.
 
 On resume, use saved source/description and the next required stage. Preserve
 prior role results; create new files and fresh role contexts for repeated stages.
-Never start an alternate model provider or infer nonexistent measurements.
+Never select an alternate provider ahead of explicit configuration, or infer
+nonexistent measurements. Codex is a fallback only for a modality absent from
+both configuration and verified host-native tools.

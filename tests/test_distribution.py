@@ -29,6 +29,19 @@ class DistributionTest(unittest.TestCase):
                     with self.subTest(document=str(document.relative_to(ROOT)), target=target):
                         self.assertTrue((document.parent / target).exists())
 
+    def test_skill_documents_portable_capability_resolution(self):
+        skill = (ROOT / "skills/papervizagent-codex/SKILL.md").read_text()
+        roles = (ROOT / "skills/papervizagent-codex/references/roles.md").read_text()
+
+        self.assertIn("`status`", skill)
+        self.assertIn("`infer(role, modality, system, contents,\noptions)`", skill)
+        self.assertIn("`generate(upstreamdata, settings)`", skill)
+        self.assertIn("explicit runtime\nconfiguration", skill)
+        self.assertIn("fresh\nrequest/thread per role", roles)
+        self.assertIn("Codex\n  only if", roles)
+        self.assertNotIn("tools with no API keys or model configuration", skill)
+        self.assertNotIn("uses built-in image generation, never a\n  provider SDK", roles)
+
 
 if __name__ == "__main__":
     unittest.main()
