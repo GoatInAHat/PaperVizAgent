@@ -22,6 +22,9 @@ jobs:
         shell: bash
     steps:
       - uses: actions/checkout@v7
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.12"
 
       - name: Ensure a python3 launcher exists (Windows)
         if: runner.os == 'Windows'
