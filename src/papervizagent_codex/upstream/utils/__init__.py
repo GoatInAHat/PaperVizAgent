@@ -1,0 +1,1 @@
+"""Vendored PaperVizAgent runtime utilities."""
