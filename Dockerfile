@@ -1,4 +1,5 @@
 # syntax=docker/dockerfile:1
+# Run `make build` first to generate the web operations schema.
 FROM node:24-alpine AS web
 WORKDIR /app
 COPY web/package.json web/package-lock.json ./web/
