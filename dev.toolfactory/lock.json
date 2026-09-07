@@ -95,7 +95,7 @@
     },
     ".github/workflows/release.yml": {
       "sha256": "a5385db31c8be38196ccf7af8c5169d6523b166123da24c8de3ec469f24684bf",
-      "state": "generated"
+      "state": "manual"
     },
     ".gitignore": {
       "sha256": "2cc1b321b2f3fa224ca34eef9d9ca8374c15cf58bc974dc974ba3c0b8ec9416a",
@@ -120,7 +120,7 @@
       "state": "generated"
     },
     "COVERAGE.md": {
-      "sha256": "c227125d356c706c1751a961b94a7f461abfb8d2a9fa9b53f07c902149bcea6b",
+      "sha256": "07d92eee3f03d6aeb41c102680745de19b1aad1d837d6976f245f9da5cd86a72",
       "state": "generated"
     },
     "dev.toolfactory/coverage.json": {
