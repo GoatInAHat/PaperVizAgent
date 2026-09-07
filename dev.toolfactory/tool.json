@@ -1,0 +1,27 @@
+{
+  "$schema": "./tool.schema.json",
+  "schemaVersion": 1,
+  "identity": "plugin.json",
+  "binding": "typescript",
+  "runtime": "none",
+  "surfaces": [
+    "skill",
+    "codex"
+  ],
+  "bundle": {
+    "runtime": "package"
+  },
+  "tests": {
+    "examples": {}
+  },
+  "codex": {
+    "interface": {
+      "displayName": "PaperVizAgent for Codex",
+      "shortDescription": "Scientific figures from paper text using your existing Codex sign-in.",
+      "longDescription": "Plan, generate, inspect, and revise scientific diagrams with native Codex tools. An independent adaptation of Google Research PaperVizAgent, formerly PaperBanana. No API keys or provider configuration.",
+      "developerName": "GoatInAHat",
+      "category": "Productivity",
+      "defaultPrompt": "Use $papervizagent-codex to turn the supplied paper methods and caption into a scientific figure, then inspect and refine it."
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "repository": "https://github.com/google-research/papervizagent",
+  "revision": "e088a8fff74cc363b6897c0843631fff76484908",
+  "license": "Apache-2.0",
+  "paper": "https://arxiv.org/abs/2601.23265",
+  "source_files": {
+    "agents/planner_agent.py": "55a5a95f05930fc69f91953a301ed46292d4342abc6a3c37456a92c089876f01",
+    "agents/stylist_agent.py": "254b82932e058653d1c6c278e8fb84ced46449fc05f51c85a244ebce7f84ad28",
+    "agents/critic_agent.py": "2893273a101e9bab7ca67d9e7bf72de9c22eb91dba1f15f7691ee863a7987a4e",
+    "agents/retriever_agent.py": "61407d154f443fb8341a289117dbd9b3dbd0a7b156e24ec95112b908e5258587",
+    "agents/visualizer_agent.py": "6452fad9872d0dad1ec696f0299d599b9b1feca10f02178e7a5d8cca09b18600",
+    "style_guides/neurips2025_diagram_style_guide.md": "d2aee50170d9de995bae01c45737a779853c07a34c1ce106219dc5790ee5bea5",
+    "prompts/diagram_eval_prompts.py": "82fc0e1137b72c5c265a5738ae7203285744632f8a49c84903b4ec3bccb5014c",
+    "LICENSE": "58d1e17ffe5109a7ae296caafcadfdbe6a7d176f0bc4ab01e12a689b0499d8bd"
+  },
+  "adapted_resources": [
+    "skills/papervizagent-codex/SKILL.md",
+    "skills/papervizagent-codex/references/planning.md",
+    "skills/papervizagent-codex/references/style.md",
+    "skills/papervizagent-codex/references/review.md",
+    "skills/papervizagent-codex/references/formats.md"
+  ],
+  "modifications": [
+    "Native Codex session and built-in image generation replace API clients.",
+    "Supplied references or authored layout heuristics replace mandatory benchmark retrieval.",
+    "Specifications, prompts, qualitative review, and versioned candidate history persist in the project.",
+    "Meaningful legends and existing styles are preserved.",
+    "Direct native SVG is an explicit optional path; quantitative data is rendered by code."
+  ]
+}

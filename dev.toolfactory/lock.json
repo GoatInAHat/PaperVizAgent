@@ -1,0 +1,144 @@
+{
+  "toolfactoryVersion": "0.1.0",
+  "files": {
+    ".agents/mcp/servers.json": {
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "state": "generated",
+      "keys": []
+    },
+    ".agents/plugins/marketplace.json": {
+      "sha256": "bb8d13572b278ac4a56a551c72a8ccde38ab2be8e2499bee0f02206f933f4928",
+      "state": "generated"
+    },
+    ".agents/README.md": {
+      "sha256": "617acad815520ca8ee30e928e5e7a890aa2953287d4f849bd98a7475d0d71359",
+      "state": "generated"
+    },
+    ".agents/setup": {
+      "sha256": "8987e78b662d9cb2c8f60ecf9d1af660e68e1500302b5cb1dfa8fb1c68e11948",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:setup",
+          "end": "# /tf:setup"
+        }
+      ]
+    },
+    ".agents/skills/.gitkeep": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "state": "generated"
+    },
+    ".agents/skills/papervizagent-codex": {
+      "sha256": "7a311f47194fbb3280825c351c88954869b349560e98b10939f30b942b985897",
+      "state": "generated"
+    },
+    ".agents/sync.py": {
+      "sha256": "6ebbc7efc764d0d8da813bd084b92fa8f59c9e4ad5ecccf517313f413407bb34",
+      "state": "generated"
+    },
+    ".claude/settings.json": {
+      "sha256": "5ee165b2a1f069ac273d89ac660cca5992893a63fab8a96f93ffb625b507a538",
+      "state": "generated"
+    },
+    ".codex-plugin/plugin.json": {
+      "sha256": "17f30bdccdb7baebd7bb09b8173305e815f71fba00edeef51a292c6aeaacff8f",
+      "state": "generated"
+    },
+    ".cursor/environment.json": {
+      "sha256": "559393387fffd75060e1c2b09ea284969712a8976ba13720bb3854d1712002a3",
+      "state": "generated"
+    },
+    ".devcontainer/devcontainer.json": {
+      "sha256": "7f64aedd61635e35d39232c777e57b4ec32a6a493fe649bda201d402e9362201",
+      "state": "generated"
+    },
+    ".devcontainer/Dockerfile": {
+      "sha256": "710e6c9d3fc037871ede60912a009223fccc4e6dd6fc9880e57911bab3677ccf",
+      "state": "generated"
+    },
+    ".env.example": {
+      "sha256": "6e42aaf6b872941b038b928239bb26cfe34a55a566c5cd2263a9ac6584c02142",
+      "state": "generated"
+    },
+    ".gitattributes": {
+      "sha256": "7cd356096f360aa1f3207ff6eef9650ea9796dff3a9fe8618ea73793b93fd4a3",
+      "state": "generated"
+    },
+    ".github/workflows/agent-config.yml": {
+      "sha256": "f12a1696e9de7d74f78d7b7a214ffdc14e2ca1ce7522d8ee5f9ad54fb9ecd642",
+      "state": "generated"
+    },
+    ".github/workflows/ci.yml": {
+      "sha256": "b0f6f84f7d0848e033191dcc9b6cb3fe7485578486be95038cc39a641bab323e",
+      "state": "manual"
+    },
+    ".github/workflows/copilot-setup-steps.yml": {
+      "sha256": "2acbbf50f0610777823a3ccdf1fc7a533cfa2a236102cd4973fb516d5f9f24ab",
+      "state": "generated"
+    },
+    ".github/workflows/release.yml": {
+      "sha256": "03ab99f7a6b32c25cec6cb57d5c27d342d26714e7ca2ef7f9898a9030e43fdc5",
+      "state": "manual"
+    },
+    ".gitignore": {
+      "sha256": "257b61c919860dfce483c8a84871845ba89dc4a57b836a27067a598e891b15d6",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:ignore",
+          "end": "# /tf:ignore"
+        }
+      ]
+    },
+    "AGENTS.md": {
+      "sha256": "28ba02e36285a9da5347ea07b95199108eea68a0bde29cede33fe50b01d2a568",
+      "state": "manual"
+    },
+    "COVERAGE.md": {
+      "sha256": "f85eb36e8d743ed781f185f51b06a72acc93566c77fa292f40ce858f9ebfb3df",
+      "state": "generated"
+    },
+    "dev.toolfactory/coverage.json": {
+      "sha256": "2a48d2d7986fd3d10b7726654230997c335c00be2a1710c78524aa3e01b5dd00",
+      "state": "generated"
+    },
+    "dev.toolfactory/tool.schema.json": {
+      "sha256": "7903b767f80a213e05bc7ad71a08440a43a5ca1ffb62c2642ab99b383d76e153",
+      "state": "generated"
+    },
+    "README.md": {
+      "sha256": "62c1996c011526beab5a6c56aed39f45901446ff4ec75e7cf0da2b0c8ec42cd7",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "<!-- tf:install -->",
+          "end": "<!-- /tf:install -->"
+        }
+      ]
+    },
+    "renovate.json": {
+      "sha256": "f708debb8452ad31dfcdcfb3c82d1519fe50363d614528143becd90ab55af1b9",
+      "state": "generated",
+      "keys": [
+        "$schema",
+        "extends",
+        "minimumReleaseAge",
+        "ignorePaths"
+      ]
+    },
+    "skills/papervizagent-codex/SKILL.md": {
+      "sha256": "71e4975145015ae6e51c1ac9dcf48b65e79c2568a2f79ac63688a37d9e11dcdc",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "---",
+          "end": "---"
+        },
+        {
+          "begin": "<!-- tf:operations -->",
+          "end": "<!-- /tf:operations -->"
+        }
+      ]
+    }
+  }
+}

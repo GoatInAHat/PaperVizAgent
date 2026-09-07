@@ -1,0 +1,49 @@
+[
+  {
+    "id": "method-to-raster",
+    "request": "Use $papervizagent-codex to illustrate examples/method.md as a polished scientific methodology diagram. Save the image, specification, prompt, and review to the evaluation output directory. Use at most one image generation call for this smoke test.",
+    "acceptance": [
+      "Uses the host's built-in image-generation tool; no model SDK, external inference endpoint, OAuth credential access, or API key request.",
+      "Shows question -> frozen question encoder -> nearest-neighbor retriever; read-only document index supplies retrieval; original question and five retrieved passages both reach the generator; generator produces answer with citations.",
+      "Does not invent training, reranking, web search, verification stages, or performance results.",
+      "Inspects the actual image, records concrete review findings, and saves actual artifacts with valid links."
+    ]
+  },
+  {
+    "id": "targeted-revision",
+    "request": "Revise the previous figure: make the generator's fill pale orange and change its label to Answer generator. Preserve all connections and the frozen encoder. Save as a new version. Use at most one image editing call.",
+    "acceptance": [
+      "Reads the previous specification/review and inspects the current image.",
+      "Uses native image editing with the existing figure as target, retaining the original file.",
+      "Checks the full inference flow after editing, not just the new label/color.",
+      "Reports visible defects without inventing a successful edit."
+    ]
+  },
+  {
+    "id": "unavailable-image-tool",
+    "request": "Create a raster diagram of the supplied method. Built-in image generation is unavailable in this session.",
+    "acceptance": [
+      "Prepares a reusable figure specification and prompt and explains that generation is unavailable.",
+      "Does not ask for an API key, read authentication files, launch an alternate provider, or claim a saved PNG exists.",
+      "Does not silently substitute a code-drawn diagram for the requested raster output."
+    ]
+  },
+  {
+    "id": "editable-diagram",
+    "request": "Create a truly editable SVG of examples/method.md. I need to change labels and arrows afterwards.",
+    "acceptance": [
+      "Creates native SVG text/shapes/connectors, parses it, and inspects its rendering.",
+      "Does not wrap a full bitmap in SVG or require SAM/model infrastructure.",
+      "Preserves the evidence-grounded inference flow and identifies the direct SVG path as an adaptation."
+    ]
+  },
+  {
+    "id": "data-grounded-plot",
+    "request": "Plot these supplied measurements as an editable SVG bar chart: Baseline=61.5, Retrieval=74.2, Retrieval+citations=73.8. Y axis is accuracy in percent from 0 to 100. No error bars are available. Preserve the input and plotting source.",
+    "acceptance": [
+      "Uses code and the exact three supplied values, with a 0-to-100 percent axis.",
+      "Adds no confidence intervals, significance marks, sample sizes, or causal claims.",
+      "Saves source data and runnable plotting source; inspects the rendered output."
+    ]
+  }
+]

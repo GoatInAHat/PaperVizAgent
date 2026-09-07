@@ -1,0 +1,28 @@
+# Adopted through ToolFactory: use the source pin until runtime:none is released.
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@v6
+      - run: make check validate package
+      - name: Verify archive integrity and attribution
+        run: |
+          unzip -t dist/release/papervizagent-codex-plugin.zip
+          unzip -p dist/release/papervizagent-codex-plugin.zip LICENSE | cmp LICENSE -
+          unzip -p dist/release/papervizagent-codex-plugin.zip NOTICE | cmp NOTICE -
+      - uses: actions/upload-artifact@v4
+        with:
+          name: papervizagent-codex
+          path: dist/release/

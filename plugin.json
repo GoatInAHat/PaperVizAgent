@@ -1,0 +1,18 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "papervizagent-codex",
+  "version": "0.1.0",
+  "description": "Create and revise scientific methodology diagrams, model architecture figures, and research workflows from paper text, captions, or sketches. Uses native Codex image generation and visual review with no API keys. Also supports requested editable diagrams and data-grounded plots.",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "author": {
+    "name": "GoatInAHat"
+  },
+  "keywords": [
+    "scientific-figures",
+    "research",
+    "papervizagent",
+    "paperbanana",
+    "codex"
+  ]
+}

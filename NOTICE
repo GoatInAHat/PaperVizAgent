@@ -1,0 +1,22 @@
+PaperVizAgent-codex
+Copyright 2026 PaperVizAgent-codex contributors
+
+This product includes material derived from PaperVizAgent (formerly
+PaperBanana), Copyright 2026 Google LLC, licensed under the Apache License,
+Version 2.0.
+
+Official upstream: https://github.com/google-research/papervizagent
+Paper: https://arxiv.org/abs/2601.23265
+Pinned source revision: e088a8fff74cc363b6897c0843631fff76484908
+
+The planning, styling, review, and plotting guidance has been adapted into
+native Codex skill instructions. Direct model API clients and mandatory
+benchmark retrieval have been replaced by host-provided capabilities,
+optional user references, and authored layout heuristics. The adaptation adds
+saved specifications, bounded revision history, preservation of useful
+legends, and an explicit native SVG path. No upstream benchmark score is
+claimed for this adaptation.
+
+The names PaperVizAgent, PaperBanana, Google, OpenAI, and Codex identify their
+respective projects or products. This independent project is not affiliated
+with or endorsed by Google or OpenAI.

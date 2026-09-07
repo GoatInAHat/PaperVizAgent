@@ -1,0 +1,28 @@
+# Adopted through ToolFactory: source-pinned validation and GitHub-only release.
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: astral-sh/setup-uv@v6
+      - name: Match tag to plugin version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: test "v$(node -p "require('./plugin.json').version")" = "$RELEASE_TAG"
+      - run: make check validate package
+      - name: Publish plugin bundle
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: gh release create "$RELEASE_TAG" dist/release/* --verify-tag --generate-notes --title "PaperVizAgent for Codex $RELEASE_TAG"

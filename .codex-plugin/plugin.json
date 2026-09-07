@@ -1,0 +1,27 @@
+{
+  "name": "papervizagent-codex",
+  "version": "0.1.0",
+  "description": "Create and revise scientific methodology diagrams, model architecture figures, and research workflows from paper text, captions, or sketches. Uses native Codex image generation and visual review with no API keys. Also supports requested editable diagrams and data-grounded plots.",
+  "author": {
+    "name": "GoatInAHat"
+  },
+  "repository": "https://github.com/GoatInAHat/PaperVizAgent-codex",
+  "license": "Apache-2.0",
+  "keywords": [
+    "scientific-figures",
+    "research",
+    "papervizagent",
+    "paperbanana",
+    "codex"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "PaperVizAgent for Codex",
+    "shortDescription": "Scientific figures from paper text using your existing Codex sign-in.",
+    "longDescription": "Plan, generate, inspect, and revise scientific diagrams with native Codex tools. An independent adaptation of Google Research PaperVizAgent, formerly PaperBanana. No API keys or provider configuration.",
+    "developerName": "GoatInAHat",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": "Use $papervizagent-codex to turn the supplied paper methods and caption into a scientific figure, then inspect and refine it."
+  }
+}
