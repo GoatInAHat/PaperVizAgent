@@ -1,2 +1,2 @@
 # Pin instruction-only support until available in a tagged ToolFactory release.
-TOOLFACTORY_REVISION := cee683b5285839f0706a6c7b9276a9aee6a7e483
+TOOLFACTORY_REVISION := 2d3cf811decb451861d73e6ef0a3663479be2c03

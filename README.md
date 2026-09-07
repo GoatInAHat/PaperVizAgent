@@ -12,7 +12,7 @@ OpenAI integration.
 <!-- tf:install -->
 ## Install
 
-[![skills.sh](https://skills.sh/b/GoatInAHat/PaperVizAgent-codex)](https://skills.sh/GoatInAHat/PaperVizAgent-codex)
+[![Agent Skill](https://img.shields.io/badge/Agent_Skill-available-5B5BD6)](https://github.com/GoatInAHat/PaperVizAgent-codex)
 
 - **Agent Skill** — `npx skills add GoatInAHat/PaperVizAgent-codex`
 - **Codex plugin** — `codex plugin marketplace add GoatInAHat/PaperVizAgent-codex`, then `codex plugin add papervizagent-codex@papervizagent-codex`
