@@ -9,10 +9,36 @@ license: Apache-2.0
 # PaperVizAgent
 
 Run Google Research PaperVizAgent's reference-driven roles in **separate role
-contexts**. The current agent coordinates; it must not impersonate the Retriever,
+contexts**. A coordinator must not impersonate the Retriever,
 Planner, Stylist, Visualizer, or Critic in one conversation.
 This is an independent port of the pinned official implementation; model and
 host substitutions are documented in [compatibility.md](references/compatibility.md).
+
+## Background execution and completion
+
+When the host supports background workers with completion notifications, dispatch
+one background coordinator for the whole requested run. Give it the source paths,
+constraints, resolved configuration, destination, and image budget. That worker
+owns role dispatch, handoffs, critique, artifact review, and the final result;
+each model role still gets a fresh context. Use this section as a dispatch rule
+for the main session, not a reason for the worker to spawn another coordinator.
+
+Register or establish the host's completion channel when dispatching, save the
+returned worker/task ID, then return control to the user. Resume delivery on the
+worker's completion or failure notification. Keep intermediate role results and
+logs in the worker; surface only a required user decision or the reviewed result.
+Do not create scheduled check-ins, heartbeat automations, sleep loops, or repeated
+file/status reads to discover completion. A user-requested status check can read
+the current state once without restarting work.
+
+For runtime execution, the background worker awaits `generate` once. Embedded
+Python callers can consume `generate_events` from `papervizagent.ops`, or pass
+an async `on_event` callback to `generate`; see
+[completion.md](references/completion.md). CLI integrations use process-exit
+notifications, and MCP/web integrations await the existing request's result.
+These are completion channels, not detached jobs. If the host cannot deliver
+background completion, keep one awaited call and explain that limitation;
+do not promise an unsolicited message after the session has ended.
 
 ## Capability resolution and role execution
 

@@ -6,6 +6,7 @@ import base64
 import json
 import os
 import tempfile
+from contextlib import suppress
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
@@ -169,6 +170,7 @@ class Backend:
         record['unavailable_upstream_options'] = sorted(set(options) - supported)
         self.trace.append(record)
         texts, images = [], []
+        terminal = False
         try:
             while True:
                 event = await client.next_turn_notification(tid)
@@ -182,11 +184,16 @@ class Backend:
                         elif item.saved_path:
                             images.append(base64.b64encode(Path(item.saved_path.root).read_bytes()).decode())
                 elif event.method == 'turn/completed':
+                    terminal = True
                     if event.payload.turn.status.value != 'completed':
                         raise RuntimeError('Codex inference failed or was interrupted; check authentication and account limits. Manually supplied OAuth tokens must be refreshed by their owner.')
                     break
         except BaseException:
-            await client.turn_interrupt(thread.thread.id, tid)
+            # A terminal event needs no interrupt. If cancellation races with
+            # completion, cleanup must not replace the original failure.
+            if not terminal:
+                with suppress(Exception):
+                    await client.turn_interrupt(thread.thread.id, tid)
             raise
         finally:
             client.unregister_turn_notifications(tid)

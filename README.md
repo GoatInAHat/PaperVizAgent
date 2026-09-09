@@ -76,6 +76,21 @@ Both diagrams and Matplotlib plots support vanilla, planner, planner+stylist, pl
 
 Original prompt constants and style guides remain unchanged. Each native role has a fresh subagent; each runtime role makes an isolated provider request or Codex thread. Critic revisions produce fresh renders; polish is a separate editing workflow. Plot execution runs generated Python in a temporary child process with a configurable timeout and 300 DPI output. This isolates plotting state and hangs; it is **not an OS security sandbox**. Use the host’s execution sandbox for untrusted inputs.
 
+## Background execution
+
+In hosts with background completion notifications, the skill dispatches one
+coordinator to own generation, isolated roles, critique and review. The main
+conversation receives the completion or failure event. It does not schedule
+check-ins or repeatedly poll files for progress.
+
+Runtime integrations keep one awaited CLI process or MCP request. Embedded
+Python hosts can use `papervizagent.ops.generate_events` for run, candidate and
+role lifecycle events, or supply an async `on_event` callback to `generate`.
+The host owns the background task and delivers the result when it completes;
+there is no additional daemon or scheduler. Hosts without a background completion
+channel use one awaited call. See [completion events](skills/papervizagent/references/completion.md)
+for the event contract and cancellation behavior.
+
 ## Development and fidelity
 
 ```sh

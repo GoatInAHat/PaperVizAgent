@@ -4,6 +4,7 @@ from __future__ import annotations
 import asyncio
 import base64
 import json
+from collections.abc import AsyncIterator
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -14,6 +15,7 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from .backends import Backend
 from .config import Modality, Role, load_settings
+from .events import EventSink, ObservedBackend, RunEvents
 from .toolfactory import Context, Operation
 
 
@@ -117,7 +119,7 @@ async def infer(args: InferInput, ctx: Context) -> dict:
         return {'outputs': outputs, 'trace': backend.trace}
 
 
-async def generate(args: GenerateInput, ctx: Context) -> dict:
+async def generate(args: GenerateInput, ctx: Context, *, on_event: EventSink | None = None) -> dict:
     from .pipeline import run_pipeline
     configured = settings_for(ctx)
     options = {**configured.pipeline, **args.settings}
@@ -128,13 +130,16 @@ async def generate(args: GenerateInput, ctx: Context) -> dict:
     if num_candidates < 1 or max_concurrent < 1:
         raise ValueError('num_candidates and max_concurrent must be positive.')
     root = _run_dir(ctx)
+    events = RunEvents(root.name, on_event)
     work_dir = Path(options.pop('work_dir', root)).expanduser().resolve()
     semaphore = asyncio.Semaphore(max_concurrent)
-    async with Backend(configured) as backend:
-        async def candidate(index):
+    async def candidate(index, backend):
+        try:
             async with semaphore:
+                await events.emit('candidate.started', candidate_id=index)
                 data = {**args.data, 'candidate_id': index}
-                result = await run_pipeline(backend, data, work_dir=work_dir, **options)
+                observed = ObservedBackend(backend, events, index) if on_event else backend
+                result = await run_pipeline(observed, data, work_dir=work_dir, **options)
                 result_path = root / f'candidate-{index}.json'
                 result_path.write_text(json.dumps(result, indent=2))
                 image_key = result.get('eval_image_field')
@@ -146,20 +151,67 @@ async def generate(args: GenerateInput, ctx: Context) -> dict:
                 if not artifact and options.get('exp_mode') != 'dev_retriever':
                     raise RuntimeError(f'Pipeline produced no final image. Inspect {result_path}')
                 stop = result.get('critic_stop_reason')
-                return {'candidate_id': index, 'artifact': artifact, 'result': str(result_path),
-                        'critic_stop_reason': stop,
-                        'status': 'partial' if stop in ('invalid_response', 'render_failed') else 'completed'}
-        trace_path = root / 'trace.json'
-        tasks = [asyncio.create_task(candidate(i)) for i in range(num_candidates)]
+                summary = {'candidate_id': index, 'artifact': artifact, 'result': str(result_path),
+                           'critic_stop_reason': stop,
+                           'status': 'partial' if stop in ('invalid_response', 'render_failed') else 'completed'}
+        except asyncio.CancelledError:
+            await events.emit('candidate.cancelled', candidate_id=index)
+            raise
+        except Exception as error:
+            await events.emit('candidate.failed', candidate_id=index, error_type=type(error).__name__)
+            raise
+        await events.emit('candidate.completed', **summary)
+        return summary
+
+    trace_path = root / 'trace.json'
+    await events.emit('run.started', run_dir=str(root), num_candidates=num_candidates)
+    try:
+        async with Backend(configured) as backend:
+            tasks = [asyncio.create_task(candidate(i, backend)) for i in range(num_candidates)]
+            try:
+                results = await asyncio.gather(*tasks)
+            finally:
+                for task in tasks:
+                    if not task.done():
+                        task.cancel()
+                await asyncio.gather(*tasks, return_exceptions=True)
+                trace_path.write_text(json.dumps(backend.trace, indent=2))
+    except asyncio.CancelledError:
+        await events.emit('run.cancelled', trace=str(trace_path))
+        raise
+    except Exception as error:
+        await events.emit('run.failed', trace=str(trace_path), error_type=type(error).__name__)
+        raise
+    result = {'candidates': results, 'trace': str(trace_path)}
+    await events.emit('run.completed', result=result,
+                      status='partial' if any(c['status'] == 'partial' for c in results) else 'completed')
+    return result
+
+
+async def generate_events(args: GenerateInput, ctx: Context) -> AsyncIterator[dict[str, Any]]:
+    """Subscribe before starting; yield pushed events and propagate run failures.
+
+    Use ``contextlib.aclosing`` when leaving the stream early so its owned run
+    is cancelled and joined. The final run.completed event contains the same
+    result as generate. This stream does not detach from the caller's process.
+    """
+    queue: asyncio.Queue[dict[str, Any] | None] = asyncio.Queue()
+
+    async def run():
         try:
-            results = await asyncio.gather(*tasks)
+            return await generate(args, ctx, on_event=queue.put)
         finally:
-            for task in tasks:
-                if not task.done():
-                    task.cancel()
-            await asyncio.gather(*tasks, return_exceptions=True)
-            trace_path.write_text(json.dumps(backend.trace, indent=2))
-        return {'candidates': results, 'trace': str(trace_path)}
+            queue.put_nowait(None)
+
+    task = asyncio.create_task(run())
+    try:
+        while (event := await queue.get()) is not None:
+            yield event
+        await task
+    finally:
+        if not task.done():
+            task.cancel()
+        await asyncio.gather(task, return_exceptions=True)
 
 
 OPERATIONS = [
