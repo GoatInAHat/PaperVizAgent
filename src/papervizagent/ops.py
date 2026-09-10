@@ -14,13 +14,14 @@ from PIL import Image
 from pydantic import BaseModel, ConfigDict, Field
 
 from .backends import Backend
-from .config import Modality, Role, load_settings
+from .config import Modality, Model, ModelPolicy, Role, load_settings
 from .events import EventSink, ObservedBackend, RunEvents
 from .toolfactory import Context, Operation
 
 
 class StatusInput(BaseModel):
     native: list[Modality] = Field(default_factory=list, description='Capabilities verified by the calling host; never inferred from the host name.')
+    model_policy: ModelPolicy | None = Field(default=None, description='Override the shared balanced default with quality for this request. Explicit model choices still win.')
 
 
 class EmptyInput(BaseModel):
@@ -34,6 +35,7 @@ class InferInput(BaseModel):
     contents: list[dict[str, Any]] = Field(default_factory=list)
     contents_file: str | None = Field(default=None, description='Optional local JSON file containing content blocks, useful for image handoffs.')
     options: dict[str, Any] = Field(default_factory=dict)
+    model_policy: ModelPolicy | None = None
 
 
 class GenerateInput(BaseModel):
@@ -41,10 +43,14 @@ class GenerateInput(BaseModel):
     settings: dict[str, Any] = Field(default_factory=dict, description='Upstream pipeline settings; overrides the configuration file pipeline section. No credentials.')
     num_candidates: int | None = Field(default=None, ge=1, description='Defaults to pipeline.num_candidates or 1.')
     max_concurrent: int | None = Field(default=None, ge=1, description='Defaults to pipeline.max_concurrent or 4.')
+    model_policy: ModelPolicy | None = None
 
 
-def settings_for(ctx: Context):
-    return load_settings(ctx.config.get('papervizagent_config'))
+def settings_for(ctx: Context, model_policy: ModelPolicy | None = None):
+    settings = load_settings(ctx.config.get('papervizagent_config'))
+    if model_policy is not None:
+        settings.model_policy = model_policy
+    return settings
 
 
 # Only native generation controls need to cross the model-visible host boundary.
@@ -55,7 +61,7 @@ _NATIVE_OPTIONS = frozenset({'effort', 'service_tier', 'temperature', 'max_outpu
 
 
 def status(args: StatusInput, ctx: Context) -> dict:
-    settings = settings_for(ctx)
+    settings = settings_for(ctx, args.model_policy)
     routes = {}
     for role in ('retriever', 'planner', 'stylist', 'visualizer', 'critic', 'vanilla', 'polish'):
         routes[role] = {}
@@ -70,6 +76,7 @@ def status(args: StatusInput, ctx: Context) -> dict:
     return {
         'routes': routes,
         'native': args.native,
+        'model_policy': settings.model_policy,
         'codex': 'Use models to verify subscription availability; host capabilities are supplied by the caller.',
         'pipeline': {key: settings.pipeline[key] for key in
                      ('task_name', 'exp_mode', 'retrieval_setting', 'temperature',
@@ -84,7 +91,16 @@ async def models(args: EmptyInput, ctx: Context) -> dict:
     async with Backend(settings_for(ctx)) as backend:
         client = await backend.codex()
         caps = await client.request('modelProvider/capabilities/read', {}, response_model=ModelProviderCapabilitiesReadResponse)
+        defaults = {}
+        for modality in ('llm', 'vlm', 'image'):
+            try:
+                selection = backend.select_model(Model(), modality)
+                defaults[modality] = {'model': selection.model, 'reason': selection.reason,
+                                      'classification': selection.classification}
+            except ValueError as error:
+                defaults[modality] = {'unavailable': str(error)}
         return {'models': backend.models, 'capabilities': caps.model_dump(by_alias=True),
+                'model_policy': backend.settings.model_policy, 'defaults': defaults,
                 'image_model': 'Managed by Codex; models.image.model selects the coordinating model.'}
 
 
@@ -98,7 +114,7 @@ async def infer(args: InferInput, ctx: Context) -> dict:
     contents = json.loads(Path(args.contents_file).expanduser().read_text()) if args.contents_file else args.contents
     if not contents:
         raise ValueError('Supply contents or contents_file.')
-    configured = settings_for(ctx)
+    configured = settings_for(ctx, args.model_policy)
     spec = configured.resolve(args.role, args.modality)
     spec.options = {**spec.options, **args.options}
     configured.roles[args.role] = spec
@@ -121,7 +137,7 @@ async def infer(args: InferInput, ctx: Context) -> dict:
 
 async def generate(args: GenerateInput, ctx: Context, *, on_event: EventSink | None = None) -> dict:
     from .pipeline import run_pipeline
-    configured = settings_for(ctx)
+    configured = settings_for(ctx, args.model_policy)
     options = {**configured.pipeline, **args.settings}
     num_candidates = args.num_candidates or int(options.pop('num_candidates', 1))
     max_concurrent = args.max_concurrent or int(options.pop('max_concurrent', 4))

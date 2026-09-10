@@ -2,7 +2,7 @@
 import base64
 from io import BytesIO
 from pathlib import Path
-from unittest.mock import AsyncMock, patch
+from unittest.mock import AsyncMock, Mock, patch
 
 from PIL import Image
 import pytest
@@ -39,11 +39,35 @@ def test_status_hands_safe_native_overrides_to_host(tmp_path):
         'pipeline': {'work_dir': '/papers/custom', 'dataset_name': 'PaperBananaBench',
                      'split_name': 'demo', 'timestamp': 'run-1', 'auth_token': 'private-pipeline'},
     }))
-    result = status(StatusInput(native=['llm', 'vlm']),
+    result = status(StatusInput(native=['llm', 'vlm'], model_policy='quality'),
                     Context(config={'papervizagent_config': str(config)}, data_dir=tmp_path))
+    assert result['model_policy'] == 'quality'
+    assert result['routes']['planner']['llm']['provider'] == 'native'
+    assert result['routes']['visualizer']['image']['provider'] == 'codex'
     critic = result['routes']['critic']['vlm']
     assert critic['options'] == {'effort': 'high'}
     assert critic['unavailable_options'] == ['api_token', 'extra_headers']
     assert result['pipeline']['work_dir'] == '/papers/custom'
     assert result['pipeline']['split_name'] == 'demo'
     assert 'private-' not in json.dumps(result)
+
+
+async def test_models_reports_missing_vision_without_hiding_catalog(tmp_path):
+    from papervizagent.model_selection import ModelSelection
+    from papervizagent.ops import EmptyInput, models
+    with patch('papervizagent.ops.Backend') as cls:
+        backend = cls.return_value.__aenter__.return_value
+        backend.models = [{'id': 'text-only', 'model': 'text-only'}]
+        backend.settings.model_policy = 'balanced'
+        backend.codex = AsyncMock()
+        backend.codex.return_value.request = AsyncMock()
+        backend.codex.return_value.request.return_value = Mock()
+        backend.codex.return_value.request.return_value.model_dump.return_value = {'imageGeneration': False}
+        backend.select_model = Mock(side_effect=[ModelSelection('text-only', 'server_default_fallback'),
+                                            ValueError('No vision model'),
+                                            ModelSelection('text-only', 'server_default_fallback')])
+        result = await models(EmptyInput(), Context(config={}, data_dir=tmp_path))
+    assert result['models'] == backend.models
+    assert result['defaults']['vlm'] == {'unavailable': 'No vision model'}
+    assert result['defaults']['llm']['model'] == 'text-only'
+    assert result['capabilities']['imageGeneration'] is False
