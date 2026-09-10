@@ -45,6 +45,14 @@ The npm package is a small launcher for the same version on PyPI and requires [u
 
 The skill resolves each role independently: **explicit role setting → modality setting → available host tool → Codex fallback**. It checks actual tools; a host name does not guarantee vision or image generation.
 
+The shared `model_policy` defaults to `balanced`: native roles use a current
+mid-tier alias or live catalog, and Codex selects from its current account
+catalog with a recorded reason. Claude Code uses `sonnet` for planning and
+image inspection, keeping Codex fallback confined to missing image generation.
+Choose `quality` for a highest-quality request (`opus` in Claude); explicit
+model and effort choices still win. Catalog tier labels are advisory, with
+transparent provider-default fallbacks. See [configuration](CONFIGURATION.md).
+
 On Codex, the skill uses native subagents, vision and image generation without API keys or a Python server. The Codex plugin does not eagerly start MCP. Custom overrides use the optional runtime through the CLI or an explicitly connected MCP server.
 
 On other hosts, use available native capabilities and supply `CODEX_OAUTH_TOKEN` for missing capabilities, or use an existing Codex sign-in. `CODEX_ACCOUNT_ID` is needed only if the supplied token does not contain its account identifier. Tokens stay in environment/host secret settings or an explicitly selected token file; never paste them into prompts or tool arguments. Static access tokens expire: their owner must refresh them. The SDK manages refresh for its own sign-in.
