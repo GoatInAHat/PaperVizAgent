@@ -45,6 +45,7 @@ jobs:
       RELEASE_TAG: ${{ inputs.tag || github.ref_name }}
     outputs:
       sha: ${{ steps.tag.outputs.sha }}
+      version: ${{ steps.version.outputs.version }}
       npm: ${{ steps.presence.outputs.npm }}
       pypi: ${{ steps.presence.outputs.pypi }}
       oci: ${{ steps.presence.outputs.oci }}
@@ -68,8 +69,9 @@ jobs:
       - id: tag
         name: the commit this tag releases
         run: sha=$(git rev-parse -q --verify "refs/tags/$RELEASE_TAG^{commit}" 2>/dev/null || git rev-parse HEAD) && git checkout -q "$sha" && echo "sha=$sha" >> "$GITHUB_OUTPUT"
-      - name: tag matches plugin.json
-        run: test "v$(node -p "require('./plugin.json').version")" = "$RELEASE_TAG"
+      - id: version
+        name: tag matches plugin.json
+        run: version=$(node -p "require('./plugin.json').version") && test "v$version" = "$RELEASE_TAG" && echo "version=$version" >> "$GITHUB_OUTPUT"
       - name: Restore Hermes
         id: hermes
         uses: actions/cache@v4
@@ -141,6 +143,7 @@ jobs:
     permissions:
       contents: read
     env:
+      VERSION: ${{ needs.gate.outputs.version }}
       FIREFOX_JWT_ISSUER: ${{ secrets.FIREFOX_JWT_ISSUER }}
       FIREFOX_JWT_SECRET: ${{ secrets.FIREFOX_JWT_SECRET }}
     steps:
@@ -184,10 +187,10 @@ jobs:
           npm exec --no -- wxt zip -b chrome
           npm exec --no -- wxt zip -b firefox
           npm exec --no -- wxt zip -b edge
-          cp .output/papervizagent-0.4.0-{chrome,firefox,edge,sources}.zip ../../dist/release/
+          cp .output/papervizagent-${VERSION}-{chrome,firefox,edge,sources}.zip ../../dist/release/
           cd ../..
-          git archive --format=zip --output=dist/release/papervizagent-0.4.0-sources.zip HEAD
-          zip -q dist/release/papervizagent-0.4.0-sources.zip web/src/ops.json
+          git archive --format=zip --output=dist/release/papervizagent-${VERSION}-sources.zip HEAD
+          zip -q dist/release/papervizagent-${VERSION}-sources.zip web/src/ops.json
       - name: Firefox signed xpi (only when FIREFOX_JWT_ISSUER/FIREFOX_JWT_SECRET are set)
         run: if [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then npm --prefix hosts/browser exec --no -- web-ext sign --channel=unlisted --api-key="$FIREFOX_JWT_ISSUER" --api-secret="$FIREFOX_JWT_SECRET" --source-dir hosts/browser/.output/firefox-mv2 --artifacts-dir dist/release; fi
       - name: coverage report
@@ -207,6 +210,7 @@ jobs:
       contents: read
     env:
       NPM_TRUSTED_PUBLISHER: ${{ vars.NPM_TRUSTED_PUBLISHER }}
+      VERSION: ${{ needs.gate.outputs.version }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -222,7 +226,7 @@ jobs:
       - name: npm publish
         env:
           NPM_TOKEN: ${{ vars.NPM_TRUSTED_PUBLISHER != 'true' && secrets.NPM_TOKEN || '' }}
-        run: 'if npm view papervizagent@0.4.0 version >/dev/null 2>&1; then echo "::notice::npm: papervizagent@0.4.0 already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish ./release-assets/papervizagent-0.4.0.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish ./release-assets/papervizagent-0.4.0.tgz --access public; fi'
+        run: 'if npm view papervizagent@$VERSION version >/dev/null 2>&1; then echo "::notice::npm: papervizagent@$VERSION already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish ./release-assets/papervizagent-$VERSION.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish ./release-assets/papervizagent-$VERSION.tgz --access public; fi'
   publish-pypi:
     needs:
       - gate
@@ -321,7 +325,7 @@ jobs:
     uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
     with:
       package_artifact_name: release-assets
-      package_artifact_path: openclaw-plugin-papervizagent-0.4.0.tgz
+      package_artifact_path: openclaw-plugin-papervizagent-${{ needs.gate.outputs.version }}.tgz
       dry_run: false
       wait_for_publication: true
     secrets:
@@ -347,6 +351,7 @@ jobs:
     permissions:
       contents: read
     env:
+      VERSION: ${{ needs.gate.outputs.version }}
       CHROME_API_VERSION: v2
       CHROME_EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
       CHROME_PUBLISHER_ID: ${{ secrets.CHROME_PUBLISHER_ID }}
@@ -376,17 +381,17 @@ jobs:
       - name: wxt submit --dry-run (zips, plus a live credential read for Chrome and Firefox)
         run: |-
           flags=()
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-0.4.0-chrome.zip); fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-0.4.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.4.0-sources.zip); fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-0.4.0-edge.zip); fi
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-${VERSION}-chrome.zip); fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-${VERSION}-firefox.zip --firefox-sources-zip release-assets/papervizagent-${VERSION}-sources.zip); fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-${VERSION}-edge.zip); fi
           if [ "${#flags[@]}" -eq 0 ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
           npm --prefix hosts/browser exec --no -- wxt submit --dry-run "${flags[@]}"
       - name: wxt submit
         run: |-
           flags=()
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-0.4.0-chrome.zip); fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-0.4.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.4.0-sources.zip); fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-0.4.0-edge.zip); fi
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-${VERSION}-chrome.zip); fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-${VERSION}-firefox.zip --firefox-sources-zip release-assets/papervizagent-${VERSION}-sources.zip); fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-${VERSION}-edge.zip); fi
           if [ "${#flags[@]}" -eq 0 ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
           npm --prefix hosts/browser exec --no -- wxt submit "${flags[@]}"
   release:
