@@ -30,12 +30,18 @@ def _is_legacy(entry: dict) -> bool:
     return bool(entry.get('upgrade') or entry.get('upgradeInfo')) or any(marker in text for marker in _LEGACY_MARKERS)
 
 
-def _eligible(entries: list[dict], modality: str) -> list[dict]:
+def _capable(entries: list[dict], modality: str) -> list[dict]:
     return [
         entry for entry in entries
+        if modality != 'vlm' or 'image' in (entry.get('inputModalities') or ())
+    ]
+
+
+def _eligible(entries: list[dict], modality: str) -> list[dict]:
+    return [
+        entry for entry in _capable(entries, modality)
         if not entry.get('hidden')
         and not entry.get('modelSpecialty')
-        and (modality != 'vlm' or 'image' in (entry.get('inputModalities') or ()))
     ]
 
 
@@ -52,12 +58,12 @@ def select_model(entries: list[dict], *, modality: str, policy: ModelPolicy,
     They are used only when a provider explicitly labels a model balanced or
     quality-oriented; otherwise the provider's default remains authoritative.
     """
-    eligible = _eligible(entries, modality)
     if explicit:
-        selected = next((entry for entry in eligible if explicit in (entry.get('id'), entry.get('model'))), None)
+        selected = next((entry for entry in _capable(entries, modality) if explicit in (entry.get('id'), entry.get('model'))), None)
         if selected is None:
             raise ValueError(f'Codex model {explicit!r} is unavailable for {modality}. Use models to inspect the account catalog. For image, model selects the Codex coordinator; its built-in image model is service-managed.')
         return ModelSelection(selected['model'], 'explicit', 'explicit')
+    eligible = _eligible(entries, modality)
     if not eligible:
         raise ValueError(f'No available visible general Codex model supports {modality}.')
 
@@ -94,11 +100,11 @@ def selected_entry(entries: list[dict], model: str) -> dict:
 
 
 def validate_controls(entry: dict, options: dict) -> None:
-    if 'effort' in options:
+    if options.get('effort') is not None:
         supported = {value.get('reasoningEffort') for value in entry.get('supportedReasoningEfforts') or ()}
         if options['effort'] not in supported:
             raise ValueError(f"Codex model {entry['model']!r} does not support effort {options['effort']!r}.")
-    if 'service_tier' in options:
+    if options.get('service_tier') is not None:
         supported = {value.get('id') for value in entry.get('serviceTiers') or ()}
         if options['service_tier'] not in supported:
             raise ValueError(f"Codex model {entry['model']!r} does not support service_tier {options['service_tier']!r}.")
