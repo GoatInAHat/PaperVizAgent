@@ -201,7 +201,7 @@ full pipeline.
 
 Run upstream PaperVizAgent end to end, with configurable roles, modes, retrieval, candidates and critic rounds. Plot mode executes generated Python in a bounded subprocess.
 
-Arguments: `data`, `settings`, `num_candidates`, `max_concurrent`.
+Arguments: `data`, `settings`, `num_candidates`, `max_concurrent`, `model_policy`.
 
 `papervizagent generate --json '<arguments>'` prints a JSON result. MCP tool `generate` on server `papervizagent` returns the same result as `structuredContent`.
 
@@ -209,7 +209,7 @@ Arguments: `data`, `settings`, `num_candidates`, `max_concurrent`.
 
 Run one isolated PaperVizAgent role using its configured provider or Codex fallback. Returns text or an image file and request trace.
 
-Arguments: `role`, `modality`, `system`, `contents`, `contents_file`, `options`.
+Arguments: `role`, `modality`, `system`, `contents`, `contents_file`, `options`, `model_policy`.
 
 `papervizagent infer --json '<arguments>'` prints a JSON result. MCP tool `infer` on server `papervizagent` returns the same result as `structuredContent`.
 
@@ -223,7 +223,7 @@ Read models and capabilities available through the configured Codex subscription
 
 Resolve per-role model routing using optional configuration and verified host capabilities. Does not call a model.
 
-Arguments: `native`.
+Arguments: `native`, `model_policy`.
 
 `papervizagent status --json '<arguments>'` prints a JSON result. MCP tool `status` on server `papervizagent` returns the same result as `structuredContent`.
 

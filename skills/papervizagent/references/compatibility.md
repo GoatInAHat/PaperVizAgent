@@ -3,7 +3,7 @@
 Pinned official source: google-research/papervizagent
 at e088a8fff74cc363b6897c0843631fff76484908. The original agents are separate
 role-specific model calls orchestrated in one Python process. This port uses
-fresh native Codex subagents and persisted artifact handoffs.
+fresh native host subagents and persisted artifact handoffs.
 
 ## Restored from v0.1.0
 
@@ -27,6 +27,13 @@ fresh native Codex subagents and persisted artifact handoffs.
   alone does not establish text, vision, delegation, or image capability, and
   model sampling, exact pixel resolution, and benchmark parity cannot be
   promised.
+- Model policy: balanced work uses current host mid-tier aliases or advisory
+  provider catalog labels, with provider defaults as an explicit fallback.
+  Highest-quality requests opt into the quality policy. Explicit model/effort
+  choices remain authoritative. This changes provider selection and effort,
+  not the pinned upstream role prompts or style guides. Codex subscription
+  images are managed by the service; the coordinating model is selectable,
+  but the underlying image-model ID cannot be pinned or verified there.
 - Configuration and settings: runtime configuration is loaded from the
   `PAPERVIZAGENT_CONFIG` JSON/YAML path and environment, never from an
   authentication-token argument. The adapter passes complete upstream request
