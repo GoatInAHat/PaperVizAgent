@@ -1,5 +1,5 @@
 {
-  "toolfactoryVersion": "0.1.2",
+  "toolfactoryVersion": "0.2.1",
   "files": {
     ".agents/mcp/servers.json": {
       "sha256": "15346e6ef8e1b2f1413cb7456c38921a4af1bd9847ab11d03a8c07627ee2a35b",
@@ -12,8 +12,13 @@
       ]
     },
     ".agents/plugins/marketplace.json": {
-      "sha256": "c9ecadf972ed7daac4e2b75fa208a1c59ce5554102601db6af9beae0d2604df5",
-      "state": "generated"
+      "sha256": "87426f138bd5d677d11bc69ba106d23871e6d7a998ae8a09f0df4d061f4e334a",
+      "state": "generated",
+      "keys": [
+        "name",
+        "interface.displayName",
+        "plugins"
+      ]
     },
     ".agents/README.md": {
       "sha256": "617acad815520ca8ee30e928e5e7a890aa2953287d4f849bd98a7475d0d71359",
@@ -42,24 +47,124 @@
       "state": "generated"
     },
     ".claude-plugin/marketplace.json": {
-      "sha256": "cab4001bf5657c24be45490b116dc699736f0189d4f489d4f04614f029e99aeb",
-      "state": "generated"
+      "sha256": "adba1609cf9f1f9a152c4040b7f69debe3c72d3d083a4ff5e3e7aca8b1be919b",
+      "state": "generated",
+      "keys": [
+        "$schema",
+        "name",
+        "description",
+        "owner.name",
+        "plugins"
+      ]
     },
     ".claude-plugin/plugin.json": {
-      "sha256": "214ce4cb32f7d4ff9352fcd1b8d890dfbe5fe5333c5d8194f5eab6160dd28066",
-      "state": "generated"
+      "sha256": "f232488d642b84e1ede5d7a37946d5636356a404f84b94547cff26ff028d8cbd",
+      "state": "generated",
+      "keys": [
+        "$schema",
+        "name",
+        "version",
+        "description",
+        "author.name",
+        "author.email",
+        "author.url",
+        "homepage",
+        "repository",
+        "license",
+        "keywords",
+        "userConfig.papervizagent_config.type",
+        "userConfig.papervizagent_config.title",
+        "userConfig.papervizagent_config.description",
+        "userConfig.codex_oauth_token.type",
+        "userConfig.codex_oauth_token.title",
+        "userConfig.codex_oauth_token.description",
+        "userConfig.codex_oauth_token.sensitive",
+        "userConfig.codex_account_id.type",
+        "userConfig.codex_account_id.title",
+        "userConfig.codex_account_id.description",
+        "userConfig.google_api_key.type",
+        "userConfig.google_api_key.title",
+        "userConfig.google_api_key.description",
+        "userConfig.google_api_key.sensitive",
+        "userConfig.openai_api_key.type",
+        "userConfig.openai_api_key.title",
+        "userConfig.openai_api_key.description",
+        "userConfig.openai_api_key.sensitive",
+        "userConfig.anthropic_api_key.type",
+        "userConfig.anthropic_api_key.title",
+        "userConfig.anthropic_api_key.description",
+        "userConfig.anthropic_api_key.sensitive",
+        "mcpServers.papervizagent.command",
+        "mcpServers.papervizagent.args",
+        "mcpServers.papervizagent.env.PAPERVIZAGENT_CONFIG",
+        "mcpServers.papervizagent.env.CODEX_OAUTH_TOKEN",
+        "mcpServers.papervizagent.env.CODEX_ACCOUNT_ID",
+        "mcpServers.papervizagent.env.GOOGLE_API_KEY",
+        "mcpServers.papervizagent.env.OPENAI_API_KEY",
+        "mcpServers.papervizagent.env.ANTHROPIC_API_KEY"
+      ]
     },
     ".claude/settings.json": {
       "sha256": "5ee165b2a1f069ac273d89ac660cca5992893a63fab8a96f93ffb625b507a538",
       "state": "generated"
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "a7aee6295c4fec47f10048f5ca2d9acacbfdcde55d59ede5902d2345753c3190",
-      "state": "generated"
+      "sha256": "ccfc02cf2168b0c1472cc8916ca65b254da106f6ff7e8ee9e281fb5a7153a904",
+      "state": "generated",
+      "keys": [
+        "name",
+        "version",
+        "description",
+        "author.name",
+        "homepage",
+        "repository",
+        "license",
+        "keywords",
+        "skills",
+        "interface.displayName",
+        "interface.shortDescription",
+        "interface.longDescription",
+        "interface.developerName",
+        "interface.category",
+        "interface.capabilities",
+        "interface.defaultPrompt"
+      ]
     },
     ".cursor-plugin/plugin.json": {
-      "sha256": "23b3e883599a2b0cbb4ccd6fb7a7cda84fb951b045dadf988d356c821f9e5e58",
-      "state": "generated"
+      "sha256": "7398249bdcf942d15f66d3c12307507c3bb15592e63d4b3b3fa91cfcb85e138c",
+      "state": "generated",
+      "keys": [
+        "name",
+        "version",
+        "description",
+        "author.name",
+        "homepage",
+        "repository",
+        "license",
+        "keywords",
+        "skills",
+        "mcpServers",
+        "variables.type",
+        "variables.properties.PAPERVIZAGENT_CONFIG.type",
+        "variables.properties.PAPERVIZAGENT_CONFIG.title",
+        "variables.properties.PAPERVIZAGENT_CONFIG.description",
+        "variables.properties.CODEX_OAUTH_TOKEN.type",
+        "variables.properties.CODEX_OAUTH_TOKEN.title",
+        "variables.properties.CODEX_OAUTH_TOKEN.description",
+        "variables.properties.CODEX_ACCOUNT_ID.type",
+        "variables.properties.CODEX_ACCOUNT_ID.title",
+        "variables.properties.CODEX_ACCOUNT_ID.description",
+        "variables.properties.GOOGLE_API_KEY.type",
+        "variables.properties.GOOGLE_API_KEY.title",
+        "variables.properties.GOOGLE_API_KEY.description",
+        "variables.properties.OPENAI_API_KEY.type",
+        "variables.properties.OPENAI_API_KEY.title",
+        "variables.properties.OPENAI_API_KEY.description",
+        "variables.properties.ANTHROPIC_API_KEY.type",
+        "variables.properties.ANTHROPIC_API_KEY.title",
+        "variables.properties.ANTHROPIC_API_KEY.description",
+        "variables.required"
+      ]
     },
     ".cursor/environment.json": {
       "sha256": "559393387fffd75060e1c2b09ea284969712a8976ba13720bb3854d1712002a3",
@@ -72,6 +177,16 @@
     ".devcontainer/Dockerfile": {
       "sha256": "710e6c9d3fc037871ede60912a009223fccc4e6dd6fc9880e57911bab3677ccf",
       "state": "generated"
+    },
+    ".dockerignore": {
+      "sha256": "9ba62e0cf3fdcb752e8ef2bd7a54b7505e70ebe01b385370f43323c3b6e275dd",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:dockerignore",
+          "end": "# /tf:dockerignore"
+        }
+      ]
     },
     ".env.example": {
       "sha256": "9399c5a88b0c66b0286cfce57dc6355626fb1e6b3d1c6c79dcc7abe3a9e71591",
@@ -86,7 +201,7 @@
       "state": "manual"
     },
     ".github/workflows/ci.yml": {
-      "sha256": "468a8558f283da202704065f31a30027716eb195ea34fba0437c0bd233ff8e43",
+      "sha256": "098d6f2fa1361dd8273c4f2510316e4a1121cd65fc24bd7fe4d1f2b8a704bc57",
       "state": "generated"
     },
     ".github/workflows/copilot-setup-steps.yml": {
@@ -112,7 +227,7 @@
       "state": "manual"
     },
     "bin/papervizagent.mjs": {
-      "sha256": "151d7dbfd3cb319107b2aa07b81ff9e5e58ce00258acc5c60d1b8233a7653fa3",
+      "sha256": "e77728870f5cb2eed0019fc16f5cdc9a379492852fdeb37d432b4e62f9d5d832",
       "state": "generated"
     },
     "compose.toolfactory.yaml": {
@@ -120,7 +235,7 @@
       "state": "generated"
     },
     "COVERAGE.md": {
-      "sha256": "07d92eee3f03d6aeb41c102680745de19b1aad1d837d6976f245f9da5cd86a72",
+      "sha256": "26da1872538719f065bd8caf6fb09fc2bcd36c3a716617566569857e5964a78a",
       "state": "generated"
     },
     "dev.toolfactory/coverage.json": {
@@ -132,7 +247,7 @@
       "state": "generated"
     },
     "dev.toolfactory/tool.schema.json": {
-      "sha256": "2608c18d3889e6d846e463ba044f7ce80af09eb8e6f43edb7656646da231774f",
+      "sha256": "41a69c7cbcaad8741f80559f127eb32b43bd9e4147e6f958639d9e914e9f7e61",
       "state": "generated"
     },
     "Dockerfile": {
@@ -140,8 +255,17 @@
       "state": "manual"
     },
     "gemini-extension.json": {
-      "sha256": "73b95fee2554a439b7bbd9b2d495893f2bc54859723f90341cb47f5e03250563",
-      "state": "generated"
+      "sha256": "78abcf22de834de213589befefd48f228208103bbdf7efed1b01c578e0a78852",
+      "state": "generated",
+      "keys": [
+        "name",
+        "version",
+        "description",
+        "mcpServers.papervizagent.command",
+        "mcpServers.papervizagent.args",
+        "contextFileName",
+        "settings"
+      ]
     },
     "hosts/browser/.gitignore": {
       "sha256": "b727faab67a7bdc19094e7915a3b0b343b3d8af60bbb0db49401e088ae9b06a5",
@@ -188,7 +312,7 @@
       "state": "generated"
     },
     "hosts/browser/package.json": {
-      "sha256": "44d1b46abd2827cdfacee8f57e4cd1470848ce7c64598ae248901bbd2f9a9582",
+      "sha256": "dfefd1b5909bedb441394f9f8a76ea150efa48af0156131ace3023e93bbd0161",
       "state": "generated",
       "keys": [
         "name",
@@ -271,28 +395,80 @@
       ]
     },
     "hosts/dsh/cordis.local.patch.yml": {
-      "sha256": "d2e66deacfcb9205d8c0e81542cfd8548d31c6dba69418497cf3aabd1a251601",
-      "state": "generated"
+      "sha256": "420c80b800cbc779293517b6f28470d19e770fc60a1f5bfa2a2817ca782a94f2",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:mcp",
+          "end": "# /tf:mcp"
+        }
+      ]
     },
     "hosts/dsh/cordis.patch.yml": {
-      "sha256": "bc93ef478c97d321f34ce31d777d5f77083c688f88b70956db869b8c09319a97",
-      "state": "generated"
+      "sha256": "77cbf0305ea06fa814d6ad05ae1bfd0844c2731838f687fccda7a03599bcd11b",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:mcp",
+          "end": "# /tf:mcp"
+        }
+      ]
     },
     "hosts/dsh/package.json": {
-      "sha256": "7654fcca02bc3412949ae6a4db757de1424cd49da6b1adbb993e7e1d9df434b4",
-      "state": "generated"
+      "sha256": "4ae45bb1b484df3f93548cb65f7340f54592611ab3e26551225095293a9a1d99",
+      "state": "generated",
+      "keys": [
+        "name",
+        "version",
+        "description",
+        "license",
+        "files",
+        "dsh.bundle.patch"
+      ]
     },
     "hosts/hermes/papervizagent_hermes/__init__.py": {
-      "sha256": "cf6a52b68cc0d03fb87f1d706ea26dc2cd63373bd039cf5b7be55ac3c4c87a85",
-      "state": "generated"
+      "sha256": "ce74cc0cc27e21e2fb68bbe5cf7392d493b2b15a5837075fe7da03d3145ac729",
+      "state": "generated",
+      "regions": [
+        {
+          "begin": "# tf:init",
+          "end": "# /tf:init"
+        }
+      ]
     },
     "hosts/hermes/papervizagent_hermes/plugin.yaml": {
-      "sha256": "6ff327d7bc6a2f3148f06cbf8cb0b3916b546ec53d496992efe765e9d8e60e86",
-      "state": "generated"
+      "sha256": "887ca0b8136a95936e16beb95e481af20fc7c0d37c5b70fada2826b3647307be",
+      "state": "generated",
+      "keys": [
+        "manifest_version",
+        "name",
+        "version",
+        "description",
+        "author",
+        "license",
+        "homepage",
+        "provides_tools",
+        "optional_env",
+        "python_dependencies"
+      ]
     },
     "hosts/hermes/pyproject.toml": {
-      "sha256": "907a6fad06f96ccfec75b9cfcb561a5598a8a5a0907efae956cf7b0e8645eac8",
-      "state": "generated"
+      "sha256": "ce6c861244ea2b83fc4288a0ac8dc3b82e0fbce04c6aee130b21a29c48491a33",
+      "state": "generated",
+      "keys": [
+        "project.name",
+        "project.version",
+        "project.description",
+        "project.license",
+        "project.requires-python",
+        "project.dependencies",
+        "project.entry-points.hermes_agent.plugins.papervizagent",
+        "build-system.requires",
+        "build-system.build-backend",
+        "tool.hatch.build.targets.wheel.packages",
+        "tool.uv.sources.papervizagent.path",
+        "tool.uv.sources.papervizagent.editable"
+      ]
     },
     "hosts/hermes/README.md": {
       "sha256": "9aa5e36be28a8693335c0d581eda1952fdff67825f8f0e5b0243b16c1f02c2ef",
@@ -303,7 +479,7 @@
       "state": "generated"
     },
     "hosts/mcpb/manifest.json": {
-      "sha256": "c705c11144a6e519eb08876e114cdfb1ae8e0dbe1f2b1c4e6f3dd8368bff1b96",
+      "sha256": "1eb98a562ac5d3a3e3066677e6990e192de936c12465c211200021156818005d",
       "state": "generated"
     },
     "hosts/openclaw/.npmrc": {
@@ -319,12 +495,63 @@
       "state": "generated"
     },
     "hosts/openclaw/openclaw.plugin.json": {
-      "sha256": "a1e35dbcaa3417e4d19aaac24a5fc256a8f653ff8fdbfc2678c44f492aab0df7",
-      "state": "generated"
+      "sha256": "af646fbc0ca4a81d99cd5dae9a53953fcd17ebaa0123f5e77f4e6f2e34048da2",
+      "state": "generated",
+      "keys": [
+        "id",
+        "name",
+        "description",
+        "version",
+        "configSchema.type",
+        "configSchema.properties.papervizagent_config.type",
+        "configSchema.properties.papervizagent_config.description",
+        "configSchema.properties.codex_oauth_token.type",
+        "configSchema.properties.codex_oauth_token.description",
+        "configSchema.properties.codex_oauth_token.x-toolfactory.sensitive",
+        "configSchema.properties.codex_account_id.type",
+        "configSchema.properties.codex_account_id.description",
+        "configSchema.properties.google_api_key.type",
+        "configSchema.properties.google_api_key.description",
+        "configSchema.properties.google_api_key.x-toolfactory.sensitive",
+        "configSchema.properties.openai_api_key.type",
+        "configSchema.properties.openai_api_key.description",
+        "configSchema.properties.openai_api_key.x-toolfactory.sensitive",
+        "configSchema.properties.anthropic_api_key.type",
+        "configSchema.properties.anthropic_api_key.description",
+        "configSchema.properties.anthropic_api_key.x-toolfactory.sensitive",
+        "uiHints.codex_oauth_token.sensitive",
+        "uiHints.google_api_key.sensitive",
+        "uiHints.openai_api_key.sensitive",
+        "uiHints.anthropic_api_key.sensitive",
+        "activation.onStartup",
+        "contracts.tools"
+      ]
     },
     "hosts/openclaw/package.json": {
-      "sha256": "840ded6891667d532fb2b7bbaa7d234230c925451d0449039c681f55d3fe2f32",
-      "state": "generated"
+      "sha256": "d0254adfde2b737ebb81483ad4de1c006088af5f16cf5fda17f88dd4c0c8ff90",
+      "state": "generated",
+      "keys": [
+        "name",
+        "version",
+        "description",
+        "type",
+        "private",
+        "scripts.build",
+        "scripts.plugin:build",
+        "scripts.plugin:validate",
+        "scripts.test",
+        "scripts.test:e2e",
+        "files",
+        "peerDependencies.openclaw",
+        "dependencies.typebox",
+        "devDependencies.openclaw",
+        "devDependencies.typescript",
+        "devDependencies.vitest",
+        "devDependencies.@copilotkit/aimock",
+        "openclaw.extensions",
+        "openclaw.compat.pluginApi",
+        "openclaw.build.openclawVersion"
+      ]
     },
     "hosts/openclaw/README.md": {
       "sha256": "0e7e313cd98fdc62fec4515a201235a529c111f7c4289258b9b1d835198144fb",
@@ -357,11 +584,17 @@
       "state": "generated"
     },
     "mcp.json": {
-      "sha256": "9604dfa9aac2eea23bf19722fcc127ac54cd91a09e6ef5750f8caddf4cf40a71",
-      "state": "generated"
+      "sha256": "07f1809d8324578e7ca90df6e3157b15bb1172eb2009a875d9c2fc5e8ef85d4c",
+      "state": "generated",
+      "keys": [
+        "$schema",
+        "mcpServers.papervizagent.type",
+        "mcpServers.papervizagent.command",
+        "mcpServers.papervizagent.args"
+      ]
     },
     "package.json": {
-      "sha256": "088311c39418186a297ce5ce646d0c10011a5f8de32853143b2cb582e9a609b9",
+      "sha256": "87fca59451f58aa366fcc7c9e7aa63892fc7126868a4ea7882701751807158de",
       "state": "generated",
       "keys": [
         "name",
@@ -379,7 +612,7 @@
       ]
     },
     "pyproject.toml": {
-      "sha256": "c4525e1be9c3ed3c1708202a09033b52ef06ebd0ac5958d179d332d6542f92b6",
+      "sha256": "f523d2799e08b825f5c995f181787d02a24b61cf216fc3186a8c6566ef26427d",
       "state": "generated",
       "keys": [
         "project.name",
@@ -400,7 +633,7 @@
       ]
     },
     "README.md": {
-      "sha256": "b100c0a1c34235490fb69594b2ac4b32bd7f1ce70a78f83f6857a73e080fd017",
+      "sha256": "16c0f7180140524133ab26df12061b3e40e2b2c6d93beabb9cd430257e0d15b6",
       "state": "generated",
       "regions": [
         {
@@ -424,7 +657,7 @@
       ]
     },
     "server.json": {
-      "sha256": "0a9225dbba5130c2a814590ffdea875fd1366eeb391f88cd9ffe367076ae219b",
+      "sha256": "bf3be8fe1b0d92b0a2686607e9244a48764ca9cb153f1fc648d0524de12eaad9",
       "state": "generated"
     },
     "skills/papervizagent/SKILL.md": {
@@ -454,7 +687,7 @@
       "state": "generated"
     },
     "src/papervizagent/toolfactory/mcp.py": {
-      "sha256": "ce342c6b9c7126bc16ad513195638a39ba3697b5007bbcdc8c9c9c2906f2d28e",
+      "sha256": "d56d14ee87533952a2c5ff2e9c5b41bb567cc49d618d63bc082cb9b7a7ccf6e9",
       "state": "generated"
     },
     "src/papervizagent/toolfactory/types.py": {
@@ -478,7 +711,7 @@
       "state": "generated"
     },
     "web/package.json": {
-      "sha256": "c9627ffab1618967ea95eebef7d2c677294d00e7d9ba9465d0ed95745d2b792d",
+      "sha256": "2bb75e6f57a4829ca5ccef45ebbccab53e1ed31567c499f265d2b4e0f16c9224",
       "state": "generated",
       "keys": [
         "name",
@@ -538,7 +771,7 @@
       "state": "generated"
     },
     "web/src/ops.json": {
-      "sha256": "52b7ea0927109aea4a729adcca629f3179c1b7988f632c135397fdd93098700d",
+      "sha256": "695e840101cda22c9ddee63699a464ededdb05e355031b341863d238508d41f4",
       "state": "generated"
     },
     "web/src/schema-form.tsx": {

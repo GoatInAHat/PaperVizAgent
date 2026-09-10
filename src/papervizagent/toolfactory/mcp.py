@@ -33,7 +33,7 @@ OPERATIONS = [*AUTHORED_OPERATIONS, WEB_OPERATION]
 
 server = MCPServer(
     name="papervizagent",
-    version="0.3.0",
+    version="0.4.0",
     description="Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available.",
 )
 

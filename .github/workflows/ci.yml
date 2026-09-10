@@ -11,6 +11,8 @@ permissions:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      TOOLFACTORY_SYSTEM_NATIVE_JOBS: "true"
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
@@ -42,15 +44,15 @@ jobs:
       - name: Install core into Hermes
         run: uv pip install --python "$HOME/.hermes/hermes-agent/venv/bin/python" --editable .
       - name: toolfactory check
-        run: npx --yes toolfactory@0.1.2 check
+        run: npx --yes toolfactory@0.2.1 check
       - name: toolfactory build (output files)
-        run: npx --yes toolfactory@0.1.2 build
+        run: npx --yes toolfactory@0.2.1 build
       - name: Install Claude Code CLI
         run: npm i -g @anthropic-ai/claude-code
       - name: Install Chromium dependencies
         run: npx --yes playwright install-deps chromium
       - name: toolfactory validate
-        run: npx --yes toolfactory@0.1.2 validate
+        run: npx --yes toolfactory@0.2.1 validate
       - name: author tests
         run: uv run --with pytest pytest -q
       - name: openclaw end-to-end (scripted model, no LLM key)

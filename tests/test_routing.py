@@ -225,3 +225,40 @@ class _TurnClient:
 
     def unregister_turn_notifications(self, turn_id):
         self.unregistered.append(turn_id)
+
+
+async def test_failed_terminal_event_is_not_interrupted_again(tmp_path):
+    terminal = types.SimpleNamespace(method='turn/completed', payload=types.SimpleNamespace(
+        turn=types.SimpleNamespace(status=types.SimpleNamespace(value='failed'))))
+    backend = Backend()
+    backend.models = [{'id': 'coordinator', 'model': 'coordinator', 'inputModalities': ['text']}]
+    backend.client = _TurnClient([terminal])
+    backend._directory = types.SimpleNamespace(name=str(tmp_path))
+    with unittest.TestCase().assertRaisesRegex(RuntimeError, 'Codex inference failed'):
+        await backend._codex_generate(Model(provider='codex'), 'planner', 'llm', 'system', [], {})
+    assert backend.client.unregistered == ['turn-1']
+
+
+async def test_cancellation_cleanup_cannot_mask_original_exception(tmp_path):
+    import asyncio
+    entered = asyncio.Event()
+
+    class Client(_TurnClient):
+        async def next_turn_notification(self, _turn_id):
+            entered.set()
+            await asyncio.Event().wait()
+
+        async def turn_interrupt(self, *_args):
+            raise RuntimeError('no active turn to interrupt')
+
+    backend = Backend()
+    backend.models = [{'id': 'coordinator', 'model': 'coordinator', 'inputModalities': ['text']}]
+    backend.client = Client([])
+    backend._directory = types.SimpleNamespace(name=str(tmp_path))
+    task = asyncio.create_task(backend._codex_generate(
+        Model(provider='codex'), 'planner', 'llm', 'system', [], {}))
+    await entered.wait()
+    task.cancel()
+    with unittest.TestCase().assertRaises(asyncio.CancelledError):
+        await task
+    assert backend.client.unregistered == ['turn-1']

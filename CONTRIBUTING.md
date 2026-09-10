@@ -1,7 +1,7 @@
 # Development
 
-Install Node.js 24, npm, Python 3.11+ and uv. ToolFactory 0.1.2 is pinned by the
-Makefile and generated workflows. `uv sync` installs the runtime dependencies.
+Install Node.js 24, npm, Python 3.11+ and uv. ToolFactory 0.2.1 is pinned by the
+Makefile and workflows. `uv sync` installs the runtime dependencies.
 
 ```sh
 make build
@@ -17,11 +17,13 @@ backends. Local live tests use the normal signed-in Codex account and are not CI
 ## Ownership
 
 Edit `plugin.json` for identity/version, `dev.toolfactory/tool.json` for surfaces,
-`src/papervizagent/{config,backends,ops}.py` for runtime behavior, and skill
+`src/papervizagent/{config,backends,events,ops}.py` for runtime behavior, and skill
 bodies/reference adapters for native behavior. ToolFactory owns generated
 kernels, host adapters, manifests, skill frontmatter, README installation regions
 and the lock. Never edit generated regions; adopt first when necessary.
-`AGENTS.md` is adopted; CI and release workflows are generated again in v0.3.
+`AGENTS.md` and the release workflow are adopted. CI remains generated; the
+release workflow preserves repository-specific permissions, container inputs
+and complete Firefox source archives.
 
 Reuse upstream source in `src/papervizagent/upstream`. Keep original prompt
 constants unchanged and retain source hashes and modified-file notices. The

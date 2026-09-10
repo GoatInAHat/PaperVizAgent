@@ -1,4 +1,4 @@
-FACTORY ?= npx --yes toolfactory@0.1.2
+FACTORY ?= npx --yes toolfactory@0.2.1
 
 .PHONY: build check validate package test
 build:

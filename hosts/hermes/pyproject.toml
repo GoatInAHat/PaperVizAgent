@@ -1,10 +1,10 @@
 [project]
 name = "papervizagent-hermes-plugin"
-version = "0.3.0"
+version = "0.4.0"
 description = "Scientific figures with upstream PaperVizAgent, separate roles, configurable model providers and Codex subscription fallback. Host-native defaults where tools are available. — Hermes plugin."
 license = "Apache-2.0"
 requires-python = ">=3.11"
-dependencies = [ "papervizagent>=0.3.0,<1" ]
+dependencies = [ "papervizagent>=0.4.0,<1" ]
 
 [project.entry-points."hermes_agent.plugins"]
 papervizagent = "papervizagent_hermes:register"

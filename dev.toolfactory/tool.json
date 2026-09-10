@@ -83,5 +83,10 @@
         }
       }
     }
+  },
+  "openclaw": {
+    "devDependencies": {
+      "openclaw": "2026.9.2"
+    }
   }
 }

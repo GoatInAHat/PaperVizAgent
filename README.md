@@ -7,7 +7,7 @@ The Python processor, seven agent implementations and complete style guides are 
 **Release status:** GitHub/source installation is available; the PyPI, npm, ClawHub and browser-store commands below require the publisher setup described in [RELEASING.md](RELEASING.md). Until PyPI is published, run the runtime from the release source:
 
 ```sh
-uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.3.0 papervizagent mcp
+uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.4.0 papervizagent mcp
 ```
 
 <!-- tf:install -->
@@ -23,18 +23,18 @@ uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.3.0 papervizagent 
 - **Gemini CLI extension** — `gemini extensions install https://github.com/GoatInAHat/PaperVizAgent`
 - **OpenClaw plugin** — `openclaw plugins install --link hosts/openclaw` from a checkout; published: `openclaw plugins install clawhub:openclaw-plugin-papervizagent`
 - **Hermes plugin** — `hermes plugins install https://github.com/GoatInAHat/PaperVizAgent#hosts/hermes/papervizagent_hermes`
-- **DSH plugin** (experimental) — `dsh plugin --profile <profile> add ./hosts/dsh` from a checkout, or the release tarball `papervizagent-dsh-0.3.0.tgz`
+- **DSH plugin** (experimental) — `dsh plugin --profile <profile> add ./hosts/dsh` from a checkout, or the release tarball `papervizagent-dsh-0.4.0.tgz`
 - **Browser extension** — from a checkout: `npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt build`,
   then `chrome://extensions` → developer mode → Load unpacked → `hosts/browser/.output/chrome-mv3`
   (Firefox: `npm --prefix hosts/browser exec --no -- web-ext run`). Each GitHub Release attaches the
-  store uploads `papervizagent-0.3.0-chrome.zip`, `papervizagent-0.3.0-firefox.zip`, `papervizagent-0.3.0-edge.zip`. When Firefox signing credentials are configured, it also attaches a
+  store uploads `papervizagent-0.4.0-chrome.zip`, `papervizagent-0.4.0-firefox.zip`, `papervizagent-0.4.0-edge.zip`. When Firefox signing credentials are configured, it also attaches a
   Mozilla-signed `.xpi`; the Chrome Web Store, Firefox Add-ons and Edge Add-ons listings appear once the release's
   submit step has each store's credentials. Then pair it: `uvx papervizagent mcp --http --pair`
   prints the `<url>#<token>` the extension's options page accepts.
 - **Web app** — `uvx papervizagent mcp --http --open` serves the operations page beside the
   MCP endpoint on one port and opens it; over MCP or a skill, the `web` operation does the same and
   returns the URL.
-- **npm package** — `npm install papervizagent`; requires `uv`, and `papervizagent` delegates to `uvx --from papervizagent==0.3.0 papervizagent`
+- **npm package** — `npm install papervizagent`; requires `uv`, and `papervizagent` delegates to `uvx --from papervizagent==0.4.0 papervizagent`
 - **PyPI package** — `uv add papervizagent`
 
 <!-- /tf:install -->
@@ -75,6 +75,21 @@ papervizagent mcp
 Both diagrams and Matplotlib plots support vanilla, planner, planner+stylist, planner+critic, full, retrieval-only and polish modes. Candidate count, concurrency, critic rounds, retrieval mode, aspect ratio, style guides and provider options remain configurable. The skill defaults to automatic reference retrieval; the standalone runtime defaults to `none` until a reference dataset or supplied examples are provided. The runtime defaults to one full candidate and three critic rounds; upstream’s ten-candidate demo is a selectable configuration, not an implied default.
 
 Original prompt constants and style guides remain unchanged. Each native role has a fresh subagent; each runtime role makes an isolated provider request or Codex thread. Critic revisions produce fresh renders; polish is a separate editing workflow. Plot execution runs generated Python in a temporary child process with a configurable timeout and 300 DPI output. This isolates plotting state and hangs; it is **not an OS security sandbox**. Use the host’s execution sandbox for untrusted inputs.
+
+## Background execution
+
+In hosts with background completion notifications, the skill dispatches one
+coordinator to own generation, isolated roles, critique and review. The main
+conversation receives the completion or failure event. It does not schedule
+check-ins or repeatedly poll files for progress.
+
+Runtime integrations keep one awaited CLI process or MCP request. Embedded
+Python hosts can use `papervizagent.ops.generate_events` for run, candidate and
+role lifecycle events, or supply an async `on_event` callback to `generate`.
+The host owns the background task and delivers the result when it completes;
+there is no additional daemon or scheduler. Hosts without a background completion
+channel use one awaited call. See [completion events](skills/papervizagent/references/completion.md)
+for the event contract and cancellation behavior.
 
 ## Development and fidelity
 
