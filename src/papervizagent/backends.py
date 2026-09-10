@@ -123,8 +123,13 @@ class Backend:
         if spec.provider == 'native':
             if modality not in self.native:
                 raise ValueError(f'{role}/{modality} is assigned to the host. Run this role using the skill and the host tool, or provide a native callback to Backend.')
-            result = await self.native[modality](role=role, modality=modality, system=system, contents=contents, options=merged)
-            self.trace.append({'role': role, 'modality': modality, 'provider': 'native', 'model': spec.model})
+            result = await self.native[modality](
+                role=role, modality=modality, system=system, contents=contents,
+                options=merged, model=spec.model,
+                model_policy=self.settings.model_policy,
+            )
+            self.trace.append({'role': role, 'modality': modality, 'provider': 'native',
+                               'model': spec.model, 'model_policy': self.settings.model_policy})
             return result
         if spec.provider == 'codex':
             return await asyncio.wait_for(self._codex_generate(spec, role, modality, system, contents, merged), self.settings.codex.timeout)

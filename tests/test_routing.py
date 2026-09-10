@@ -40,7 +40,10 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
             received.append(request)
             return ["host answer"]
 
-        backend = Backend(native={"llm": native})
+        backend = Backend(Settings(
+            model_policy="quality",
+            roles={"planner": Model(provider="native", model="host-quality-model")},
+        ), native={"llm": native})
         backend._codex_generate = AsyncMock(return_value=["codex answer"])
         text = [{"type": "text", "text": "paper"}]
 
@@ -48,8 +51,11 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(await backend.generate("critic", "vlm", "inspect", text), ["codex answer"])
         self.assertEqual(received[0]["role"], "planner")
         self.assertEqual(received[0]["options"], {})
+        self.assertEqual(received[0]["model"], "host-quality-model")
+        self.assertEqual(received[0]["model_policy"], "quality")
         backend._codex_generate.assert_awaited_once()
-        self.assertEqual([entry["provider"] for entry in backend.trace], ["native"])
+        self.assertEqual(backend.trace, [{"role": "planner", "modality": "llm", "provider": "native",
+                                          "model": "host-quality-model", "model_policy": "quality"}])
 
     def test_vision_model_selection_requires_image_input_and_honors_default(self):
         backend = Backend()
