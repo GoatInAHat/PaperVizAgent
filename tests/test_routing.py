@@ -28,6 +28,11 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(settings.resolve("visualizer", "image", ("image",)).provider, "native")
         self.assertEqual(settings.resolve("visualizer", "vlm", ("image",)).provider, "codex")
 
+    def test_unconfigured_routes_keep_every_verified_native_modality(self):
+        settings = Settings()
+        for modality in ("llm", "vlm", "image"):
+            self.assertEqual(settings.resolve("visualizer", modality, ("llm", "vlm", "image")).provider, "native")
+
     async def test_native_callback_and_codex_fallback_are_selected_per_modality(self):
         received = []
 
@@ -55,9 +60,86 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
         ]
 
         self.assertEqual(backend.choose_model(Model(), "vlm"), "vision-default")
-        self.assertEqual(backend.choose_model(Model(model="vision"), "vlm"), "vision")
+        self.assertEqual(backend.choose_model(Model(model="vision"), "vlm"), "vision-model")
         with self.assertRaisesRegex(ValueError, "unavailable for vlm"):
             backend.choose_model(Model(model="text"), "vlm")
+
+    def test_balanced_policy_beats_an_expensive_server_default_without_model_name_heuristics(self):
+        backend = Backend()
+        backend.models = [
+            {"id": "opaque-default", "model": "opaque-default", "description": "Most capable general model.", "inputModalities": ["text", "image"], "isDefault": True, "supportedReasoningEfforts": []},
+            {"id": "future-name", "model": "future-model", "description": "Balanced general model for everyday work.", "inputModalities": ["text", "image"], "isDefault": False, "supportedReasoningEfforts": []},
+        ]
+        selected = backend.select_model(Model(), "llm")
+        self.assertEqual((selected.model, selected.reason, selected.classification), ("future-model", "balanced_catalog_label", "balanced"))
+
+    def test_quality_policy_prefers_advertised_general_quality_and_excludes_specialty_hidden_and_legacy(self):
+        backend = Backend(Settings(model_policy="quality"))
+        backend.models = [
+            {"id": "old", "model": "old", "description": "Previous-generation flagship.", "inputModalities": ["text", "image"], "isDefault": True, "supportedReasoningEfforts": []},
+            {"id": "cyber", "model": "cyber", "description": "Most capable frontier model.", "modelSpecialty": "cyber", "inputModalities": ["text", "image"], "isDefault": False, "supportedReasoningEfforts": []},
+            {"id": "hidden", "model": "hidden", "description": "Most capable frontier model.", "hidden": True, "inputModalities": ["text", "image"], "isDefault": False, "supportedReasoningEfforts": []},
+            {"id": "current", "model": "current", "description": "Flagship general model.", "inputModalities": ["text", "image"], "isDefault": False, "supportedReasoningEfforts": []},
+        ]
+        selected = backend.select_model(Model(), "vlm")
+        self.assertEqual((selected.model, selected.reason), ("current", "quality_catalog_label"))
+
+    def test_unknown_catalog_labels_fall_back_to_server_default_and_explicit_ids_are_canonicalized(self):
+        backend = Backend()
+        backend.models = [
+            {"id": "retired", "model": "retired-model", "description": "Deprecated general model.", "inputModalities": ["text", "image"], "isDefault": True, "supportedReasoningEfforts": []},
+            {"id": "new-id", "model": "canonical-new", "description": "General work.", "inputModalities": ["text", "image"], "isDefault": True, "supportedReasoningEfforts": []},
+        ]
+        selected = backend.select_model(Model(), "llm")
+        self.assertEqual((selected.model, selected.reason), ("canonical-new", "server_default_fallback"))
+        explicit = backend.select_model(Model(model="new-id"), "llm")
+        self.assertEqual((explicit.model, explicit.reason), ("canonical-new", "explicit"))
+
+    def test_quality_policy_uses_supported_effort_and_explicit_controls_validate_before_thread(self):
+        backend = Backend(Settings(model_policy="quality"))
+        backend.models = [{
+            "id": "quality", "model": "quality", "description": "Flagship general model.",
+            "inputModalities": ["text", "image"], "isDefault": True,
+            "supportedReasoningEfforts": [{"reasoningEffort": "medium"}, {"reasoningEffort": "high"}],
+            "serviceTiers": [{"id": "priority"}],
+        }]
+        selected = backend.select_model(Model(), "llm")
+        from papervizagent.model_selection import automatic_effort, validate_controls
+        self.assertEqual(automatic_effort(backend.models[0], policy="quality", modality="llm")[0], "high")
+        with self.assertRaisesRegex(ValueError, "does not support effort"):
+            validate_controls(backend.models[0], {"effort": "ultra"})
+        with self.assertRaisesRegex(ValueError, "does not support service_tier"):
+            validate_controls(backend.models[0], {"service_tier": "slow"})
+        self.assertEqual(selected.model, "quality")
+
+    async def test_catalog_selection_reason_and_policy_effort_are_recorded_on_codex_turn(self):
+        completed_text = types.SimpleNamespace(
+            method="item/completed",
+            payload=types.SimpleNamespace(item=types.SimpleNamespace(root=types.SimpleNamespace(
+                type="agentMessage", text="done"
+            ))),
+        )
+        completed_turn = types.SimpleNamespace(
+            method="turn/completed",
+            payload=types.SimpleNamespace(turn=types.SimpleNamespace(status=types.SimpleNamespace(value="completed"))),
+        )
+        backend = Backend(Settings(model_policy="balanced"))
+        backend.models = [{
+            "id": "opaque", "model": "future-balanced", "description": "Balanced general model.",
+            "inputModalities": ["text", "image"], "isDefault": False,
+            "supportedReasoningEfforts": [{"reasoningEffort": "low"}, {"reasoningEffort": "medium"}],
+            "serviceTiers": [],
+        }]
+        client = _TurnClient([completed_text, completed_turn])
+        backend.client = client
+        backend._directory = tempfile.TemporaryDirectory()
+        try:
+            await backend._codex_generate(Model(provider="codex"), "planner", "llm", "system", [{"type": "text", "text": "x"}], {})
+            self.assertEqual(client.turn_params, [{"effort": "medium"}])
+            self.assertEqual(backend.trace[-1]["model"], "future-balanced")
+            self.assertEqual(backend.trace[-1]["model_selection_reason"], "balanced_catalog_label")
+        finally:
+            backend._directory.cleanup()
 
     def test_oauth_env_jwt_and_token_file_are_read_only_and_not_logged(self):
         account = "acct-from-jwt"
@@ -200,6 +282,7 @@ class _TurnClient:
         self.events = list(events)
         self.thread_requests = []
         self.unregistered = []
+        self.turn_params = []
         self._threads = 0
         self._turns = 0
 
@@ -215,6 +298,7 @@ class _TurnClient:
 
     async def turn_start(self, _thread_id, _items, _params):
         self._turns += 1
+        self.turn_params.append(_params)
         return types.SimpleNamespace(turn=types.SimpleNamespace(id=f"turn-{self._turns}"))
 
     async def next_turn_notification(self, _turn_id):

@@ -11,6 +11,7 @@ from pydantic import BaseModel, ConfigDict, Field, SecretStr
 Modality = Literal['llm', 'vlm', 'image']
 Role = Literal['retriever', 'planner', 'stylist', 'visualizer', 'critic', 'vanilla', 'polish']
 Provider = Literal['native', 'codex', 'gemini', 'openai', 'anthropic']
+ModelPolicy = Literal['balanced', 'quality']
 
 
 class Model(BaseModel):
@@ -40,6 +41,7 @@ class Settings(BaseModel):
     model_config = ConfigDict(extra='forbid', hide_input_in_errors=True)
     models: dict[Modality, Model] = Field(default_factory=dict)
     roles: dict[Role, Model] = Field(default_factory=dict)
+    model_policy: ModelPolicy = 'balanced'
     codex: CodexAuth = Field(default_factory=CodexAuth)
     pipeline: dict[str, Any] = Field(default_factory=dict)
 
@@ -92,5 +94,5 @@ def _upstream_config(value: dict) -> dict:
             if secret:
                 spec['api_key'] = secret
             models[modality] = spec
-    return {**{key: value[key] for key in ('roles', 'codex', 'pipeline') if key in value},
+    return {**{key: value[key] for key in ('roles', 'model_policy', 'codex', 'pipeline') if key in value},
             'models': {**models, **value.get('models', {})}}

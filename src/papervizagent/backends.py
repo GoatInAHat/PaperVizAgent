@@ -12,6 +12,7 @@ from typing import Any
 from uuid import uuid4
 
 from .config import Model, Settings
+from .model_selection import automatic_effort, select_model, selected_entry, validate_controls
 
 
 def image_source(block: dict) -> dict:
@@ -106,16 +107,12 @@ class Backend:
             models.extend(values['data'])
         return models
 
+    def select_model(self, spec: Model, modality: str):
+        return select_model(self.models, modality=modality, policy=self.settings.model_policy, explicit=spec.model)
+
     def choose_model(self, spec: Model, modality: str) -> str:
-        eligible = [m for m in self.models if modality != 'vlm' or 'image' in m['inputModalities']]
-        if spec.model:
-            if not any(spec.model in (m['id'], m['model']) for m in eligible):
-                raise ValueError(f'Codex model {spec.model!r} is unavailable for {modality}. Use models to inspect the account catalog. For image, model selects the Codex coordinator; its built-in image model is service-managed.')
-            return spec.model
-        default = next((m for m in eligible if m.get('isDefault')), None)
-        if not eligible:
-            raise ValueError(f'No available Codex model supports {modality}.')
-        return (default or eligible[0])['model']
+        """Compatibility helper for callers that only need the coordinator ID."""
+        return self.select_model(spec, modality).model
 
     async def generate(self, role: str, modality: str, system: str, contents: list[dict], options: dict | None = None) -> list[str]:
         spec = self.settings.resolve(role, modality, tuple(self.native))
@@ -138,11 +135,19 @@ class Backend:
     async def _codex_generate(self, spec, role, modality, system, contents, options):
         from openai_codex.generated.v2_all import ModelProviderCapabilitiesReadResponse
         client = await self.codex()
-        model = self.choose_model(spec, 'vlm' if any(b.get('type') == 'image' for b in contents) else modality)
+        selected_modality = 'vlm' if any(b.get('type') == 'image' for b in contents) else modality
+        selection = self.select_model(spec, selected_modality)
+        model = selection.model
         supported = {'effort', 'service_tier', 'output_schema', 'aspect_ratio', 'image_size', 'size', 'quality', 'background'}
         unsupported = set(spec.options) - supported
         if unsupported:
             raise ValueError(f'Codex does not expose these model options: {sorted(unsupported)}. Select an API provider for these controls.')
+        entry = selected_entry(self.models, model)
+        if 'effort' not in options:
+            effort, _ = automatic_effort(entry, policy=self.settings.model_policy, modality=modality)
+            if effort:
+                options = {**options, 'effort': effort}
+        validate_controls(entry, options)
         if modality == 'image':
             caps = await client.request('modelProvider/capabilities/read', {}, response_model=ModelProviderCapabilitiesReadResponse)
             if not caps.image_generation:
@@ -166,7 +171,10 @@ class Backend:
         params = {k: options[key] for key, k in [('effort', 'effort'), ('service_tier', 'serviceTier'), ('output_schema', 'outputSchema')] if key in options}
         turn = await client.turn_start(thread.thread.id, items, params)
         tid = turn.turn.id
-        record = {'role': role, 'modality': modality, 'provider': 'codex', 'model': model, 'thread_id': thread.thread.id, 'turn_id': tid}
+        record = {'role': role, 'modality': modality, 'provider': 'codex', 'model': model,
+                  'model_selection_reason': selection.reason,
+                  'model_classification': selection.classification,
+                  'thread_id': thread.thread.id, 'turn_id': tid}
         record['unavailable_upstream_options'] = sorted(set(options) - supported)
         self.trace.append(record)
         texts, images = [], []
