@@ -1,6 +1,6 @@
 # Release coverage
 
-ToolFactory 0.1.2 generates 18 selected surfaces from one Python runtime:
+ToolFactory 0.2.1 generates 18 selected surfaces from one Python runtime:
 Agent Skill, Agent Plugins, Claude, Codex, Cursor, Gemini, MCP, CLI, PyPI, npm,
 MCP Registry, MCPB, OpenClaw, Hermes, ClawHub, web, DSH and browser extensions.
 The browser extension is a local MCP client, not a hosted inference service.
@@ -13,7 +13,7 @@ and MCPB do not require an existing PyPI package.
 
 ## Current publication status
 
-The v0.3.0 GitHub release provides downloadable integrations independently of
+The v0.4.0 GitHub release provides downloadable integrations independently of
 registry accounts. PyPI and npm publication, ClawHub listings and browser-store
 submission remain pending their publisher setup. The GitHub `pypi` environment
 and Pages source are configured; the PyPI trusted-publisher record must still be
@@ -54,3 +54,7 @@ while the Codex path has live end-to-end coverage.
 Before a local `docker build`, run `make build` to generate the web operations
 schema. The release container job performs this step, then checks that the built
 image starts the CLI and contains the compiled web interface.
+
+The release workflow runs WXT from the browser project directory. Its Firefox
+source archive contains the tagged repository plus the generated web operations
+schema, including the shared web sources imported by the extension.

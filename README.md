@@ -7,7 +7,7 @@ The Python processor, seven agent implementations and complete style guides are 
 **Release status:** GitHub/source installation is available; the PyPI, npm, ClawHub and browser-store commands below require the publisher setup described in [RELEASING.md](RELEASING.md). Until PyPI is published, run the runtime from the release source:
 
 ```sh
-uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.3.0 papervizagent mcp
+uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.4.0 papervizagent mcp
 ```
 
 <!-- tf:install -->
@@ -23,18 +23,18 @@ uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@v0.3.0 papervizagent 
 - **Gemini CLI extension** — `gemini extensions install https://github.com/GoatInAHat/PaperVizAgent`
 - **OpenClaw plugin** — `openclaw plugins install --link hosts/openclaw` from a checkout; published: `openclaw plugins install clawhub:openclaw-plugin-papervizagent`
 - **Hermes plugin** — `hermes plugins install https://github.com/GoatInAHat/PaperVizAgent#hosts/hermes/papervizagent_hermes`
-- **DSH plugin** (experimental) — `dsh plugin --profile <profile> add ./hosts/dsh` from a checkout, or the release tarball `papervizagent-dsh-0.3.0.tgz`
+- **DSH plugin** (experimental) — `dsh plugin --profile <profile> add ./hosts/dsh` from a checkout, or the release tarball `papervizagent-dsh-0.4.0.tgz`
 - **Browser extension** — from a checkout: `npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt build`,
   then `chrome://extensions` → developer mode → Load unpacked → `hosts/browser/.output/chrome-mv3`
   (Firefox: `npm --prefix hosts/browser exec --no -- web-ext run`). Each GitHub Release attaches the
-  store uploads `papervizagent-0.3.0-chrome.zip`, `papervizagent-0.3.0-firefox.zip`, `papervizagent-0.3.0-edge.zip`. When Firefox signing credentials are configured, it also attaches a
+  store uploads `papervizagent-0.4.0-chrome.zip`, `papervizagent-0.4.0-firefox.zip`, `papervizagent-0.4.0-edge.zip`. When Firefox signing credentials are configured, it also attaches a
   Mozilla-signed `.xpi`; the Chrome Web Store, Firefox Add-ons and Edge Add-ons listings appear once the release's
   submit step has each store's credentials. Then pair it: `uvx papervizagent mcp --http --pair`
   prints the `<url>#<token>` the extension's options page accepts.
 - **Web app** — `uvx papervizagent mcp --http --open` serves the operations page beside the
   MCP endpoint on one port and opens it; over MCP or a skill, the `web` operation does the same and
   returns the URL.
-- **npm package** — `npm install papervizagent`; requires `uv`, and `papervizagent` delegates to `uvx --from papervizagent==0.3.0 papervizagent`
+- **npm package** — `npm install papervizagent`; requires `uv`, and `papervizagent` delegates to `uvx --from papervizagent==0.4.0 papervizagent`
 - **PyPI package** — `uv add papervizagent`
 
 <!-- /tf:install -->

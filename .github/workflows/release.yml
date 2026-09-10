@@ -1,4 +1,4 @@
-# Adopted from ToolFactory 0.1.2 for workflow permissions and container inputs.
+# Adopted from ToolFactory 0.2.1 for workflow permissions and container inputs.
 # `gate` decides once which registries this tag can publish to (a job-level `if` cannot read
 # secrets) and every leg obeys its output, so a tag with no secrets is still green: gate,
 # package, the Release, and whatever else applies. After adding a secret, re-run with
@@ -93,15 +93,15 @@ jobs:
       - name: Install core into Hermes
         run: uv pip install --python "$HOME/.hermes/hermes-agent/venv/bin/python" --editable .
       - name: toolfactory check
-        run: npx --yes toolfactory@0.1.2 check
+        run: npx --yes toolfactory@0.2.1 check
       - name: toolfactory build (output files)
-        run: npx --yes toolfactory@0.1.2 build
+        run: npx --yes toolfactory@0.2.1 build
       - name: Install Claude Code CLI
         run: npm i -g @anthropic-ai/claude-code
       - name: Install Chromium dependencies
         run: npx --yes playwright install-deps chromium
       - name: toolfactory validate
-        run: npx --yes toolfactory@0.1.2 validate
+        run: npx --yes toolfactory@0.2.1 validate
       - name: author tests
         run: uv run --with pytest pytest -q
       - name: openclaw end-to-end (scripted model, no LLM key)
@@ -158,7 +158,7 @@ jobs:
       - name: install
         run: uv sync
       - name: toolfactory build (output files)
-        run: npx --yes toolfactory@0.1.2 build
+        run: npx --yes toolfactory@0.2.1 build
       - name: web build
         run: npm -C web ci && npm -C web run build
         env:
@@ -178,11 +178,20 @@ jobs:
       - name: web tarball
         run: tar -czf dist/release/papervizagent-web.tar.gz -C web/dist .
       - name: browser extension zips
-        run: npm --prefix hosts/browser install && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b chrome && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b firefox && npm --prefix hosts/browser exec --no -- wxt zip hosts/browser -b edge && cp hosts/browser/.output/papervizagent-0.3.0-chrome.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-firefox.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-edge.zip dist/release/ && cp hosts/browser/.output/papervizagent-0.3.0-sources.zip dist/release/
+        working-directory: hosts/browser
+        run: |-
+          npm install
+          npm exec --no -- wxt zip -b chrome
+          npm exec --no -- wxt zip -b firefox
+          npm exec --no -- wxt zip -b edge
+          cp .output/papervizagent-0.4.0-{chrome,firefox,edge,sources}.zip ../../dist/release/
+          cd ../..
+          git archive --format=zip --output=dist/release/papervizagent-0.4.0-sources.zip HEAD
+          zip -q dist/release/papervizagent-0.4.0-sources.zip web/src/ops.json
       - name: Firefox signed xpi (only when FIREFOX_JWT_ISSUER/FIREFOX_JWT_SECRET are set)
         run: if [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then npm --prefix hosts/browser exec --no -- web-ext sign --channel=unlisted --api-key="$FIREFOX_JWT_ISSUER" --api-secret="$FIREFOX_JWT_SECRET" --source-dir hosts/browser/.output/firefox-mv2 --artifacts-dir dist/release; fi
       - name: coverage report
-        run: cp COVERAGE.md dist/release/ && npx --yes toolfactory@0.1.2 coverage > dist/release/coverage.json
+        run: cp COVERAGE.md dist/release/ && npx --yes toolfactory@0.2.1 coverage > dist/release/coverage.json
       - uses: actions/upload-artifact@v7
         with:
           name: release-assets
@@ -213,7 +222,7 @@ jobs:
       - name: npm publish
         env:
           NPM_TOKEN: ${{ vars.NPM_TRUSTED_PUBLISHER != 'true' && secrets.NPM_TOKEN || '' }}
-        run: 'if npm view papervizagent@0.3.0 version >/dev/null 2>&1; then echo "::notice::npm: papervizagent@0.3.0 already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish ./release-assets/papervizagent-0.3.0.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish ./release-assets/papervizagent-0.3.0.tgz --access public; fi'
+        run: 'if npm view papervizagent@0.4.0 version >/dev/null 2>&1; then echo "::notice::npm: papervizagent@0.4.0 already published; skipping immutable version."; elif [ "$NPM_TRUSTED_PUBLISHER" = true ]; then npm publish ./release-assets/papervizagent-0.4.0.tgz --access public; else NODE_AUTH_TOKEN="$NPM_TOKEN" npm publish ./release-assets/papervizagent-0.4.0.tgz --access public; fi'
   publish-pypi:
     needs:
       - gate
@@ -254,7 +263,7 @@ jobs:
       - name: install
         run: uv sync --frozen
       - name: generate container build inputs
-        run: npx --yes toolfactory@0.1.2 build
+        run: npx --yes toolfactory@0.2.1 build
       - uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -312,7 +321,7 @@ jobs:
     uses: openclaw/clawhub/.github/workflows/package-publish.yml@main
     with:
       package_artifact_name: release-assets
-      package_artifact_path: openclaw-plugin-papervizagent-0.3.0.tgz
+      package_artifact_path: openclaw-plugin-papervizagent-0.4.0.tgz
       dry_run: false
       wait_for_publication: true
     secrets:
@@ -366,20 +375,20 @@ jobs:
           path: release-assets
       - name: wxt submit --dry-run (zips, plus a live credential read for Chrome and Firefox)
         run: |-
-          flags=""
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-0.3.0-chrome.zip"; fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.3.0-sources.zip"; fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-0.3.0-edge.zip"; fi
-          if [ -z "$flags" ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
-          npm --prefix hosts/browser exec --no -- wxt submit --dry-run $flags
+          flags=()
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-0.4.0-chrome.zip); fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-0.4.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.4.0-sources.zip); fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-0.4.0-edge.zip); fi
+          if [ "${#flags[@]}" -eq 0 ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
+          npm --prefix hosts/browser exec --no -- wxt submit --dry-run "${flags[@]}"
       - name: wxt submit
         run: |-
-          flags=""
-          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags="$flags --chrome-zip release-assets/papervizagent-0.3.0-chrome.zip"; fi
-          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags="$flags --firefox-zip release-assets/papervizagent-0.3.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.3.0-sources.zip"; fi
-          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags="$flags --edge-zip release-assets/papervizagent-0.3.0-edge.zip"; fi
-          if [ -z "$flags" ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
-          npm --prefix hosts/browser exec --no -- wxt submit $flags
+          flags=()
+          if [ -n "$CHROME_EXTENSION_ID" ] && [ -n "$CHROME_PUBLISHER_ID" ] && [ -n "$CHROME_SERVICE_ACCOUNT_CLIENT_EMAIL" ] && [ -n "$CHROME_SERVICE_ACCOUNT_PRIVATE_KEY" ]; then flags+=(--chrome-zip release-assets/papervizagent-0.4.0-chrome.zip); fi
+          if [ -n "$FIREFOX_EXTENSION_ID" ] && [ -n "$FIREFOX_JWT_ISSUER" ] && [ -n "$FIREFOX_JWT_SECRET" ]; then flags+=(--firefox-zip release-assets/papervizagent-0.4.0-firefox.zip --firefox-sources-zip release-assets/papervizagent-0.4.0-sources.zip); fi
+          if [ -n "$EDGE_PRODUCT_ID" ] && [ -n "$EDGE_CLIENT_ID" ] && [ -n "$EDGE_API_KEY" ]; then flags+=(--edge-zip release-assets/papervizagent-0.4.0-edge.zip); fi
+          if [ "${#flags[@]}" -eq 0 ]; then echo "No browser store credentials configured; skipping wxt submit."; exit 0; fi
+          npm --prefix hosts/browser exec --no -- wxt submit "${flags[@]}"
   release:
     needs:
       - gate
@@ -414,7 +423,7 @@ jobs:
       - name: install
         run: uv sync
       - name: unpublish dropped registries
-        run: npx --yes toolfactory@0.1.2 unpublish
+        run: npx --yes toolfactory@0.2.1 unpublish
         env:
           GH_TOKEN: ${{ github.token }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
@@ -464,14 +473,14 @@ jobs:
       - name: install
         run: uv sync
       - name: toolfactory build (output files)
-        run: npx --yes toolfactory@0.1.2 build
+        run: npx --yes toolfactory@0.2.1 build
       - uses: actions/configure-pages@v5
       - name: web build
         env:
           PAGES_BASE: /${{ github.event.repository.name }}/
         run: npm -C web ci && npm -C web run build
       - name: publish the schema and the coverage report alongside the app
-        run: cp dev.toolfactory/tool.schema.json COVERAGE.md web/dist/ && npx --yes toolfactory@0.1.2 coverage > web/dist/coverage.json
+        run: cp dev.toolfactory/tool.schema.json COVERAGE.md web/dist/ && npx --yes toolfactory@0.2.1 coverage > web/dist/coverage.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: web/dist
