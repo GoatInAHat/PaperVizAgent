@@ -59,6 +59,20 @@ Supported roles: `retriever`, `planner`, `stylist`, `visualizer`, `critic`,
 contain images, otherwise `llm`. Render calls use `image`. This includes the two
 different modalities used by polish.
 
+## Native Python callbacks in 0.5.0
+
+Version 0.5.0 extends the embedded `Backend(native={...})` callback contract.
+Callbacks with an explicit signature must add the keyword arguments `model`
+and `model_policy` alongside `role`, `modality`, `system`, `contents`, and
+`options`. `model` is `None` when unconfigured; otherwise apply that exact
+model. When it is absent, resolve `model_policy` through the host's supported
+aliases/catalog. Preserve explicit controls in `options`. Returning a result
+without applying an explicit model is not a valid native adapter.
+
+This is a breaking change for callbacks with the old five-argument signature;
+update the adapter before upgrading. Skills and generated CLI/MCP/host adapters
+already share the updated policy and do not need callback code.
+
 ## Providers
 
 Each model/role entry accepts `provider`, `model`, `api_key_env`, `api_key`,

@@ -58,7 +58,7 @@
       ]
     },
     ".claude-plugin/plugin.json": {
-      "sha256": "f232488d642b84e1ede5d7a37946d5636356a404f84b94547cff26ff028d8cbd",
+      "sha256": "5e04a437922a3b763a0b9edcf892d45526c52af0b8e08666cd30471e19473f2b",
       "state": "generated",
       "keys": [
         "$schema",
@@ -109,7 +109,7 @@
       "state": "generated"
     },
     ".codex-plugin/plugin.json": {
-      "sha256": "ccfc02cf2168b0c1472cc8916ca65b254da106f6ff7e8ee9e281fb5a7153a904",
+      "sha256": "690a26b0614cc44befc5c81404250a62bc05f5036f3334f54b430cd6aa00da1c",
       "state": "generated",
       "keys": [
         "name",
@@ -131,7 +131,7 @@
       ]
     },
     ".cursor-plugin/plugin.json": {
-      "sha256": "7398249bdcf942d15f66d3c12307507c3bb15592e63d4b3b3fa91cfcb85e138c",
+      "sha256": "271122b9bb90d4374e85d25455c40715e7d5799f10d69094552142388ac3bf1e",
       "state": "generated",
       "keys": [
         "name",
@@ -227,7 +227,7 @@
       "state": "manual"
     },
     "bin/papervizagent.mjs": {
-      "sha256": "e77728870f5cb2eed0019fc16f5cdc9a379492852fdeb37d432b4e62f9d5d832",
+      "sha256": "49f1ee566a9a90f40007dc798ed4133651ae6fc5a1c442c1160246680df10c49",
       "state": "generated"
     },
     "compose.toolfactory.yaml": {
@@ -255,7 +255,7 @@
       "state": "manual"
     },
     "gemini-extension.json": {
-      "sha256": "78abcf22de834de213589befefd48f228208103bbdf7efed1b01c578e0a78852",
+      "sha256": "4ddd17d40d474dd5ede2f076c294697f4f4fa5839c336b987e13a31fb1413d8a",
       "state": "generated",
       "keys": [
         "name",
@@ -312,7 +312,7 @@
       "state": "generated"
     },
     "hosts/browser/package.json": {
-      "sha256": "dfefd1b5909bedb441394f9f8a76ea150efa48af0156131ace3023e93bbd0161",
+      "sha256": "e97d6c25f8091bf8b10975c5a47c9a62a49e5a1fa3c59789e82e46619c934ff1",
       "state": "generated",
       "keys": [
         "name",
@@ -405,7 +405,7 @@
       ]
     },
     "hosts/dsh/cordis.patch.yml": {
-      "sha256": "77cbf0305ea06fa814d6ad05ae1bfd0844c2731838f687fccda7a03599bcd11b",
+      "sha256": "d2560823daccadc9898a6d82136af8bb6ba3b57fe950cf4c84ace898847fac57",
       "state": "generated",
       "regions": [
         {
@@ -415,7 +415,7 @@
       ]
     },
     "hosts/dsh/package.json": {
-      "sha256": "4ae45bb1b484df3f93548cb65f7340f54592611ab3e26551225095293a9a1d99",
+      "sha256": "ff68f9a68f516d632576a1ea3441e4d08e5efed0ef271267e99f49faf21fb48c",
       "state": "generated",
       "keys": [
         "name",
@@ -437,7 +437,7 @@
       ]
     },
     "hosts/hermes/papervizagent_hermes/plugin.yaml": {
-      "sha256": "887ca0b8136a95936e16beb95e481af20fc7c0d37c5b70fada2826b3647307be",
+      "sha256": "20a4064983d9ee20c7fbcb3d1813e99b6ce896f728cf3d564a23ee6e10c31a91",
       "state": "generated",
       "keys": [
         "manifest_version",
@@ -453,7 +453,7 @@
       ]
     },
     "hosts/hermes/pyproject.toml": {
-      "sha256": "ce6c861244ea2b83fc4288a0ac8dc3b82e0fbce04c6aee130b21a29c48491a33",
+      "sha256": "604e9678e69b86f2ef224baad83024ca8e62c64db28d7257e883fbd7833d5ecf",
       "state": "generated",
       "keys": [
         "project.name",
@@ -479,7 +479,7 @@
       "state": "generated"
     },
     "hosts/mcpb/manifest.json": {
-      "sha256": "1eb98a562ac5d3a3e3066677e6990e192de936c12465c211200021156818005d",
+      "sha256": "117c44b000902f78966bbfc204e66600f899739008ee0bcb3e50006e6d520fe6",
       "state": "generated"
     },
     "hosts/openclaw/.npmrc": {
@@ -495,7 +495,7 @@
       "state": "generated"
     },
     "hosts/openclaw/openclaw.plugin.json": {
-      "sha256": "af646fbc0ca4a81d99cd5dae9a53953fcd17ebaa0123f5e77f4e6f2e34048da2",
+      "sha256": "2aede3e28cf1449e5348124d3510849883956261b64834a4d607be7ff81bc07a",
       "state": "generated",
       "keys": [
         "id",
@@ -528,7 +528,7 @@
       ]
     },
     "hosts/openclaw/package.json": {
-      "sha256": "d0254adfde2b737ebb81483ad4de1c006088af5f16cf5fda17f88dd4c0c8ff90",
+      "sha256": "1c440fdbd238a775ac9eb830a0c65b87e3ec03180295b665fdcf6dd720612dd8",
       "state": "generated",
       "keys": [
         "name",
@@ -584,7 +584,7 @@
       "state": "generated"
     },
     "mcp.json": {
-      "sha256": "07f1809d8324578e7ca90df6e3157b15bb1172eb2009a875d9c2fc5e8ef85d4c",
+      "sha256": "a9690afee11caefbda6b723381238c48f810d9e658b2e8142b1dc2272ada0afc",
       "state": "generated",
       "keys": [
         "$schema",
@@ -594,7 +594,7 @@
       ]
     },
     "package.json": {
-      "sha256": "87fca59451f58aa366fcc7c9e7aa63892fc7126868a4ea7882701751807158de",
+      "sha256": "bad13e4f4efdc0187b0c2c7ec9c74284836063f58abd4f42068383455af58ec4",
       "state": "generated",
       "keys": [
         "name",
@@ -612,7 +612,7 @@
       ]
     },
     "pyproject.toml": {
-      "sha256": "f523d2799e08b825f5c995f181787d02a24b61cf216fc3186a8c6566ef26427d",
+      "sha256": "4c537d25a493c414eedb3a63dfa8e01853e52f1d90fa3004466c647cb80f7f16",
       "state": "generated",
       "keys": [
         "project.name",
@@ -633,7 +633,7 @@
       ]
     },
     "README.md": {
-      "sha256": "16c0f7180140524133ab26df12061b3e40e2b2c6d93beabb9cd430257e0d15b6",
+      "sha256": "537800a9211493d2bc9d5dacbfc31f8f2e8aea6e8755cbcf71cb01a091a36e6f",
       "state": "generated",
       "regions": [
         {
@@ -657,7 +657,7 @@
       ]
     },
     "server.json": {
-      "sha256": "bf3be8fe1b0d92b0a2686607e9244a48764ca9cb153f1fc648d0524de12eaad9",
+      "sha256": "c0d8674787bd164600b9e677a84256b8a8d4a810b9f21e8e388cdd83251edf48",
       "state": "generated"
     },
     "skills/papervizagent/SKILL.md": {
@@ -687,7 +687,7 @@
       "state": "generated"
     },
     "src/papervizagent/toolfactory/mcp.py": {
-      "sha256": "d56d14ee87533952a2c5ff2e9c5b41bb567cc49d618d63bc082cb9b7a7ccf6e9",
+      "sha256": "e4d7a0fea6e2ef4ae6ed4dc316e64d9d26167fa489aed62ba2163c8b05768078",
       "state": "generated"
     },
     "src/papervizagent/toolfactory/types.py": {
@@ -711,7 +711,7 @@
       "state": "generated"
     },
     "web/package.json": {
-      "sha256": "2bb75e6f57a4829ca5ccef45ebbccab53e1ed31567c499f265d2b4e0f16c9224",
+      "sha256": "6b9c54554d1f63081180e3e84550b75a4e5c8ace0e2d4d773830f0fef687b224",
       "state": "generated",
       "keys": [
         "name",
@@ -771,7 +771,7 @@
       "state": "generated"
     },
     "web/src/ops.json": {
-      "sha256": "c9a312ac4633eb00e3c5a1f90ae8723e59a11c038d76478866ae874e66a8802d",
+      "sha256": "980a66957faf8e53653735d3fe0f827ea087da0c20dc6ad3f07ee4c892362681",
       "state": "generated"
     },
     "web/src/schema-form.tsx": {

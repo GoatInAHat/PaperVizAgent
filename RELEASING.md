@@ -13,7 +13,7 @@ and MCPB do not require an existing PyPI package.
 
 ## Current publication status
 
-The v0.4.0 GitHub release provides downloadable integrations independently of
+GitHub release bundles provide downloadable integrations independently of
 registry accounts. PyPI and npm publication, ClawHub listings and browser-store
 submission remain pending their publisher setup. The GitHub `pypi` environment
 and Pages source are configured; the PyPI trusted-publisher record must still be

@@ -1,6 +1,6 @@
 {
   "name": "papervizagent-dsh",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "DSH bundle for papervizagent: attaches its MCP server through @deepseek-ai/dsh-mcp-client.",
   "license": "Apache-2.0",
   "files": [
