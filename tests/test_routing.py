@@ -36,8 +36,16 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
     async def test_native_callback_and_codex_fallback_are_selected_per_modality(self):
         received = []
 
-        async def native(**request):
-            received.append(request)
+        async def native(*, role, modality, system, contents, options, model, model_policy):
+            received.append({
+                "role": role,
+                "modality": modality,
+                "system": system,
+                "contents": contents,
+                "options": options,
+                "model": model,
+                "model_policy": model_policy,
+            })
             return ["host answer"]
 
         backend = Backend(Settings(
