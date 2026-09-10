@@ -95,6 +95,19 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
         explicit = backend.select_model(Model(model="new-id"), "llm")
         self.assertEqual((explicit.model, explicit.reason), ("canonical-new", "explicit"))
 
+    def test_explicit_model_can_use_hidden_or_specialized_catalog_entries_when_capable(self):
+        backend = Backend()
+        backend.models = [
+            {"id": "hidden-specialist", "model": "hidden-specialist", "hidden": True,
+             "modelSpecialty": "science", "inputModalities": ["text", "image"],
+             "description": "Specialized model.", "isDefault": False},
+            {"id": "text-only", "model": "text-only", "inputModalities": ["text"],
+             "description": "General model.", "isDefault": True},
+        ]
+        self.assertEqual(backend.choose_model(Model(model="hidden-specialist"), "vlm"), "hidden-specialist")
+        with self.assertRaisesRegex(ValueError, "unavailable for vlm"):
+            backend.choose_model(Model(model="text-only"), "vlm")
+
     def test_quality_policy_uses_supported_effort_and_explicit_controls_validate_before_thread(self):
         backend = Backend(Settings(model_policy="quality"))
         backend.models = [{
@@ -110,6 +123,7 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
             validate_controls(backend.models[0], {"effort": "ultra"})
         with self.assertRaisesRegex(ValueError, "does not support service_tier"):
             validate_controls(backend.models[0], {"service_tier": "slow"})
+        validate_controls(backend.models[0], {"effort": None, "service_tier": None})
         self.assertEqual(selected.model, "quality")
 
     async def test_catalog_selection_reason_and_policy_effort_are_recorded_on_codex_turn(self):
@@ -130,14 +144,20 @@ class RoutingTest(unittest.IsolatedAsyncioTestCase):
             "supportedReasoningEfforts": [{"reasoningEffort": "low"}, {"reasoningEffort": "medium"}],
             "serviceTiers": [],
         }]
-        client = _TurnClient([completed_text, completed_turn])
+        client = _TurnClient([completed_text, completed_turn, completed_text, completed_turn])
         backend.client = client
         backend._directory = tempfile.TemporaryDirectory()
         try:
             await backend._codex_generate(Model(provider="codex"), "planner", "llm", "system", [{"type": "text", "text": "x"}], {})
             self.assertEqual(client.turn_params, [{"effort": "medium"}])
             self.assertEqual(backend.trace[-1]["model"], "future-balanced")
+            self.assertEqual(backend.trace[-1]["model_policy"], "balanced")
+            self.assertEqual(backend.trace[-1]["effort"], "medium")
             self.assertEqual(backend.trace[-1]["model_selection_reason"], "balanced_catalog_label")
+            await backend._codex_generate(Model(provider="codex", options={"effort": None, "service_tier": None}), "planner", "llm", "system", [{"type": "text", "text": "x"}], {"effort": None, "service_tier": None})
+            self.assertEqual(client.turn_params[-1], {})
+            self.assertIsNone(backend.trace[-1]["effort"])
+            self.assertIsNone(backend.trace[-1]["service_tier"])
         finally:
             backend._directory.cleanup()
 

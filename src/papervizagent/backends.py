@@ -98,11 +98,14 @@ class Backend:
     @staticmethod
     async def _model_catalog(client):
         from openai_codex.generated.v2_all import ModelListResponse
-        result = await client.model_list()
+        # Hidden entries remain excluded from automatic policy selection, but
+        # an explicit user choice may legitimately target one if the account
+        # catalog reports it as available.
+        result = await client.model_list(include_hidden=True)
         values = result.model_dump(mode='json', by_alias=True)
         models = values['data']
         while values.get('nextCursor'):
-            result = await client.request('model/list', {'cursor': values['nextCursor']}, response_model=ModelListResponse)
+            result = await client.request('model/list', {'cursor': values['nextCursor'], 'includeHidden': True}, response_model=ModelListResponse)
             values = result.model_dump(mode='json', by_alias=True)
             models.extend(values['data'])
         return models
@@ -168,12 +171,15 @@ class Backend:
             'approvalPolicy': 'never', 'sandbox': 'read-only',
             'developerInstructions': instruction, 'config': self.settings.codex.config,
         })
-        params = {k: options[key] for key, k in [('effort', 'effort'), ('service_tier', 'serviceTier'), ('output_schema', 'outputSchema')] if key in options}
+        params = {k: options[key] for key, k in [('effort', 'effort'), ('service_tier', 'serviceTier'), ('output_schema', 'outputSchema')] if options.get(key) is not None}
         turn = await client.turn_start(thread.thread.id, items, params)
         tid = turn.turn.id
         record = {'role': role, 'modality': modality, 'provider': 'codex', 'model': model,
+                  'model_policy': self.settings.model_policy,
                   'model_selection_reason': selection.reason,
                   'model_classification': selection.classification,
+                  'effort': options.get('effort'),
+                  'service_tier': options.get('service_tier'),
                   'thread_id': thread.thread.id, 'turn_id': tid}
         record['unavailable_upstream_options'] = sorted(set(options) - supported)
         self.trace.append(record)
