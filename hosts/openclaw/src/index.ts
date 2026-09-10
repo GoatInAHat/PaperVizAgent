@@ -132,6 +132,22 @@ const entry = defineToolPlugin({
             "default": null,
             "description": "Defaults to pipeline.max_concurrent or 4.",
             "title": "Max Concurrent"
+          },
+          "model_policy": {
+            "anyOf": [
+              {
+                "enum": [
+                  "balanced",
+                  "quality"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Model Policy"
           }
         },
         "required": [
@@ -199,6 +215,22 @@ const entry = defineToolPlugin({
             "additionalProperties": true,
             "title": "Options",
             "type": "object"
+          },
+          "model_policy": {
+            "anyOf": [
+              {
+                "enum": [
+                  "balanced",
+                  "quality"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "title": "Model Policy"
           }
         },
         "required": [
@@ -237,6 +269,23 @@ const entry = defineToolPlugin({
             },
             "title": "Native",
             "type": "array"
+          },
+          "model_policy": {
+            "anyOf": [
+              {
+                "enum": [
+                  "balanced",
+                  "quality"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Override the shared balanced default with quality for this request. Explicit model choices still win.",
+            "title": "Model Policy"
           }
         },
         "title": "statusArguments"

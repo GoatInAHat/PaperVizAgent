@@ -427,7 +427,7 @@
       ]
     },
     "hosts/hermes/papervizagent_hermes/__init__.py": {
-      "sha256": "ce74cc0cc27e21e2fb68bbe5cf7392d493b2b15a5837075fe7da03d3145ac729",
+      "sha256": "dade1712190c1cad9beca72a0b461140b5b72b7c879fc13d10c56d4fc5911781",
       "state": "generated",
       "regions": [
         {
@@ -562,7 +562,7 @@
       "state": "generated"
     },
     "hosts/openclaw/src/index.ts": {
-      "sha256": "d450b9116da7cf7542b9963456afb95e4d16154745d8306274b0f1ccc3a2750f",
+      "sha256": "734a035f017365f6c8e7495405c2afae0e3169f4140115ca7d18a6a434a68cc9",
       "state": "generated",
       "regions": [
         {
@@ -661,7 +661,7 @@
       "state": "generated"
     },
     "skills/papervizagent/SKILL.md": {
-      "sha256": "7dfb020c6c09c46133275b30dc21e34b60c2d4246248be6ff972e12811f06907",
+      "sha256": "8cdf64f8ca2a17ee14f6af5d6757ca68a28f6f316a9d5d95b548a7dc5ca93400",
       "state": "generated",
       "regions": [
         {
@@ -771,7 +771,7 @@
       "state": "generated"
     },
     "web/src/ops.json": {
-      "sha256": "695e840101cda22c9ddee63699a464ededdb05e355031b341863d238508d41f4",
+      "sha256": "c9a312ac4633eb00e3c5a1f90ae8723e59a11c038d76478866ae874e66a8802d",
       "state": "generated"
     },
     "web/src/schema-form.tsx": {
