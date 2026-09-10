@@ -10,13 +10,7 @@ skill and managed Codex sign-in in the standalone runtime. No model IDs are
 hardcoded into automatic selection.
 
 ```yaml
-models:
-  llm: {provider: codex}
-  vlm: {provider: codex}
-  image: {provider: codex}
-roles:
-  critic:
-    options: {effort: high}
+model_policy: balanced
 pipeline:
   task_name: diagram
   exp_mode: demo_full
@@ -24,22 +18,41 @@ pipeline:
   max_critic_rounds: 3
   num_candidates: 1
   max_concurrent: 4
-codex:
-  access_token_env: CODEX_OAUTH_TOKEN
-  account_id_env: CODEX_ACCOUNT_ID
-  timeout: 600
 ```
 
-This example explicitly assigns all modalities to Codex. To keep the host's
-tools as defaults, omit `models` and configure only the roles you want to
-override. `status` accepts the native capabilities the host has verified;
-`models` reads the actual subscription catalog, including vision eligibility.
-Copy an available model ID into any modality or role's `model` field to select
-it. An explicit override that fails is an error; it does not silently switch
-providers. A role's fields merge over its modality's fields. Native role options are
-limited by the host's own controls; `status` exposes common scalar generation
-controls and reports other keys as unavailable, without exposing SDK options
-or credentials. Use a configured provider for its full SDK option set.
+This example preserves verified host-native tools, with managed Codex sign-in
+for missing modalities. `status` accepts the native capabilities the host has
+verified. `models` reads the actual subscription catalog and reports automatic
+choices and selection reasons without making an inference request.
+
+`model_policy` is `balanced` by default; choose `quality` for highest-quality
+work. The `status`, `infer`, and `generate` operations also accept a per-request
+`model_policy` override. Native skill roles use a supported current mid-tier
+alias or live catalog; Claude Code uses `sonnet`, or `opus` for quality. Hosts
+without tier information use their own default and record the fallback.
+
+The Codex runtime discovers models at connection time. Automatic selection
+excludes hidden and specialized entries, requires vision support for image
+inputs, and prefers entries without retirement/upgrade hints. It uses the
+provider's balanced/mid-tier or flagship/most-capable descriptions, then the
+provider default, then catalog order. These advisory labels cannot guarantee
+lowest cost or benchmark ranking. Model IDs and version numbers are never
+hardcoded or guessed. Selection reasons are recorded in traces, so a changed
+catalog remains inspectable. Balanced effort is medium for text/vision and low
+for the image-tool coordinator where supported; quality prefers high effort.
+
+Copy an available model ID into a modality or role's `model` field to override
+automatic selection. Set `provider` to explicitly override native-first routing.
+For example, `models.image: {provider: codex, model: YOUR_AVAILABLE_MODEL}` pins
+the Codex coordinator while leaving native text and vision available. An
+explicit override that fails is an error; it does not silently switch providers
+or models. A role's fields merge over its modality's fields. Explicit effort
+options also win over the policy defaults.
+
+Native role options are limited by the host's own controls; `status` exposes
+common scalar generation controls and reports other keys as unavailable,
+without exposing SDK options or credentials. Use a configured provider for its
+full SDK option set.
 
 Supported roles: `retriever`, `planner`, `stylist`, `visualizer`, `critic`,
 `vanilla`, `polish`. Text-producing roles use `vlm` when their actual inputs
@@ -86,7 +99,10 @@ same Gemini path and `gpt-image` image path as upstream. Portable `models`,
 take precedence. Select Anthropic explicitly to use its text adapter.
 
 Codex image `model` selects the coordinator, not the service-managed image
-generator. Image size/aspect/quality/background are requested in the prompt,
+generator. The subscription interface does not expose or report its underlying
+image-model ID, so it cannot guarantee a `gpt-image-2` pin. Existing Codex login
+is reused through the official SDK without copying OAuth credentials.
+Image size/aspect/quality/background are requested in the prompt,
 not guaranteed API dimensions. Its upstream temperature/token/count defaults
 are recorded as unavailable in traces. Explicit unsupported Codex options
 fail. Select Gemini or OpenAI image models for their direct API controls.

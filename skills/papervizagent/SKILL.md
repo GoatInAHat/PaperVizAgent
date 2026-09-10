@@ -28,7 +28,9 @@ returned worker/task ID, then return control to the user. Resume delivery on the
 worker's completion or failure notification. Keep intermediate role results and
 logs in the worker; surface only a required user decision or the reviewed result.
 Do not create scheduled check-ins, heartbeat automations, sleep loops, or repeated
-file/status reads to discover completion. A user-requested status check can read
+file/status reads to discover completion. In Claude Code, yield after Agent
+dispatch and resume from its automatic completion notification; never use
+ScheduleWakeup or a follow-up message to check whether a role has finished. A user-requested status check can read
 the current state once without restarting work.
 
 For runtime execution, the background worker awaits `generate` once. Embedded
@@ -71,6 +73,27 @@ and preserve the returned pipeline settings. Pass only the role's explicit
 input files, its original prompt, and the adapter
 instructions in [roles.md](references/roles.md). In both cases, apply an
 explicit user override only when the selected runtime configuration permits it.
+
+Use the returned `model_policy` (default `balanced`) for every role without an
+explicit model override. A request for highest possible quality selects `quality`;
+pass that policy to `status`, `infer`, and `generate` for the run. For native roles,
+choose the host's current general-purpose mid-tier model using its supported
+moving alias or live catalog. In Claude Code, use `sonnet` for balanced work and
+`opus` for quality, including image inspection through Read; verify the actual
+tools and record the resolved model. Do not inherit an expensive coordinator's
+model automatically. Other hosts must use their own verified catalog or alias,
+not Claude's names. If no tier information is exposed, use the host default and
+record that fallback. Never guess a newly released model ID or silently replace
+an explicit choice when it retires.
+
+Keep effort moderate for routine text/vision roles and low for an image-tool
+coordinator, using only controls the selected host/model supports. Explicit
+model and effort overrides take precedence. The shared Codex runtime uses its
+live account catalog and records its selection reason; catalog labels are
+advisory and do not prove cost or benchmark quality. Codex subscription images
+are service-managed: `model` selects the small coordinating request, not the
+underlying image generator. Do not claim a pinned image-model version when the
+interface neither selects nor reports it.
 
 Pass the same caption/title constraint to all roles: caption and overall title
 stay outside the image unless explicitly requested inside; supported phase and
