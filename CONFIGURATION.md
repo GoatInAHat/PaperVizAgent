@@ -112,6 +112,33 @@ polish selects editing automatically. Ordinary Visualizer calls are fresh
 generation from the revised text description. Gemini and Codex can condition
 on reference image inputs through their native multimodal interfaces.
 
+## Claude Code with existing Codex sign-in
+
+Install the shared skill and an MCP server. While PyPI publication is pending,
+use Git source for the runtime too; the generated marketplace plugin's PyPI
+command requires that publication. These commands install the current main
+branch; replace `main` with a reviewed commit for a reproducible installation.
+
+```sh
+npx skills add GoatInAHat/PaperVizAgent --skill papervizagent --agent claude-code --global --yes
+claude mcp add --scope user papervizagent -- uvx --from git+https://github.com/GoatInAHat/PaperVizAgent@main papervizagent mcp
+claude --model sonnet
+```
+
+Claude and Codex each use their own existing login (`claude auth login` and
+`codex login` if needed). Do not move Codex OAuth tokens into Claude. Ask Claude
+to use the PaperVizAgent skill: fresh Claude roles plan and inspect images;
+`infer` invokes the Codex image bridge only when that modality is absent.
+The Codex image bridge necessarily includes a small coordinating LLM request,
+with low effort under the balanced policy; it is not a direct image-only API.
+
+For an unattended demonstration, constrain built-in tools with `--tools` and
+use `--strict-mcp-config` with an explicit server file. Allow Read, Write, Agent
+and the needed MCP operations; omit scheduler/polling tools. Resume on Claude's
+automatic role-completion notifications. Record the resolved model metadata,
+actual artifact inspection and any failed stages rather than assuming a host
+integration implies success.
+
 ## External Codex tokens
 
 Supply `CODEX_OAUTH_TOKEN` through the host's secret field or environment. An
